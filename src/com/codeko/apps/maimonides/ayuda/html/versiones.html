@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>Registro de versiones</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="general.css"/>
+    </head>
+    <body>
+
+        <h1 class="titulo">Registro de versiones</h1>
+        <ul>
+            <li><b>1.26</b>:
+                <ul>
+                    <li>Implementados filtros por fechas en envío de notificaciones de pérdida de evaluación continua.</li>
+                    <li>Implementado botón de actualizar datos de profesores desde Séneca en el panel de profesores.</li>
+                    <li>Los horarios D.I.C.U. se unifican ahora en un sólo parte.</li>
+                    <li>Los distintos informes ya no se precargan al acceder a ellos, permitiendo concretar el filtro antes de la carga inicial.</li>
+                </ul>
+            </li>
+            <li><b>1.27</b>:
+                <ul>
+                    <li>Añadida posibilidad de enviar ficheros de faltas a Séneca uno a uno desde la pantalla de envíos o desde la pantalla inicial.</li>
+                    <li>Versión preliminar de analizador de errores de envío de ficheros de faltas a Séneca.</li>
+                    <li>Importador de códigos de faltas de alumno desde Séneca.</li>
+                </ul>
+            </li>
+            <li><b>1.28</b>:
+                <ul>
+                    <li>Completado analizador de errores de envío de ficheros de faltas a Séneca.</li>
+                    <li>Añadida la posibilidad de excluir a un alumno del envío de faltas.</li>
+                    <li>Modificado sistema de envío de faltas para adaptarlo a cambios en Séneca.</li>
+                </ul>
+            </li>
+            <li><b>1.29</b>:
+                <ul>
+                    <li>Añadida pantalla de Calendario escolar para poder definir los días festivos.</li>
+                    <li>Añadido importador de días festivos desde Séneca al calendario escolar.</li>
+                    <li>Añadido que el botón de imprimir partes tenga en cuenta los días festivos para seleccionar la fecha a imprimir.</li>
+                    <li>Añadida advertencia en generador de partes si se intentan crear los partes de un día festivo.</li>
+                    <li>Añadido que el sistema de envío de faltas a Séneca no añada los días marcados como festivos para el personal docente aunque haya partes de faltas en esa fecha ya que Séneca no admite esos partes.</li>
+                    <li>Añadido en el panel de revisión de errores de envío de faltas de asistencia la posibilidad de borrar varios registros de una vez y botón de actualizar en el listado de ficheros.</li>
+                    <li>Añadida tarea de importación de calendario escolar en el panel de importación inicial.</li>
+                    <li>Cambiado el motor de conexión web con Séneca a Apache HttpClient 4, este nuevo motor proporciona mucha más velocidad en las transacciones y soporta ciertos errores de Séneca (como la definición de las cookies).</li>
+                </ul>
+            </li>
+            <li><b>1.29.1</b>:
+                <ul>
+                    <li>Mejorado el panel de ayuda con iconos correspondientes a cada sección.</li>
+                    <li>Añadida posibilidad de buscar en el panel de ayuda.</li>
+                    <li>Añadida ayuda contextual en todos los paneles principales. Ahora pulsando F1 en cualquier panel se abre directamente la ayuda de ese panel.</li>
+                    <li>Corregido un error con los filtros de fecha en los informes de convivencia.</li>
+                </ul>
+            </li>
+            <li><b>1.29.2</b>:
+                <ul>
+                    <li>Corregido problema de asignación de faltas manualmente en ciertos casos.</li>
+                    <li>Añadido filtro de profesor al informe de convivencia.</li>
+                    <li>Mejorada la creación y revisión de la base de datos así como el arranque del programa.</li>
+                </ul>
+            </li>
+            <li><b>2.0</b>:
+                <ul>
+                    <li>Renovado el diseño e imagen de la aplicación.</li>
+                    <li>Eliminado el menú lateral para permitir más espacio en pantallas de baja resolución.</li>
+                    <li>Implementado sistema de usuarios y roles.</li>
+                    <li>Implementado control de acceso a la aplicación.</li>
+                    <li>Implementado sistema de selección de rol/es activo/s.</li>
+                    <li>Añadida pantalla de edición de configuración de conexión.</li>
+                    <li>La clave de acceso a la base de datos se guarda ahora encriptada.</li>
+                    <li>Añadido cambio de usuario y cambio de clave.</li>
+                    <li>Añadido control de acceso, edición, creación, borrado y operaciones especiales según rol en toda la aplicación, así como filtros para tutores.</li>
+                    <li>Mejora, limpieza y refactorizaciones considerables en el código de todo el programa.</li>
+                    <li>Añadidas operaciones de creación y borrado de elementos en tablas que sólo admitían importación desde Séneca</li>
+                    <li>Añadidas opciones de impresión/exportación en varias tablas que no las tenían.</li>
+                    <li>Añadida información extra de asistencia en el mapa de asistencia y listados de asistencia</li>
+                    <li>Añadido soporte para impresión de pdfs en Linux.</li>
+                    <li>Añadido panel de configuración de impresión. Inicialmente se puede especificar la localización de OpenOffice para aquellos sistemas en los que no está en la localización por defecto.</li>
+                    <li>Añadidas plantillas para SMS y mensajes de voz e implementadas en las notificaciones de faltas de asistencia, expulsiones y pérdida de evaluación continua.</li>
+                    <li>Añadido visor expandido de texto de notificaciones.</li>
+                    <li>Las notificaciones se registran ahora con fecha y hora.</li>
+                    <li>Añadida búsqueda por localizador en panel de notificaciones general y de alumno.</li>
+                    <li>Añadido panel de notificaciones para mostrar todas la notificaciones del año (o unidad) y buscar por localizadores.</li>
+                    <li>Completada la ayuda.</li>
+                </ul>
+            </li>
+            <li><b>2.01</b>:
+                <ul>
+                    <li>Corregido un error de referencia de la instalación de OpenOffice en Windows.</li>
+                    <li>Mejorado el sistema de detección de cabeceras en digitalización de partes.</li>
+                </ul>
+            </li>
+            <li><b>2.02</b>:
+                <ul>
+                    <li>Corregido error recuperando código de conductas y medidas de convivencia.</li>
+                    <li>Mejorado el sistema de recuperación de tipos de conducta, conductas y medidas de convivencia, ahora actualiza datos si hay cambios en vez de volver a crear.</li>
+                    <li>Añadido soporte para acceder a fichas de alumnos desde otros paneles.</li>
+                    <li>Añadido acceso a la ficha de alumno con doble clic en: Resumen de convivencia, listado de partes de convivencia, listado/notificaciones de expulsion.</li>
+                    <li>Añadido menú de impresión/exportación al listado de partes de convivencia.</li>
+                    <li>Añadidos campos de situación en ficha de partes de convivencia.</li>
+                    <li>Rediseñado el aspecto de la pestaña de convivencia.</li>
+                    <li>Añadido listado de partes de convivencia en informes de convivencia.</li>
+                    <li>Añadido control de los partes que pueden ser enviados a Séneca y pantalla de información.</li>
+                    <li>Añadida configuración de asignación automática de medidas en los partes de convivencia.</li>
+                    <li>Añadido sistema de envío de partes de convivencia en listado de partes.</li>
+                    <li>Añadido control de partes de convivencia pendientes de enviar y envío desde panel inicial.</li>
+                    <li>Implementado nuevo sistema de cache que mejora el rendimiento del programa sobre todo con conexiones lentas.</li>
+                    <li>Eliminación de puntos de configuración obsoletos y reorganización de ciertos puntos.</li>
+                    <li>Mejoras en el envío de emails. Ahora se usa como FROM el configurador en el SMTP y como REPLY_TO el del centro escolar.</li>
+                </ul>
+            </li>
+            <li><b>2.03</b>:
+                <ul>
+                    <li>Añadida pantalla de notificaciones manuales en menú de herramientas.</li>
+                </ul>
+            </li>
+            <li><b>2.04</b>:
+                <ul>
+                    <li>Corregido problema de carga en pantalla de generaciones de expulsión.</li>
+                    <li>Añadido filtro de curso/grupo en pantalla de generaciones de expulsión.</li>
+                    <li>Mejoras en el sistema de chache para cambios entre años escolares.</li>
+                    <li>Mejoras en el sistema de importación inicial de datos.</li>
+                    <li>Añadidas secciones de información de clases y asistencia para profesores y tutores en pantalla inicial.</li>
+                </ul>
+            </li>
+            <li><b>2.05</b>:
+                <ul>
+                    <li>Añadido sistema de impresión de horarios.</li>
+                    <li>Añadida impresión de horario de un alumno.</li>
+                    <li>Añadida impresión de horarios de profesores en listado de profesores.</li>
+                    <li>Añadida impresión de horarios en editor de horarios.</li>
+                    <li>Corregido problema en pestaña de horario de un alumno se mostraban asignaturas de las que no estaba matriculado.</li>
+                    <li>Corregido problema de fusión de horarios cuando dos bloques tenían el mismo profesor y aula.</li>
+                    <li>Añadido sistema de exportación de horarios en formato XML importable por Séneca.</li>
+                    <li>Implementado el envío de notificaciones de partes de convivencia.</li>
+                    <li>Implementada notificación de partes de convivencia desde el mismo parte de convivencia.</li>
+                    <li>Las notificaciones de todo tipo ya se pueden imprimir en PDF según la configuración general.</li>
+                    <li>Las notificaciones de todo tipo ya muestran el diálogo de selección de impresora en vez de imprimirse por la impresora por defecto.</li>
+                    <li>Implementado panel de alertas de partes de convivencia en pantalla inicial para tutores. Permite acceder a los partes no revisados así como a los no notificados (permitiendo notificarlos).</li>
+                    <li>El registro de notificaciones ahora almacena el usuario que ha realizado el envío.</li>
+                    <li>Cambiado diseño de partes de asistencia para que quepan hasta 43 lineas.</li>
+                </ul>
+            </li>
+            <li><b>2.06-2.08</b>:
+                <ul>
+                    <li>Corregidos problemas generados por actualización de java.</li>
+                    <li>Mejorado sistema de conexiones con Séneca. Ahora es más rápida la conexión.</li>
+                    <li>Mejoras en impresión de notificaciones.</li>
+                    <li>Corregido problema en importación de datos de alumnos que hacía que a veces no se importase correctamente el primer alumno del listado.</li>
+                    <li>Ampliado el tiempo máximo de ejecución para generación de documentos para equipos antiguos.</li>
+                    <li>Añadido nombre de profesor a las notificaciones de partes de convivencia.</li>
+                    <li>v2.08.4</li>
+                    <li>Mejorada cancelación de envío de faltas a Séneca.</li>
+                    <li>Ahora el programa revisa de forma indefinida el estado del envío hasta que este se realiza o se cancela.</li>
+                    <li>Mejoras menores en interfaz gráfica pantalla justificación de faltas y generación de expulsiones.</li>
+                    <li>Corregido problema con el tramo horario en partes de convivencia. No se mostraba el tramo asignado realmente.</li>
+                    <li>Añadida configuración de tramo horario por defecto para partes de convivencia.</li>
+                    <li>Añadido panel de control de datos de alumnos.</li>
+                    <li>En panel de control de datos de alumnos añadido panel de recuperación de alumnos borrados.</li>
+                    <li>v2.08.5</li>
+                    <li>En panel de control de datos de alumnos añadido panel de alumnos sin unidad.</li>
+                    <li>Añadida información de error en el listado de ficheros de faltas fallidos.</li>
+                    <li>v2.08.6</li>
+                    <li>Mejoras en la ayuda.</li>
+                    <li>Añadida importación de horarios desde Séneca.</li>
+                </ul>
+            </li>
+            <li><b>2.09</b>:
+                <ul>
+                    <li>Añadido sistema para verificar que cuando Séneca envía datos de matrículas dobles (matricula y translado) se aplique sólo la matriculación, evitando bajas erróneas de alumnos.</li>
+                    <li>Añadido soporte para poder definir plantillas de documentos propios por instalación sin necesidad de modificar los originales (necesario para ejecución JNLP).</li>
+                    <li>Mejoras en el sistema de impresión/generación de envíos de notificaciones.</li>
+                    <li>Añadido soporte para que ficheros descargados/enviados a Séneca se guarden en carpeta de usuario en vez de en carpeta instalación (recomendable para ejecución JNLP).</li>
+                    <li>Añadido soporte para ejecución mediante Java WebStart.</li>
+                    <li>Añadido, para el administrador un panel inicial que avisa de configuraciones incompletas.</li>
+                    <li>Eliminado sistema de copias de seguridad ya que no se considera que debe ser un punto del programa (se traspasará al servidor).</li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

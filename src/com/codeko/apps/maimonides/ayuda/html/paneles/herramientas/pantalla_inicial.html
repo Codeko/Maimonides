@@ -1,0 +1,87 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Pantalla Inicial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../../general.css"/>
+  </head>
+  <body>
+    <h1 class="titulo">Pantalla Inicial</h1>
+<h2 class="rapido">Acceso rápido Crtl + Inicio</h2>
+<h3 class="descripcion">Descripción</h3>
+<p>Esta la pantalla incial. <br>
+    Esta es la primera pantalla que se muestra al arrancar la aplicación. Los datos mostrados dependen de su usuario, diferentes usuarios observaran datos distintos relacionados con el nivel de acceso, de esta manera un Jefe de Estudios observará diferentes datos que un Tutor.<br>
+    Desde esta pantalla usted podra acceder a las tareas pendientes y avisos importantes de Maimónides</p>
+<p> A continuación se detallan los paneles que mostraran a cada tipo de usuario según la configuración típica</p>
+<ul><li><b>Clases del día</b>: Si el usuario que accede tiene un profesor asociado, se mostrará un desglose las clases de ese día.<br>
+        Este desglose es una tabla con una celdilla por cara hora, cada celdilla estara encabezada con el numero de hora, y en su interior se muestran los siguientes datos por cada hora lectiva de ese profesor:<br>
+        Unidad o unidades, el aula donde se imparte y la materia impartida, en caso de que alguna hora no se imparta una materia aparecerá en blanco, de esta manera de un rápido vistazo se puede comprobar el horario con sólo arrancar Maimónides.
+        <br>&nbsp;<br>
+    </li>
+  <li><b>Pérdidas de Evaluacion Continua</b>: Si el usuario que accedes es tutor de alguna unidad se le mostrará informacion acerca de la asistencia de su grupo tutorizado de la siguiente forma:<br>
+      <ul>
+          <li>Perdidas de evaluacion continua en alguna materia: Muestra un listado de los alumnos de su grupo de tutoría que:
+              <ul>
+          <li>Estan cercanos a perder la evaluación continua en una materia: En este caso se muestra desplegable con el listado de los alumnos y la materias en las que estan cercanos a perder la evaluación continua. Si desplegamos esta parte nos encontramos el listado de los alumnos ordenado de alfabeticamente con los siguientes datos  Nombre del Alumno (Faltas Acumuladas / Faltas Máximas / Porcentajde de faltas acumulado).<br>
+              Haciendo click sobre el nombre del alumno podremos acceder a su ficha.</li>
+          <li>Alumnos que han perdido la evaluación continua en alguna materia y han sido notificados: Muestra desplegable con el listado de que ya han perdido la evaluación continua en alguna materia y han sido notificados. Si desplegamos esta parte nos encontramos el listado de los alumnos ordenado de alfabeticamente con los siguientes datos  Nombre del Alumno (Faltas Acumuladas / Faltas Máximas)<br>
+              Haciendo click sobre el nombre del alumno podremos acceder a su ficha.</li>
+          <li>Alumnos que han perdido la evaluación continua en alguna materia y no han sido notificados: Muestra desplegable con el listado de aquellos alumnos que no han sido notificados todavía de la pérdida de evaluación continua en alguna materia, en este caso aparece junto al desplegable un botón que permite notificar a todos los alumnos pendientes.<br>
+               Si desplegamos esta parte nos encontramos el listado de los alumnos ordenado de alfabeticamente con los siguientes datos  Nombre del Alumno (Faltas Acumuladas / Faltas Máximas) y un boton de Notificar para ese alumno en concreto.<br>
+               Haciendo click sobre el nombre del alumno podremos acceder a su ficha.</li>
+              </ul></li>
+
+          <li>Pérdidas de evaluación continua global: Muestra un listado de los alumnos de su grupo de tutoría que:
+               <ul>
+                    <li>Alumnos que han perdido la evaluación continua global y han sido notificados: Muestra desplegable con el listado de que ya han perdido la evaluación continua en global y han sido notificados. Si desplegamos esta parte nos encontramos el listado de los alumnos ordenado de alfabeticamente con los siguientes datos  Nombre del Alumno (Faltas Acumuladas / Faltas Máximas)<br>
+              Haciendo click sobre el nombre del alumno podremos acceder a su ficha.</li>
+          <li>Alumnos que han perdido la evaluación continua en global y no han sido notificados: Muestra desplegable con el listado de aquellos alumnos que no han sido notificados todavía de la pérdida de evaluación continua global, en este caso aparece junto al desplegable un botón que permite notificar a todos los alumnos pendientes.<br>
+               Si desplegamos esta parte nos encontramos el listado de los alumnos ordenado de alfabeticamente con los siguientes datos  Nombre del Alumno (Faltas Acumuladas / Faltas Máximas) y un boton de Notificar para ese alumno en concreto.<br>
+               Haciendo click sobre el nombre del alumno podremos acceder a su ficha.</li>
+               </ul><br>&nbsp;<br></li>
+ </ul>
+      </li>
+
+      <li><b>Alertas partes de convivencia</b>: Si el usuario que accede es tutor de alguna unidad se le mostrarán los partes de convivencia:<br>
+          <ul><li>Partes de convivencia pendientes de revisar: Se muestra un listado desplegable con los partes de convivencia pendientes de revisar por el tutor. Una vez desplegado nos encontramos un listado con el nombre del alumno y la descripción del parte.<br>
+                  Si hacemos click sobre el nombre del alumno podremos visualizar ese parte en concreto y revisarlo marcando la casilla de situación "Revisado por el Tutor".</li>
+              <li>Partes de convivencia pendientes de notificar: Se muestra un desplegable con los partes de convivencia que aun no han sido notificados, en este caso aparece junto al desplegable un botón para notificar todos los partes pendientes.<br>
+                  Una vez desplegado nos encontramos un listado con el nombre del alumno, la descripción del parte y un botón para notificar ese parte en concreto.<br>
+                  Si hacemos click sobre el nombre del alumno podremos visualizar ese parte en concreto.</li></ul>
+
+         <br>&nbsp;<br></li>
+      <li><b>Partes de Asistencia</b>: Si el usuario que accede es la persona autozidad para procesar los partes de asistencia, usualmente el Jefe de Estudios se le mostrará este bloque.<br>
+          El bloque esta encabeza con un gran botón que permite imprimir los partes de asistencia del dia siguiente para todo el centro. Si los partes ya han sido impresos el boton de deshabilita.<br>
+          Seguidamente muestra las siguientes notificaciones y adventencias relacionadas con los partes de asistencia.<br>
+          <ul>
+              <li>Advertecias de digitalizaciones pendientes de revisar: Un parte digitalizado es aquel ya ha sido procesado por Maimónides, si durante el proceso de digitaliación Maimónides encontrara algun problema (partes sin firmar,dudas sobre la marca anotada, etc...)  se lo notificará mediante esta pantalla<br>
+              Haciendo click sobre el texto podrá consultar cuales son las advertencias y proceder con cada una de ellas segun convenga.</li>
+              <li>Partes pendientes de digitalizar: Son partes que se han emitido pero estan pendientes de ser digitalizados ya sea manualmente o mediante el escáner.
+                  <br> Habitualmente los partes pendientes de digitalizar son los del día anterior o partes que por algun motivo se han perdido.<br>
+                  Haciendo click sobre el texto se accede al listado de los partes</li>
+              <li>Partes parcialmente digitalizados: Son partes que han sido digitalizados de manera parcial, normalmente esto se debe a que aunque el parte no se haya llegado a digitalizar si se han justificado faltas manualmente.<br>
+                   Haciendo click sobre el texto se accede al listado de los partes</li>
+              <li>Partes escaneados pendientes de digitalizar: Son partes que si han sido escaneados y la imagen se encuentra registrada en Maimónides pero cuyo contenido aun no ha sido procesado por Maimónides<br>
+              Haciendo click sobre el texto se accede al listado desde donde se puede procesar.</li>
+              <li>Partes fallidos: habitualmente un parte da como fallido cuando no se ha podido reconocer el código de barras que lo identifica, aunque tambien puede mostrar este error cuando no pueda procesar la imagen resultante del escaner, bien por falta de permisos, bien por que esta ets corrupta, etc..<br>
+                  Haciendo click sobre el texto se accede al listado desde donde se puede procesar</li></ul>
+ <br>&nbsp;<br></li>
+<li><b>Envío de datos a Séneca</b>: Si el usuario que accede es la persona autorizada para realizar los envíós de datos a Séneca, usualmente el jefe de Estudios, se le mostrará este punto.<br>
+    Desde este apartado se pueden realizar los envíos tanto de faltas de asistencia como de partes de convivencia a séneca de manera completamente desatendida.<br>
+    <ul><li>Faltas de Asistencia: Muestra un mensaje con el número de ficheros pendientes de envio a Séneca, si hacemos click sobre el mensaje podremos acceder a la pantalla que nos permite (previa confirmación), entre otras cosas, exportar a séneca todos los ficheros pendientes.<br>
+        Inmediatamente despues del listado podremos ver un desglose de los ficheros de faltas pendientes de envío, con la fecha y las unidaddes a que corresponde dicho envío, si hacemos click sobre el texto maimónides, previa confirmación, enviará unicamente esos datos a Séneca, en vez de todo el listado.</li>
+        <li> Partes de convivencia : Muestra un listado de los partes de convivencia pendientes de enviarse a Séneca e indica cuantos de estos no se pueden enviar por ejemplo por estar incompletos.<br>
+          Haciendo click sobre el texto se enviaran a Séneca los partes de convivencia que reúnan todos los requistos para ser enviados.</li>
+    </ul>
+    <br>&nbsp;<br></li>
+    <li><b>Copias de seguridad</b>: Si el usuario que accede es Administrador, se le mostrara un mensaje con la fecha en la que se realizó la última copia de seguridad, y en el caso de que el archivo de copia de seguridad supere un tamaño determinado se le mostrará un mensaje de advertencia.</li>
+</ul>
+      
+<h4 class="ruta">Ruta: Herramientas -> Pantalla Inicial</h4>
+
+  </body>
+</html>

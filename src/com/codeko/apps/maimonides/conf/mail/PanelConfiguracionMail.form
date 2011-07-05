@@ -1,0 +1,265 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane1" pref="497" max="32767" attributes="2"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="lPie" alignment="0" pref="509" max="32767" attributes="1"/>
+                          <Group type="102" alignment="0" max="-2" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lCaracteres" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="spCaracteres" min="-2" pref="113" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" max="-2" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lFrom" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lusuario" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lSmtp" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="tfEmail" min="-2" pref="184" max="-2" attributes="0"/>
+                                          <Component id="tfUsuario" alignment="0" pref="184" max="32767" attributes="1"/>
+                                          <Component id="tfSMTP" alignment="0" pref="184" max="32767" attributes="1"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lExtra" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" max="-2" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="lClave" max="32767" attributes="1"/>
+                                              <Component id="lPuerto" alignment="0" max="32767" attributes="1"/>
+                                          </Group>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="tfPuerto" min="-2" pref="58" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="cbSSL" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                                  <Component id="tfExtra" alignment="0" max="32767" attributes="1"/>
+                                                  <Component id="tfClave" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <Component id="lInfoCaracteres" pref="217" max="32767" attributes="1"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lSmtp" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfSMTP" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lPuerto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfPuerto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbSSL" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lusuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lClave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfClave" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lFrom" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfEmail" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lExtra" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tfExtra" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lCaracteres" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="spCaracteres" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lInfoCaracteres" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lPie" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="216" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="lSmtp">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lSmtp.text"/>
+        <Property name="name" type="java.lang.String" value="lSmtp" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfSMTP">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfSMTP.text"/>
+        <Property name="name" type="java.lang.String" value="tfSMTP" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lPuerto">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lPuerto.text"/>
+        <Property name="name" type="java.lang.String" value="lPuerto" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfPuerto">
+      <Properties>
+        <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new NumericDocument(0, false)" type="code"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="tfPuerto.text"/>
+        <Property name="name" type="java.lang.String" value="tfPuerto" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="cbSSL">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="cbSSL.text"/>
+        <Property name="name" type="java.lang.String" value="cbSSL" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lusuario">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lusuario.text"/>
+        <Property name="name" type="java.lang.String" value="lusuario" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfUsuario">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfUsuario.text"/>
+        <Property name="name" type="java.lang.String" value="tfUsuario" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lClave">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lClave.text"/>
+        <Property name="name" type="java.lang.String" value="lClave" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lFrom">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lFrom.text"/>
+        <Property name="name" type="java.lang.String" value="lFrom" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfEmail">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfEmail.text"/>
+        <Property name="name" type="java.lang.String" value="tfEmail" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lCaracteres">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lCaracteres.text"/>
+        <Property name="name" type="java.lang.String" value="lCaracteres" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="spCaracteres">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="spCaracteres" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lPie">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lPie.text"/>
+        <Property name="name" type="java.lang.String" value="lPie" noResource="true"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="jScrollPane1" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="taPie">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="name" type="java.lang.String" value="taPie" noResource="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JPasswordField" name="tfClave">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfClave.text"/>
+        <Property name="name" type="java.lang.String" value="tfClave" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lInfoCaracteres">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lInfoCaracteres.text"/>
+        <Property name="name" type="java.lang.String" value="lInfoCaracteres" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="bGuardar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.mail.PanelConfiguracionMail" id="guardar" methodName="guardar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bGuardar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lExtra">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lExtra.text"/>
+        <Property name="name" type="java.lang.String" value="lExtra" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfExtra">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfExtra.text"/>
+        <Property name="name" type="java.lang.String" value="tfExtra" noResource="true"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="cabAcceso" alignment="0" pref="435" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lClave" pref="79" max="32767" attributes="2"/>
+                  <Component id="lUsuario" alignment="0" pref="79" max="32767" attributes="2"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="cbRecordar" alignment="0" pref="320" max="32767" attributes="0"/>
+                  <Component id="tfClave" alignment="1" pref="320" max="32767" attributes="1"/>
+                  <Component id="tfusuario" alignment="1" pref="320" max="32767" attributes="1"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <Component id="cabAcceso" pref="126" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="tfusuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="tfClave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lClave" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="cbRecordar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="lUsuario">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lUsuario.text"/>
+        <Property name="name" type="java.lang.String" value="lUsuario" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lClave">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lClave.text"/>
+        <Property name="name" type="java.lang.String" value="lClave" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfusuario">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfusuario.text"/>
+        <Property name="name" type="java.lang.String" value="tfusuario" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="tfClave">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfClave.text"/>
+        <Property name="name" type="java.lang.String" value="tfClave" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="cbRecordar">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="cbRecordar.text"/>
+        <Property name="name" type="java.lang.String" value="cbRecordar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHeader" name="cabAcceso">
+      <Properties>
+        <Property name="description" type="java.lang.String" resourceKey="cabAcceso.description"/>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="cabAcceso.icon"/>
+        <Property name="title" type="java.lang.String" resourceKey="cabAcceso.title"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="cabAcceso.toolTipText"/>
+        <Property name="name" type="java.lang.String" value="cabAcceso" noResource="true"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

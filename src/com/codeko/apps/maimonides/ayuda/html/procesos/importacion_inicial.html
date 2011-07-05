@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="../general.css"/>
+    </head>
+    <body>
+        <h1 class="titulo">Guía de creación de nuevo año escolar de Maimónides</h1>
+        Maimónides trabaja con multitud de datos que provienen de diferentes
+        orígenes esta guía estructura y documenta cada uno de los pasos a seguir
+        para configurar un nuevo año escolar en Maimónides.
+        <h2>Creación del año escolar</h2>
+        <p>El primer paso para configurar un nuevo año escolar es, lógicamente, crearlo. Es este año escolar se asociarán todos los datos.
+            Los años escolares son totalmente independientes unos de otros pero en ciertos informes con carácter interanual se usarán los datos de todos los años escolares.</p>
+        <p>Para crear un año escolar vaya al menú “Datos”, apartado “Años escolares”. Pulse el botón “Nuevo”. Se creará un nuevo año escolar con inicio en el año actual.
+            Puede cambiar tanto el año como la descripción de este. Una vez empiece a trabajar con un año escolar no debe cambiar el año de este ya que puede producir
+            incongruencias en los datos a la hora de trabajar con Séneca.</p>
+        <p>Una vez creado el año escolar márquelo y pulse el botón “Activar”. Con esto marcaremos ese año como el año en curso y trabajaremos con él a partir de ahora.</p>
+        <h2>Importación de datos</h2>
+        <p>Existe una gran variedad de datos a importar desde Séneca, algunos datos no se pueden importar si no se han importado antes otros. Por ejemplo si importa el listado de alumnos antes de haber importado los cursos y unidades la importación no se realizará correctamente. Antes de importar los datos al programa debe haberlos rellenado en Séneca.</p>
+
+        <p>El orden de importación recomendado es:</p>
+        <h3>Archivo de datos generales</h3>
+        <p>Este archivo lo proporciona Séneca para los distintos generadores de horarios, proporciona información  Profesores, Cursos/Grupos, Materias, Dependencias y Tramos Horarios. Es por lo tanto el primer archivo a importar.</p>
+        <p>Puede descargar este archivo e importarlo o dejar que Maimónides lo haga automáticamente.</p>
+        Para descargarlo manualmente:
+        <p>
+            En Séneca en el desplegable superior izquierdo:
+        </p>
+        <ul>
+            <li>“Utilidades”->”Intercambio de información”.</li>
+            <li>Desplegable “Sentido del intercambio”-> “Exportar datos desde Séneca”</li>
+            <li>Desplegable “Tipo de intercambio de información”->”Exportación hacia generadores de horarios”.</li>
+            <li>En la esquina superior derecha pulsar el botón añadir.</li>
+            <li>En la pantalla que saldrá pulsar aceptar.</li>
+            <li>Aparecerá el archivo “ExportacionHorarios.xml”.</li>
+        </ul>
+
+        <p>Una vez importados los datos puede que quiera revisar los siguientes aspectos:</p>
+        <ul>
+            <li>Emails de profesores nuevos.</li>
+            <li>Abreviaturas de asignaturas.</li>
+            <li>Número de faltas para la perdida de evaluación continua de las asignaturas.</li>
+            <li>Fechas de inicio y fin de los diferentes cursos.</li>
+            <li>Máximo de faltas para la perdida de evaluación continua en los diferentes cursos.</li>
+            <li>Cambiar o añadir descripciones a las dependencias.</li>
+        </ul>
+
+
+        <h3>Archivo de tutores</h3>
+
+        <p>Este archivo permite especificar el tutor de cada grupo. Puede asignar manualmente los tutores, descargar el archivo desde Séneca o dejar que Maimónides importe automáticamente el archivo.</p>
+
+        <p>Si desea descargarlo manualmente siga estas instrucciones:</p>
+
+        <p>En Séneca en el desplegable superior izquierdo:</p>
+        <ul>
+            <li>“Alumnado”->”Unidades”->”Relacion de unidades”.</li>
+            <li>En el desplegable de curso seleccionar “Cualquiera”.</li>
+            <li>Pulsar el botón “Exportar datos”.</li>
+            <li>En el desplegable “Exportar datos al formato” seleccionar “Fichero CSV”.</li>
+            <li>Pulsar "Aceptar" aparecerá para descargar el archivo RegUnidades.csv.</li>
+        </ul>
+        <p>Una vez importado se deben haber asignado correctamente los tutores de cada unidad. Es recomendable revisar que esta asignación se haya hecho correctamente.</p>
+
+        <h3>Datos del alumnado</h3>
+        <p>Este archivo permite especificar los diferentes alumnos y sus datos extendidos. Puede asignar manualmente el fichero de datos o dejar que Maimónides lo importe automáticamente.</p>
+
+        <p>Si desea descargarlo manualmente siga las siguientes intrucciones:</p>
+
+        <p>En Séneca en el desplegable superior izquierdo:</p>
+        <ul><li>“Alumnado”->”Alumnado del centro”.</li>
+            <li>En la pantalla que saldrá pulsar aceptar sin modificar ningún filtro.</li>
+            <li>Pulsar el botón “Exportar datos”.</li>
+            <li>En el desplegable “Exportar datos al formato” seleccionar “Hoja de Microsoft Excel”.</li>
+            <li>Pulsar aceptar aparecerá para descargar el archivo RegAlumn.xls.</li>
+        </ul>
+
+        <h3>Código séneca del alumnado</h3>
+
+        <p>Este fichero permite recuperar el código Séneca de cada alumno, información que no viene en el fichero de datos extendidos.</p>
+
+        <p>Como siempre puede elegir asignar el fichero a mano o que maimónides lo recupere automáticamente.</p><p>Para descargarlo manualmente debe seguir las siguientes instrucciones:</p>
+
+        <p>En Séneca en el desplegable superior izquierdo:</p>
+        <ul>
+            <li>“Utilidades”->”Intercambio de información”.</li>
+            <li>Desplegable “Sentido del intercambio”-> “Exportar datos desde Séneca”</li>
+            <li>Desplegable “Tipo de intercambio de información”->”Exportación faltas alumnado”. No importa que no haya faltas. Este fichero se usa para recuperar los datos de alumnos.</li>
+            <li>En la esquina superior derecha pulsar el botón añadir.</li>
+            <li>Añadir por cada curso todas las unidades. Para ello en el desplegable “Curso” seleccionar el curso. En la parte de abajo aparecera una lista “Unidades candidatas”. Pulsar el botón       y las unidades se moveran a la lista “Unidades seleccionadas”. Pulsar ahora el botón “Añadir” y se copiarán a recuadro inferior “Seleccion”. Seleccionar otro curso en el desplegable de curso y repetir la operación con todos los cursos.</li>
+            <li>Una vez añadidas todas las unidades de todos los cursos pulsar el botón aceptar </li>
+            <li>La web volverá sola a la página de “Intercambios de información”.</li>
+            <li>Volver a seleccionar Desplegable “Sentido del intercambio”-> “Exportar datos desde Séneca”.</li>
+            <li>Desplegable “Tipo de intercambio de información”-> “Exporatción faltas Alumnado”.</li>
+            <li>Aparecerá debajo una lista con los ficheros generador. Hacer clic en la fecha del último y seleccionar del menú que aparecerá la opción “Descargar documento”.</li>
+            <li>Descargar el archivo “Exportacion_Faltas_Alumnado.zip” y guardarlo.</li>
+        </ul>
+
+        <p>El proceso de asignación automática puede ser lento y es recomendable verificar que se han asignado correctamente todos los códigos ya que séneca puede dar error en muchos casos, además la recuperación automática sólo debe usarse cuando se recuperan datos del año en curso ya que debido a un error en Séneca este proporciona siempre el último código aunque se le asigne un año anterior.</p>
+
+        <h3>Datos de matriculación</h3>
+
+        <p>Los datos de matriculación contienen el estado de las matrículas de cada alumno. Puede descargar los diferentes ficheros de datos e importarlos en el programa o dejar que Maimónides lo haga automáticamente.</p>
+        <p>Si desea descargar los ficheros sigua los siguientes pasos:</p>
+
+        <p>En Séneca en el desplegable superior izquierdo:</p>
+        <ol><li>”Alumnado”-> “Matriculación”->”Relación de matriculas”.</li>
+            <li>En el desplegable “Curso“ seleccionar el primer curso.</li>
+            <li>Pulsar el botón “ Materias de las que se ha matriculado cada alumno” en la esquina superior derecha.</li>
+            <li>En la nueva pantalla pulsar el botón “Exportar datos” en la parte superior de la pantalla.</li>
+            <li>En el desplegable “Exportar los datos al formato” seleccionar “Ficheo CSV” y pulsar aceptar en la esquina superior derecha.</li>
+            <li>Aparecerá para descargar el fichero “MatOMCMatr.csv”. Guardarlo con el nombre que se desee conservando la extensión csv.</li>
+            <li>Despues de esto la web volverá automaticamente a la pantalla de “ Materias de las que se ha matriculado cada alumno”.</li>
+            <li>Seleccionar el siguiente curso y repetir la operación desde el punto 3.</li>
+            <li>NOTA: Si se utiliza Firefox para descargar los ficheros estos se renombrarán automaticamente al descargarlos. Si se usa internet explorer habrá que cambairle el nombre manualmente.</li>
+            <li>Desde el importador puede seleccionar todos los archivos para que se importen y no tener que importar archivo por archivo. </li>
+        </ol>
+
+
+        <p>Si importa los datos automáticamente desde Séneca debe tener en cuenta que debe estar trabajando en el año actual o si es un año diferente no debe haber habido cambios en los cursos.</p>
+
+        <p>Es interesante revisar que se hayan importado correctamente las matriculaciones (viendo que haya datos en el punto de matriculaciones) pues séneca tiene tendencia a devolver ficheros excel erroneos.</p>
+
+        <h3>Importación de datos de convivencia</h3>
+
+        <p>En este punto se importan los diferentes datos necesarios para rellenar los partes de convivencia compatibles con séneca. Este apartado sólo permite su carga desde Seéneca directamente ya que no existe ningún punto en Séneca para exportarlos manualmente.</p>
+
+        <p>Es recomendable revisar que se han importado correctamente desde el punto de configuración de convivencia.</p>
+
+
+        <h3>Importación de horarios</h3>
+
+        <p>Actualmente maimónides es capaz de importar horarios desde Horw. Para que la importación sea correcta los nombres de profesores, materias, cursos, dependencias, etc deben ser coincidentes con séneca. </p>
+
+        <h3>Importación de calendario escolar</h3>
+
+        <p>Desde este punto podrá importar el calendario escolar del centro desde Séneca. Para más información visite la ayuda del <a href="../paneles/datos/calendario.html">Panel de Calendario</a>.</p>
+
+        <h2>Acciones posteriores a la importación</h2>
+
+        <p>Una vez se hayan importado los datos es necesario realizar una serie de tareas. Entre ellas:</p>
+        <ul>
+            <li>Asignar las divisiones de horarios en el apartado de horarios. Howr no proporciona información de división de alumnos en los diferentes casos en los que varias unidades den clase conjuntamente en un aula o se divida una unidad en varioas aulas. Esta información ha de especificarse manualmente.</li>
+        </ul>
+    </body>
+</html>

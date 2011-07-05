@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+  </Properties>
+  <Events>
+    <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="formAncestorAdded"/>
+  </Events>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bZoomIn" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bZoomOut" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bAjustar" min="-2" max="-2" attributes="1"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bOriginal" min="-2" max="-2" attributes="1"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="bImprimir" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+          </Group>
+          <Component id="scroll" alignment="0" pref="309" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <Component id="scroll" pref="636" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="bImprimir" min="-2" max="-2" attributes="0"/>
+                  <Component id="bZoomIn" min="-2" max="-2" attributes="0"/>
+                  <Component id="bZoomOut" min="-2" max="-2" attributes="0"/>
+                  <Component id="bAjustar" min="-2" max="-2" attributes="0"/>
+                  <Component id="bOriginal" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JScrollPane" name="scroll">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="scroll" noResource="true"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="lImagen">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" resourceKey="lImagen.text"/>
+            <Property name="name" type="java.lang.String" value="lImagen" noResource="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="bZoomIn">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="bZoomIn.icon"/>
+        <Property name="text" type="java.lang.String" resourceKey="bZoomIn.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bZoomIn.toolTipText"/>
+        <Property name="name" type="java.lang.String" value="bZoomIn" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bZoomInActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bZoomOut">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="bZoomOut.icon"/>
+        <Property name="text" type="java.lang.String" resourceKey="bZoomOut.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bZoomOut.toolTipText"/>
+        <Property name="name" type="java.lang.String" value="bZoomOut" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bZoomOutActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bImprimir">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="bImprimir.icon"/>
+        <Property name="text" type="java.lang.String" resourceKey="bImprimir.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bImprimir.toolTipText"/>
+        <Property name="name" type="java.lang.String" value="bImprimir" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bImprimirActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bAjustar">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="bAjustar.icon"/>
+        <Property name="text" type="java.lang.String" resourceKey="bAjustar.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bAjustar.toolTipText"/>
+        <Property name="name" type="java.lang.String" value="bAjustar" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bAjustarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="bOriginal">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="bOriginal.icon"/>
+        <Property name="text" type="java.lang.String" resourceKey="bOriginal.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bOriginal.toolTipText"/>
+        <Property name="name" type="java.lang.String" value="bOriginal" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bOriginalActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>

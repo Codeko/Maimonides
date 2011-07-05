@@ -1,0 +1,1 @@
+INSERT INTO usuarios (id,nombre,clave,falta,roles) VALUES(1,"Admin","21232f297a57a5a743894a0e4a801fc3","2009-01-01",1);

@@ -1,0 +1,523 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="maimonides.paneles.convivencia.partes" noResource="true"/>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-23,0,0,3,31"/>
+  </AuxValues>
+
+  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="panelPrincipal">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="panelPrincipal" noResource="true"/>
+      </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+          <BorderConstraints direction="Center"/>
+        </Constraint>
+      </Constraints>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="pCampos" alignment="0" max="32767" attributes="1"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="tabMedidasConductas" pref="775" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="pCampos" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Component id="tabMedidasConductas" pref="142" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="pCampos">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="pCampos" noResource="true"/>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lSancion" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lFecha" alignment="0" min="-2" max="-2" attributes="1"/>
+                                  <Component id="lProfesor" alignment="0" min="-2" max="-2" attributes="1"/>
+                                  <Component id="lDescripcion" alignment="0" min="-2" max="-2" attributes="1"/>
+                                  <Component id="lObs" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lAlumno" alignment="0" min="-2" pref="51" max="-2" attributes="1"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="lExpulsionValor" pref="642" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="bAsignarExpulsion" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="lValorAlumno" pref="608" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="bBuscar" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="bFichaAlumno" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="tfDescripcion" alignment="1" pref="682" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="jScrollPane1" pref="385" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="cbTutor" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbPadres" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lInformados" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbAlumno" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" pref="30" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbSitTutor" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbSitJE" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cbSitEnviado" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="cbProfesores" alignment="0" pref="515" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="tfFecha" min="-2" pref="111" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lTramoHorario" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <Component id="cbTramosHorarios" pref="0" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lEstado" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="cbEstado" max="32767" attributes="1"/>
+                                          <Component id="cbGravedad" alignment="1" pref="89" max="32767" attributes="1"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="2" attributes="0">
+                          <Component id="lAlumno" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="lValorAlumno" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="bFichaAlumno" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="bBuscar" alignment="2" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="2" attributes="0">
+                          <Component id="lFecha" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="tfFecha" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="lTramoHorario" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbTramosHorarios" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="lEstado" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbEstado" alignment="2" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="cbProfesores" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lProfesor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbGravedad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tfDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane1" pref="101" max="32767" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lObs" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lInformados" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="cbAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbSitTutor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="cbTutor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbSitJE" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="cbPadres" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbSitEnviado" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lSancion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lExpulsionValor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="bAsignarExpulsion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="lFecha">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lFecha.text"/>
+                <Property name="name" type="java.lang.String" value="lFecha" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="org.jdesktop.swingx.JXDatePicker" name="tfFecha">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="tfFecha" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lProfesor">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lProfesor.text"/>
+                <Property name="name" type="java.lang.String" value="lProfesor" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cbProfesores">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="cbProfesores" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lAlumno">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lAlumno.text"/>
+                <Property name="name" type="java.lang.String" value="lAlumno" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lDescripcion">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lDescripcion.text"/>
+                <Property name="name" type="java.lang.String" value="lDescripcion" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="tfDescripcion">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="tfDescripcion.text"/>
+                <Property name="name" type="java.lang.String" value="tfDescripcion" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lTramoHorario">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lTramoHorario.text"/>
+                <Property name="name" type="java.lang.String" value="lTramoHorario" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cbTramosHorarios">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="cbTramosHorarios" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lValorAlumno">
+              <Properties>
+                <Property name="font" type="java.awt.Font" resourceKey="lValorAlumno.font"/>
+                <Property name="text" type="java.lang.String" resourceKey="lValorAlumno.text"/>
+                <Property name="name" type="java.lang.String" value="lValorAlumno" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="bBuscar">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="mostraBusquedaAlumnos" methodName="mostraBusquedaAlumnos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="bBuscar" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lObs">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lObs.text"/>
+                <Property name="name" type="java.lang.String" value="lObs" noResource="true"/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jScrollPane1" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextArea" name="taObservaciones">
+                  <Properties>
+                    <Property name="columns" type="int" value="20"/>
+                    <Property name="lineWrap" type="boolean" value="true"/>
+                    <Property name="rows" type="int" value="5"/>
+                    <Property name="wrapStyleWord" type="boolean" value="true"/>
+                    <Property name="name" type="java.lang.String" value="taObservaciones" noResource="true"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="lEstado">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lEstado.text"/>
+                <Property name="name" type="java.lang.String" value="lEstado" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cbEstado">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="cbEstado" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lInformados">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lInformados.text"/>
+                <Property name="name" type="java.lang.String" value="lInformados" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbAlumno">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="cbAlumno.text"/>
+                <Property name="name" type="java.lang.String" value="cbAlumno" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbTutor">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="cbTutor.text"/>
+                <Property name="name" type="java.lang.String" value="cbTutor" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbPadres">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="cbPadres.text"/>
+                <Property name="name" type="java.lang.String" value="cbPadres" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lSancion">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="lSancion.text"/>
+                <Property name="name" type="java.lang.String" value="lSancion" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lExpulsionValor">
+              <Properties>
+                <Property name="font" type="java.awt.Font" resourceKey="lExpulsionValor.font"/>
+                <Property name="text" type="java.lang.String" resourceKey="lExpulsionValor.text"/>
+                <Property name="name" type="java.lang.String" value="lExpulsionValor" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="bAsignarExpulsion">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="asignarExpulsion" methodName="asignarExpulsion"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="bAsignarExpulsion" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
+                <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cbGravedad">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="cbGravedad" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel2">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jLabel2.text"/>
+                <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbSitEnviado">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="cbSitEnviado.text"/>
+                <Property name="name" type="java.lang.String" value="cbSitEnviado" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbSitTutor">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="cbSitTutor.text"/>
+                <Property name="name" type="java.lang.String" value="cbSitTutor" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbSitJE">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="cbSitJE.text"/>
+                <Property name="name" type="java.lang.String" value="cbSitJE" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="bFichaAlumno">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="mostrarFichaAlumno" methodName="mostrarFichaAlumno"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="bFichaAlumno" noResource="true"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JTabbedPane" name="tabMedidasConductas">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="tabMedidasConductas" noResource="true"/>
+          </Properties>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="com.codeko.apps.maimonides.convivencia.PanelConductasParte" name="panelConductasParte1">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="panelConductasParte1" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.codeko.apps.maimonides.convivencia.PanelConductasParte(TipoConducta.TIPO_CONDUCTA)"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="Conductas">
+                    <Property name="tabTitle" type="java.lang.String" resourceKey="panelConductasParte1.TabConstraints.tabTitle"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+            </Component>
+            <Component class="com.codeko.apps.maimonides.convivencia.PanelConductasParte" name="panelMedidasParte">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="panelMedidasParte" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.codeko.apps.maimonides.convivencia.PanelConductasParte(TipoConducta.TIPO_MEDIDA)"/>
+              </AuxValues>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="Medidas">
+                    <Property name="tabTitle" type="java.lang.String" resourceKey="panelMedidasParte.TabConstraints.tabTitle"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JToolBar" name="barraHerramientas">
+      <Properties>
+        <Property name="floatable" type="boolean" value="false"/>
+        <Property name="rollover" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="barraHerramientas" noResource="true"/>
+      </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+          <BorderConstraints direction="North"/>
+        </Constraint>
+      </Constraints>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="bActualizar">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="actualizar" methodName="actualizar"/>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="bActualizar" noResource="true"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="bNuevo">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="nuevo" methodName="nuevo"/>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="bNuevo" noResource="true"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="bGuardar">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="guardar" methodName="guardar"/>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="bGuardar" noResource="true"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="bBorrar">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="borrar" methodName="borrar"/>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="bBorrar" noResource="true"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="bNotificar">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="com.codeko.apps.maimonides.convivencia.PanelPartes" id="notificar" methodName="notificar"/>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="name" type="java.lang.String" value="bNotificar" noResource="true"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN" "http://java.sun.com/products/javahelp/map_2_0.dtd">
+<map version="2.0">
+    <mapID target="maimonides.about" url="html/maimonides-about.html"/>
+    <mapID target="img.toplevelfolder" url="resources/maimonides.png"/>
+    <mapID target="iconoPrincipal" url="resources/maimonides.png"/>
+    <mapID target="contentIcon" url="resources/book.png"/>
+    <mapID target="searchIcon" url="resources/find.png"/>
+    <mapID target="bookmarkIcon" url="resources/heart.png"/>
+    <mapID target="homeIcon" url="resources/house.png"/>
+    <mapID target="backIcon" url="resources/arrow_left.png"/>
+    <mapID target="addBookmarkIcon" url="resources/heart_add.png"/>
+    <mapID target="reloadIcon" url="resources/arrow_rotate_anticlockwise.png"/>
+    <mapID target="forwardIcon" url="resources/arrow_right.png"/>
+    <mapID target="printIcon" url="resources/printer.png"/>
+    <mapID target="printSetupIcon" url="resources/wrench.png"/>
+    <mapID target="openFolderIcon" url="resources/folder_add.png"/>
+    <mapID target="closedFolderIcon" url="resources/folder_delete.png"/>
+    <mapID target="topicIcon" url="resources/information.png"/>
+
+    <mapID target="img.herramientas" url="../resources/wrench.png"/>
+    <mapID target="img.datos" url="../resources/database.png"/>
+    <mapID target="img.asistencia" url="../resources/user_go.png"/>
+    <mapID target="img.horarios" url="../resources/calendar.png"/>
+    <mapID target="img.convivencia" url="../resources/building.png"/>
+    <mapID target="img.procesos" url="../resources/cog.png"/>
+    
+    <mapID target="maimonides.procesos.nuevo_ano_escolar" url="html/procesos/importacion_inicial.html"/>
+    <mapID target="img.maimonides.procesos.nuevo_ano_escolar" url="../resources/database_restore.png"/>
+    <mapID target="maimonides.procesos.digitalizacion_partes_asistencia" url="html/procesos/digitalizacion_partes_asistencia.html"/>
+    <mapID target="img.maimonides.procesos.digitalizacion_partes_asistencia" url="../resources/images.png"/>
+
+    <mapID target="maimonides.paneles.herramientas.importacion_inicial_datos" url="html/paneles/herramientas/importacion_inicial_datos.html"/>
+    <mapID target="img.maimonides.paneles.herramientas.importacion_inicial_datos" url="../resources/database_restore.png"/>
+
+    <mapID target="maimonides.paneles.herramientas.pantalla_incial" url="html/paneles/herramientas/pantalla_inicial.html"/>
+    <mapID target="img.maimonides.paneles.herramientas.pantalla_incial" url="../resources/application_home.png"/>
+    <mapID target="maimonides.paneles.herramientas.copias_seguridad" url="html/paneles/herramientas/copias_seguridad.html"/>
+    <mapID target="img.maimonides.paneles.herramientas.copias_seguridad" url="../resources/database_save.png"/>
+    <mapID target="maimonides.paneles.herramientas.debug_faltas" url="html/paneles/herramientas/debug_envio_faltas.html"/>
+    <mapID target="img.maimonides.paneles.herramientas.debug_faltas" url="../resources/world_delete.png"/>
+    <mapID target="maimonides.paneles.herramientas.notificaciones_generales" url="html/paneles/herramientas/notificaciones_generales.html"/>
+    <mapID target="img.maimonides.paneles.herramientas.notificaciones" url="../resources/email_go.png"/>
+    <mapID target="maimonides.paneles.herramientas.control_datos_alumnos" url="html/paneles/herramientas/control_datos_alumnos.html"/>
+    <mapID target="img.maimonides.paneles.herramientas.control_datos_alumnos" url="../resources/group_error.png"/>
+
+    
+    <mapID target="maimonides.paneles.datos.anos_escolares" url="html/paneles/datos/anos_escolares.html"/>
+    <mapID target="img.maimonides.paneles.datos.anos_escolares" url="../resources/date.png"/>
+    <mapID target="maimonides.paneles.datos.dependencias" url="html/paneles/datos/dependencias.html"/>
+    <mapID target="img.maimonides.paneles.datos.dependencias" url="../resources/door.png"/>
+    <mapID target="maimonides.paneles.datos.profesores" url="html/paneles/datos/profesores.html"/>
+    <mapID target="img.maimonides.paneles.datos.profesores" url="../resources/user_gray.png"/>
+    <mapID target="maimonides.paneles.datos.alumnos" url="html/paneles/datos/alumnos.html"/>
+    <mapID target="img.maimonides.paneles.datos.alumnos" url="../resources/user_edit.png"/>
+    <mapID target="maimonides.paneles.datos.listado_materias" url="html/paneles/datos/listado_materias.html"/>
+    <mapID target="img.maimonides.paneles.datos.listado_materias" url="../resources/book_edit.png"/>
+    <mapID target="maimonides.paneles.datos.matriculaciones_alumnos" url="html/paneles/datos/matriculaciones_alumnos.html"/>
+    <mapID target="img.maimonides.paneles.datos.matriculaciones_alumnos" url="../resources/group_link.png"/>
+    <mapID target="maimonides.paneles.datos.cursos_grupos" url="html/paneles/datos/cursos_grupos.html"/>
+    <mapID target="img.maimonides.paneles.datos.cursos_grupos" url="../resources/group_edit.png"/>
+    <mapID target="maimonides.paneles.datos.calendario" url="html/paneles/datos/calendario.html"/>
+    <mapID target="img.maimonides.paneles.datos.calendario" url="../resources/calendar.png"/>
+    <mapID target="maimonides.paneles.datos.notificaciones" url="html/paneles/datos/notificaciones.html"/>
+    <mapID target="img.maimonides.paneles.datos.notificaciones" url="../resources/email_go.png"/>
+
+
+
+
+    <mapID target="maimonides.paneles.faltas.partes_asistencia" url="html/paneles/faltas/partes_asistencia.html"/>
+    <mapID target="img.maimonides.paneles.faltas.partes_asistencia" url="../resources/table_edit.png"/>
+    <mapID target="maimonides.paneles.faltas.partes_genericos" url="html/paneles/faltas/partes_genericos.html"/>
+    <mapID target="img.maimonides.paneles.faltas.partes_genericos" url="../resources/page_edit.png"/>
+    <mapID target="maimonides.paneles.faltas.digitalizar_partes" url="html/paneles/faltas/digitalizacion.html"/>
+    <mapID target="img.maimonides.paneles.faltas.digitalizar_partes" url="../resources/images.png"/>
+    <mapID target="maimonides.paneles.faltas.justificaciones_a" url="html/paneles/faltas/justificaciones_a.html"/>
+    <mapID target="img.maimonides.paneles.faltas.justificaciones_a" url="../resources/script.png"/>
+    <mapID target="maimonides.paneles.faltas.justificaciones_b" url="html/paneles/faltas/justificaciones_b.html"/>
+    <mapID target="img.maimonides.paneles.faltas.justificaciones_b" url="../resources/script.png"/>
+    <mapID target="maimonides.paneles.faltas.exportar_faltas" url="html/paneles/faltas/exportar_faltas_seneca.html"/>
+    <mapID target="img.maimonides.paneles.faltas.exportar_faltas" url="../resources/world_go.png"/>
+    <mapID target="maimonides.paneles.faltas.cartas" url="html/paneles/faltas/cartas.html"/>
+    <mapID target="img.maimonides.paneles.faltas.cartas" url="../resources/email.png"/>
+    <mapID target="maimonides.paneles.faltas.informes.partes_no_firmados" url="html/paneles/faltas/partes_no_firmados.html"/>
+    <mapID target="img.maimonides.paneles.faltas.informes.partes_no_firmados" url="../resources/report.png"/>
+    <mapID target="maimonides.paneles.faltas.informes.partes_no_digitalizados" url="html/paneles/faltas/partes_no_digitalizados.html"/>
+    <mapID target="img.maimonides.paneles.faltas.informes.partes_no_digitalizados" url="../resources/report.png"/>
+    <mapID target="maimonides.paneles.faltas.informes.listado_asistencia" url="html/paneles/faltas/listado_asistencia.html"/>
+    <mapID target="img.maimonides.paneles.faltas.informes.listado_asistencia" url="../resources/report.png"/>
+    <mapID target="maimonides.paneles.faltas.informes.evolucion_asistencia" url="html/paneles/faltas/evolucion_asistencia.html"/>
+    <mapID target="img.maimonides.paneles.faltas.informes.evolucion_asistencia" url="../resources/report.png"/>
+    <mapID target="maimonides.paneles.faltas.informes.perdida_evaluacion_continua" url="html/paneles/faltas/perdida_evaluacion_continua.html"/>
+    <mapID target="img.maimonides.paneles.faltas.informes.perdida_evaluacion_continua" url="../resources/report.png"/>
+    <mapID target="maimonides.paneles.faltas.informes.perdida_evaluacion_materias" url="html/paneles/faltas/perdida_evaluacion_materias.html"/>
+    <mapID target="img.maimonides.paneles.faltas.informes.perdida_evaluacion_materias" url="../resources/report.png"/>
+
+
+    <mapID target="maimonides.paneles.horarios.horarios" url="html/paneles/horarios/horarios.html"/>
+    <mapID target="img.maimonides.paneles.horarios.horarios" url="../resources/calendar.png"/>
+    <mapID target="maimonides.paneles.horarios.divisiones_alumnos" url="html/paneles/horarios/divisiones_alumnos.html"/>
+    <mapID target="img.maimonides.paneles.horarios.divisiones_alumnos" url="../resources/arrow_join.png"/>
+
+    <mapID target="maimonides.paneles.convivencia.partes" url="html/paneles/convivencia/partes.html"/>
+    <mapID target="img.maimonides.paneles.convivencia.partes" url="../resources/building_error.png"/>
+    <mapID target="maimonides.paneles.convivencia.expulsiones" url="html/paneles/convivencia/expulsiones.html"/>
+    <mapID target="img.maimonides.paneles.convivencia.expulsiones" url="../resources/user_go.png"/>
+    <mapID target="maimonides.paneles.convivencia.propuestas" url="html/paneles/convivencia/propuestas.html"/>
+    <mapID target="img.maimonides.paneles.convivencia.propuestas" url="../resources/cog.png"/>
+    <mapID target="maimonides.paneles.convivencia.informes" url="html/paneles/convivencia/informes.html"/>
+    <mapID target="img.maimonides.paneles.convivencia.informes" url="../resources/report.png"/>
+    <mapID target="maimonides.paneles.convivencia.notificaciones_convivencia" url="html/paneles/convivencia/notificaciones_convivencia.html"/>
+    <mapID target="img.maimonides.paneles.convivencia.notificaciones_convivencia" url="../resources/email.png"/>
+
+    <mapID target="maimonides.versiones" url="html/versiones.html"/>
+
+    
+
+</map>

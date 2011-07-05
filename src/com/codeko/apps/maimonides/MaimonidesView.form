@@ -1,0 +1,714 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.6">
+  <NonVisualComponents>
+    <Container class="javax.swing.JPanel" name="mainPanel">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="mainPanel" noResource="true"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+      <SubComponents>
+        <Component class="com.codeko.swing.MemoriaLabel" name="memoriaLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="memoriaLabel.text"/>
+            <Property name="name" type="java.lang.String" value="memoriaLabel" noResource="true"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+              <BorderConstraints direction="South"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Container class="javax.swing.JPanel" name="panelPrincipal">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="panelPrincipal" noResource="true"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+              <BorderConstraints direction="Center"/>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="838" max="32767" attributes="0"/>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="panelPestanas" pref="826" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="793" max="32767" attributes="0"/>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Component id="panelPestanas" pref="781" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JTabbedPane" name="panelPestanas">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="panelPestanas" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTabbedPane(){&#xa;    public void paint(Graphics g){&#xa;        super.paint(g);&#xa;        if(panelPestanas.getTabCount()==0){&#xa;            Graphics2D g2=(Graphics2D)g;&#xa;            imPainter.paint(g2, this, getWidth(), getHeight());&#xa;        }&#xa;    }&#xa;}"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+            </Container>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JMenuBar" name="menuBar">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="menuBar" noResource="true"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="fileMenu">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="fileMenu.icon"/>
+            <Property name="mnemonic" type="int" value="118"/>
+            <Property name="text" type="java.lang.String" resourceKey="fileMenu.text"/>
+            <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="jMenu1">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jMenu1.icon"/>
+                <Property name="mnemonic" type="int" value="99"/>
+                <Property name="text" type="java.lang.String" resourceKey="jMenu1.text"/>
+                <Property name="name" type="java.lang.String" value="jMenu1" noResource="true"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="miConfConexion">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesApp" id="editarConexion" methodName="editarConexion"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miConfConexion" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="menuConfigGeneral">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelConfiguracion" methodName="mostrarPanelConfiguracion"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="menuConfigGeneral" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JSeparator" name="jSeparator2">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator2" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="exitMenuItem.text"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="exitMenuItem.toolTipText"/>
+                <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mHerramientas">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="mHerramientas.icon"/>
+            <Property name="mnemonic" type="int" value="116"/>
+            <Property name="text" type="java.lang.String" resourceKey="mHerramientas.text"/>
+            <Property name="name" type="java.lang.String" value="mHerramientas" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="miInicio">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="inicio" methodName="inicio"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miInicio" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miCopiaSeguridad">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="backup" methodName="backup"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miCopiaSeguridad" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miImportacionInicialDatos">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelImportacionInicialDatos" methodName="mostrarPanelImportacionInicialDatos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miImportacionInicialDatos" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelProblemasEnvioFaltas" methodName="mostrarPanelProblemasEnvioFaltas"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="jMenuItem3" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miNotificacionesGenerales">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelNotificacionesManuales" methodName="mostrarPanelNotificacionesManuales"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miNotificacionesGenerales" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelControlDatosAlumnos" methodName="mostrarPanelControlDatosAlumnos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="jMenuItem7" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mDatos">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="mDatos.icon"/>
+            <Property name="mnemonic" type="int" value="100"/>
+            <Property name="text" type="java.lang.String" resourceKey="mDatos.text"/>
+            <Property name="name" type="java.lang.String" value="mDatos" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="configAnoEscolar" methodName="configAnoEscolar"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="jMenuItem2" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miDependencias">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarDependencias" methodName="mostrarDependencias"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miDependencias" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miProfesores">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="editarProfesores" methodName="editarProfesores"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miProfesores" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miFichaAlumnos">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="fichasAlumnos" methodName="fichasAlumnos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miFichaAlumnos" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miMaterias">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="editarMaterias" methodName="editarMaterias"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miMaterias" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miMatriculaciones">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="editarMatriculaciones" methodName="editarMatriculaciones"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miMatriculaciones" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="cbCursoGrupos">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="editarCursosGrupos" methodName="editarCursosGrupos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="cbCursoGrupos" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miCalendario">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelCalendarioEscolar" methodName="mostrarPanelCalendarioEscolar"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miCalendario" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miNotificaciones">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelNotificaciones" methodName="mostrarPanelNotificaciones"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miNotificaciones" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mFaltas">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="mFaltas.icon"/>
+            <Property name="mnemonic" type="int" value="97"/>
+            <Property name="text" type="java.lang.String" resourceKey="mFaltas.text"/>
+            <Property name="name" type="java.lang.String" value="mFaltas" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="miAsistencia">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="editarPartes" methodName="editarPartes"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miAsistencia" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mPartesGenericos">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelPartesGenericos" methodName="mostrarPanelPartesGenericos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="mPartesGenericos" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miDigitalizar">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="digitalizarPartes" methodName="digitalizarPartes"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miDigitalizar" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miJustificacionesB">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelJustificacionesRapidas" methodName="mostrarPanelJustificacionesRapidas"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miJustificacionesB" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miJustificaciones">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelJustificaciones" methodName="mostrarPanelJustificaciones"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miJustificaciones" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miExportarSeneca">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="exportarFaltasSeneca" methodName="exportarFaltasSeneca"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miExportarSeneca" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mCartas">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelCartas" methodName="mostrarPanelCartas"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="mCartas" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="miInformesPartes">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="miInformesPartes.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="miInformesPartes.text"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="miInformesPartes.toolTipText"/>
+                <Property name="name" type="java.lang.String" value="miInformesPartes" noResource="true"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="miInformePartesFirmas">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarInformePartesNoFirmados" methodName="mostrarInformePartesNoFirmados"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miInformePartesFirmas" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="miInformesPartesDigitalizacion">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarInformePartesNoDigitalizados" methodName="mostrarInformePartesNoDigitalizados"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miInformesPartesDigitalizacion" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="miInformesAsistencia">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="miInformesAsistencia.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="miInformesAsistencia.text"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="miInformesAsistencia.toolTipText"/>
+                <Property name="name" type="java.lang.String" value="miInformesAsistencia" noResource="true"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="miInfAsistenciaListado">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarInformeListadoAsistencia" methodName="mostrarInformeListadoAsistencia"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miInfAsistenciaListado" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="miInfAsistenciaEvolucion">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarInformeEvolucionAsistencia" methodName="mostrarInformeEvolucionAsistencia"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miInfAsistenciaEvolucion" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="miInfAsistenciaPerdidaEC">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarInformePerdidaEscolaridadGlobal" methodName="mostrarInformePerdidaEscolaridadGlobal"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miInfAsistenciaPerdidaEC" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="miInfAsistenciaPerdidaECMaterias">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarInformePerdidaEscolaridadMaterias" methodName="mostrarInformePerdidaEscolaridadMaterias"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="miInfAsistenciaPerdidaECMaterias" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mHorarios">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="mHorarios.icon"/>
+            <Property name="mnemonic" type="int" value="104"/>
+            <Property name="text" type="java.lang.String" resourceKey="mHorarios.text"/>
+            <Property name="name" type="java.lang.String" value="mHorarios" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="miEditorHorarios">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarEditorHorarios" methodName="mostrarEditorHorarios"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miEditorHorarios" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miDivisionesAlumnos">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="divisionesAlumnos" methodName="divisionesAlumnos"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miDivisionesAlumnos" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miExportarHorariosSeneca">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="exportarFicheroHorariosSeneca" methodName="exportarFicheroHorariosSeneca"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miExportarHorariosSeneca" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mConvivencia">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="mConvivencia.icon"/>
+            <Property name="mnemonic" type="int" value="99"/>
+            <Property name="text" type="java.lang.String" resourceKey="mConvivencia.text"/>
+            <Property name="name" type="java.lang.String" value="mConvivencia" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPartesConvivencia" methodName="mostrarPartesConvivencia"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="jMenuItem4" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarExpulsiones" methodName="mostrarExpulsiones"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="jMenuItem5" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelGeneracionExpulsiones" methodName="mostrarPanelGeneracionExpulsiones"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="jMenuItem6" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="mInformesConvivencia">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="mInformesConvivencia.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="mInformesConvivencia.text"/>
+                <Property name="name" type="java.lang.String" value="mInformesConvivencia" noResource="true"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelResumenDeConvivencia" methodName="mostrarPanelResumenDeConvivencia"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="jMenuItem8" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelInformeExpulsiones" methodName="mostrarPanelInformeExpulsiones"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="jMenuItem9" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
+                  <Properties>
+                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                      <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarPanelListadoPartesConvivencia" methodName="mostrarPanelListadoPartesConvivencia"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="jMenuItem10" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="mCartasConvivencia">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarCartasExpulsion" methodName="mostrarCartasExpulsion"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="mCartasConvivencia" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="helpMenu">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="helpMenu.icon"/>
+            <Property name="mnemonic" type="int" value="121"/>
+            <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
+            <Property name="name" type="java.lang.String" value="helpMenu" noResource="true"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="showAboutBox" methodName="showAboutBox"/>
+                </Property>
+                <Property name="text" type="java.lang.String" resourceKey="aboutMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miAyuda">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="mostrarAyuda" methodName="mostrarAyuda"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miAyuda" noResource="true"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mUsuario">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" resourceKey="mUsuario.icon"/>
+            <Property name="text" type="java.lang.String" resourceKey="mUsuario.text"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="mUsuario" noResource="true"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="menuBar.add(Box.createHorizontalGlue());"/>
+          </AuxValues>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="miCambiarUsuario">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="cambiarUsuario" methodName="cambiarUsuario"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miCambiarUsuario" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miEditarMisDatos">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="com.codeko.apps.maimonides.MaimonidesView" id="editarUsuarioActual" methodName="editarUsuarioActual"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="miEditarMisDatos" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="miRolesActivos">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="miRolesActivos.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="miRolesActivos.text"/>
+                <Property name="name" type="java.lang.String" value="miRolesActivos" noResource="true"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="miRolesAdmin">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" resourceKey="miRolesAdmin.text"/>
+                    <Property name="name" type="java.lang.String" value="miRolesAdmin" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="miRolesDirectivo">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" resourceKey="miRolesDirectivo.text"/>
+                    <Property name="name" type="java.lang.String" value="miRolesDirectivo" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="miRolesJE">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" resourceKey="miRolesJE.text"/>
+                    <Property name="name" type="java.lang.String" value="miRolesJE" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="miRolesProfesor">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" resourceKey="miRolesProfesor.text"/>
+                    <Property name="name" type="java.lang.String" value="miRolesProfesor" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="statusPanel">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="statusPanel" noResource="true"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="statusPanelSeparator" alignment="0" pref="838" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="statusMessageLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="654" max="32767" attributes="0"/>
+                  <Component id="progressBar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="statusAnimationLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="statusPanelSeparator" min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="statusMessageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="statusAnimationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="progressBar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JSeparator" name="statusPanelSeparator">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="statusPanelSeparator" noResource="true"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="statusMessageLabel">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="statusMessageLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="statusAnimationLabel">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="name" type="java.lang.String" value="statusAnimationLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JProgressBar" name="progressBar">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="progressBar" noResource="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="component" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+      <ComponentRef name="mainPanel"/>
+    </Property>
+    <Property name="menuBar" type="javax.swing.JMenuBar" editor="org.netbeans.modules.form.ComponentChooserEditor">
+      <ComponentRef name="menuBar"/>
+    </Property>
+    <Property name="statusBar" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+      <ComponentRef name="statusPanel"/>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,3,99,0,0,3,70"/>
+  </AuxValues>
+</Form>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Calendario</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../../general.css"/>
+  </head>
+  <body>
+    
+<h1 class="titulo">Calendario</h1>
+<h2 class="rapido">Acceso rápido Crtl + Mayúsculas + C</h2>
+<h3 class="descripcion">Descripción</h3>
+<p>Desde esta pantalla usted podrá gestionar los días festivos tanto del profesorado como del personal del centro, así como importar estos datos directamente desde Séneca</p>
+<p>A la hora de importar el calendario desde Séneca se le preguntará si quiere sobreescribir las fechas existentes, si decide sobreescribir las fechas Maimónides sobreescribirá los datos de los festivos existentes con los importados de Séneca. 
+    Sólo se sobreescribirán las fechas existentes, es decir, si ya existe una festividad para una fecha que se está importando de Séneca esa festividad se sustituirá por la indicada en Séneca. Si existe alguna festividad que no aparece en Séneca no se sobreescribirá.</p>
+<p>Si desea que el sistema sólo conserve la fechas de las festividades existentes en Séneca debe primero eliminar todas las festividades y posteriormente importar los datos de Séneca.</p>
+<h3 class="descripcion">Datos</h3>
+Cada festividad consta de los siguientes datos:<br/>
+<ul>
+    <li>Día: El día de la festividad</li>
+    <li>Descripción: Descripción de la festividad</li>
+    <li>Ámbito: Ámbito de la festividad (Andalucía, Provincial, Local...)</li>
+    <li>Docentes: Marcado si la festividad afecta al profesorado</li>
+    <li>Personal: Marcado si la festividad afecta al personal no docente del centro</li>
+</ul>
+<h3 class="descripcion">¿Cómo usa Maimónides los datos de las festividades?</h3>
+Maimónides usa los datos de las festividades para decidir si se debe imprimir un parte de faltas para una fecha o no.<br/>
+Así en el botón de impresión de partes de asistencia de la pantalla inicial no se ofrecerá imprimir partes de días festivos.
+Si se intentan generar manualmente los partes de un día festivo desde el editor de partes de asistencia Maimónides advertirá de que ese día es festivo.<br/>
+Por último, Maimónides nunca enviará los datos de faltas de un día festivo a Séneca aunque existan partes de faltas en ese día ya que Séneca no admite faltas en días
+marcados como festivos y fallaría el envío de todo el bloque de faltas.
+<p>Maimónides sólo considerará un día como festivo a efectos de partes y envío de faltas si el día es festivo para el personal docente (columna Datos: Docentes).</p>
+<h4 class="ruta">Ruta: Datos -> Calendario</h4>
+  </body>
+</html>
+
+
+
+
+

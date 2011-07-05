@@ -1,0 +1,51 @@
+/* 
+    Document   : general
+    Created on : 26-feb-2009, 18:46:00
+    Author     : Codeko
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+
+root { 
+    display: block;
+
+}
+
+body{
+    font-family: helvetica, verdana, arial;
+    font-size:10px;
+    margin:10px;
+    padding:10px 10px 10px 15px;
+    background-color: #fefefe;
+    /**background:url(../resources/notebook_paper.jpg) repeat-y scroll 0 0 #ffffff;**/
+}
+
+.titulo{
+    /**background: url("../resources/maimonides.png") no-repeat scroll 0 0 #CAD2EE;**/
+    border: 1px solid #3850A3;
+    background-color: #CAD2EE;
+    /**height: 70px;
+    line-height: 70px;**/
+    padding: 10px;
+}
+
+.descripcion{
+    /**font-size:1.7em;
+    border-bottom:2px dotted #3850A3;**/
+}
+
+.ruta{
+    padding:10px;
+    background-color: #dbe3ff;
+    border: 1px solid black;
+}
+
+
+.solerrores{
+   padding:10px;
+    background-color: #F6CECE;
+    border: 1px solid black;
+
+}

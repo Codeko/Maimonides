@@ -1,0 +1,45 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Problemas envío de faltas</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../../general.css"/>
+  </head>
+  <body>
+    <h1 class="titulo">Problemas envío de faltas</h1>
+<h3 class="descripcion">Descripción</h3>
+<p>
+Aunque el envío de faltas a Séneca se realice correctamente existen casos en los que aún estando el fichero correcto Séneca no admite el envío. 
+Esos casos suelen ser por configuraciones incorrectas en las definiciones de los horarios o las asignaturas de un alumno.
+</p>
+<p>
+    Esta herramienta permite localizar cómodamente que alumnos y en que fechas no está admitiendo Séneca para poder revisar los datos almacenados en Séneca.
+</p>
+<p>
+    La pantalla está dividida en dos partes. En la parte superior se gestionan los ficheros que ha fallado su envío a Séneca en la parte inferior se ven aquellos alumnos que tras un análisis de un fichero han dado errores por parte de Séneca.
+</p>
+<p>
+    Para analizar los fallos generados en un fichero simplemente hay que seleccionarlo y pulsar el botón analizar. Maimónides realizará en envío del fichero por partes para localizar en que punto está ocurriendo el error.
+    Una vez localizado el alumno que genera el error este se añadirá (junto con la información de las fechas en las que está dando problemas) en el panel inferior.
+</p>
+<p>Una vez analizado un fichero puede borrarse marcando el fichero y pulsando el botón "Borrar"</p>
+<p>
+    Una vez localizados los alumnos que dan algún problema la forma de poder localizar el problema es accediendo a Séneca y probando a asignar las faltas manualmente en el día indicado.
+    En este punto Séneca no dará el mensaje de error en la hora(s) concreta en la que se produce el problema. El problema que suele indicar es que el alumno no tiene clase a esa hora. Revisando los horarios de los profesores y los alumnos a los que imparte clase se puede, normalmente,
+    identificar la razón por la que Séneca piensa que el alumno no tiene clase a esa hora.
+</p>
+<p>
+    Una vez localizado el error se puede borrar el registro del alumno pulsando el botón "borrar".
+</p>
+<p>
+    Si por alguna razón no se pudiese localizar el error y es necesario enviar las faltas de asistencia se puede marcar la casilla "excluir" del alumno. Esto hace que ese alumno no se incluya en los envíos de faltas de asistencia.
+    Esta medida sólo debe tomarse en casos en los que sea imposible determinar por qué Séneca no admite la asignación de las faltas de asistencia. 
+</p>
+<h4 class="ruta">Ruta: Herramientas -> Problemas envío de faltas</h4>
+
+  </body>
+</html>

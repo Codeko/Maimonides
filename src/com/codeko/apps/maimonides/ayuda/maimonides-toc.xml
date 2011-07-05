@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE toc PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 2.0//EN" "http://java.sun.com/products/javahelp/toc_2_0.dtd">
+<toc version="2.0" categoryclosedimage="closedFolderIcon" categoryopenimage="openFolderIcon"  topicimage="topicIcon">
+    <tocitem text="Acerca de Maimónides" target="maimonides.about"/>
+    <tocitem text="Registro de versiones" target="maimonides.versiones"/>
+    <tocitem text="Paneles">
+    <tocitem image="img.herramientas" text="Herramientas">
+    <tocitem image="img.maimonides.paneles.herramientas.pantalla_incial" text="Pantalla Inicial" target="maimonides.paneles.herramientas.pantalla_incial"/>
+    <tocitem image="img.maimonides.paneles.herramientas.copias_seguridad" text="Copias de Seguridad" target="maimonides.paneles.herramientas.copias_seguridad"/>
+    <tocitem image="img.maimonides.paneles.herramientas.importacion_inicial_datos" text="Importación inicial de datos" target="maimonides.paneles.herramientas.importacion_inicial_datos"/>
+    <tocitem image="img.maimonides.paneles.herramientas.debug_faltas" text="Problemas envío de faltas" target="maimonides.paneles.herramientas.debug_faltas"/>
+    <tocitem image="img.maimonides.paneles.herramientas.notificaciones" text="Notificaciones Generales" target="maimonides.paneles.herramientas.notificaciones_generales"/>
+    <tocitem image="img.maimonides.paneles.herramientas.control_datos_alumnos" text="Control de Datos de Alumnos" target="maimonides.paneles.herramientas.control_datos_alumnos"/>
+
+    </tocitem>
+    <tocitem image="img.datos" text="Datos">
+    <tocitem image="img.maimonides.paneles.datos.anos_escolares" text="Años Escolares" target="maimonides.paneles.datos.anos_escolares"/>
+    <tocitem image="img.maimonides.paneles.datos.dependencias" text="Dependencias" target="maimonides.paneles.datos.dependencias"/>
+    <tocitem image="img.maimonides.paneles.datos.profesores" text="Profesores" target="maimonides.paneles.datos.profesores"/>
+    <tocitem image="img.maimonides.paneles.datos.alumnos" text="Alumnos" target="maimonides.paneles.datos.alumnos"/>
+    <tocitem image="img.maimonides.paneles.datos.listado_materias" text="Materias" target="maimonides.paneles.datos.listado_materias"/>
+    <tocitem image="img.maimonides.paneles.datos.matriculaciones_alumnos" text="Matriculaciones" target="maimonides.paneles.datos.matriculaciones_alumnos"/>
+    <tocitem image="img.maimonides.paneles.datos.cursos_grupos" text="Cursos / Grupos" target="maimonides.paneles.datos.cursos_grupos"/>
+    <tocitem image="img.maimonides.paneles.datos.calendario" text="Calendario" target="maimonides.paneles.datos.calendario"/>
+    <tocitem image="img.maimonides.paneles.datos.notificaciones" text="Notificaciones" target="maimonides.paneles.datos.notificaciones"/>
+
+
+    </tocitem>
+
+    <tocitem image="img.asistencia" text="Asistencia">
+    <tocitem image="img.maimonides.paneles.faltas.partes_asistencia" text="Partes de Asistencia" target="maimonides.paneles.faltas.partes_asistencia"/>
+    <tocitem image="img.maimonides.paneles.faltas.partes_genericos" text="Partes Genéricos" target="maimonides.paneles.faltas.partes_genericos"/>
+    <tocitem image="img.maimonides.paneles.faltas.digitalizar_partes" text="Digitalizar Partes" target="maimonides.paneles.faltas.digitalizar_partes"/>
+    <tocitem image="img.maimonides.paneles.faltas.justificaciones_a" text="Justificaciones" target="maimonides.paneles.faltas.justificaciones_a"/>
+    <tocitem image="img.maimonides.paneles.faltas.justificaciones_b" text="Justificaciones B" target="maimonides.paneles.faltas.justificaciones_b"/>
+    <tocitem image="img.maimonides.paneles.faltas.exportar_faltas" text="Exportar Faltas" target="maimonides.paneles.faltas.exportar_faltas"/>
+    <tocitem image="img.maimonides.paneles.faltas.cartas" text="Notificaciones de Asistencia" target="maimonides.paneles.faltas.cartas"/>
+    <tocitem image="img.maimonides.paneles.faltas.informes.partes_no_firmados" text="Partes no firmados" target="maimonides.paneles.faltas.informes.partes_no_firmados"/>
+    <tocitem image="img.maimonides.paneles.faltas.informes.partes_no_digitalizados" text="Partes no digitalizados" target="maimonides.paneles.faltas.informes.partes_no_digitalizados"/>
+    <tocitem image="img.maimonides.paneles.faltas.informes.listado_asistencia" text="Partes no digitalizados" target="maimonides.paneles.faltas.informes.listado_asistencia"/>
+    <tocitem image="img.maimonides.paneles.faltas.informes.evolucion_asistencia" text="Evolucion de Asistencia" target="maimonides.paneles.faltas.informes.evolucion_asistencia"/>
+    <tocitem image="img.maimonides.paneles.faltas.informes.perdida_evaluacion_continua" text="Pérdida de evaluación continua" target="maimonides.paneles.faltas.informes.perdida_evaluacion_continua"/>
+    <tocitem image="img.maimonides.paneles.faltas.informes.perdida_evaluacion_materias" text="Pérdida de evaluación continua de materias" target="maimonides.paneles.faltas.informes.perdida_evaluacion_materias"/>
+
+
+    </tocitem>
+
+
+    <tocitem image="img.horarios" text="Horarios">
+    <tocitem image="img.maimonides.paneles.horarios.horarios" text="Horarios" target="maimonides.paneles.horarios.horarios"/>
+    <tocitem image="img.maimonides.paneles.horarios.divisiones_alumnos" text="Divisiones de Alumnos" target="maimonides.paneles.horarios.divisiones_alumnos"/>
+    </tocitem>
+
+    <tocitem image="img.convivencia" text="Convivencia">
+        <tocitem image="img.maimonides.paneles.convivencia.partes" text="Partes de Convivencia" target="maimonides.paneles.convivencia.partes"/>
+        <tocitem image="img.maimonides.paneles.convivencia.expulsiones" text="Expulsiones" target="maimonides.paneles.convivencia.expulsiones"/>
+        <tocitem image="img.maimonides.paneles.convivencia.propuestas" text="Propuestas de Expulsión" target="maimonides.paneles.convivencia.propuestas"/>
+        <tocitem image="img.maimonides.paneles.convivencia.informes" text="Informes de Convivencia" target="maimonides.paneles.convivencia.informes"/>
+        <tocitem image="img.maimonides.paneles.convivencia.notificaciones_convivencia" text="Notificaciones de Convivencia" target="maimonides.paneles.convivencia.notificaciones_convivencia"/>
+
+    </tocitem>
+
+    </tocitem>
+        <tocitem image="img.procesos" text="Procesos" >
+         <tocitem image="img.maimonides.procesos.nuevo_ano_escolar" text="Creación de un nuevo año escolar" target="maimonides.procesos.nuevo_ano_escolar"/>
+          <tocitem image="img.maimonides.procesos.digitalizacion_partes_asistencia" text="Digitalización de partes de asistencia" target="maimonides.procesos.digitalizacion_partes_asistencia"/>
+    </tocitem>
+</toc>

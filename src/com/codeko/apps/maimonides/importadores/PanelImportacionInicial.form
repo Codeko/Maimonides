@@ -1,0 +1,164 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="name" type="java.lang.String" value="maimonides.paneles.herramientas.importacion_inicial_datos" noResource="true"/>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="bImportarDatosBaseSeneca" pref="487" max="32767" attributes="0"/>
+                  <Component id="bImportarEmailsProfesoresOtrosAnos" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bImportarEmailsProfesoresOtrosAnos1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bImportarTutores" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jXHyperlink1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bImportarDatosAlumnos" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="bDatosBaseAlumnos" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lInfoCodigosPendientes" pref="234" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="jXHyperlink2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bImportarHorarios" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="bImportarCalendario" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarDatosBaseSeneca" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarEmailsProfesoresOtrosAnos" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarTutores" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarDatosAlumnos" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="bDatosBaseAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lInfoCodigosPendientes" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarEmailsProfesoresOtrosAnos1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jXHyperlink1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jXHyperlink2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarHorarios" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="bImportarCalendario" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="120" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarDatosBaseSeneca">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarDatosBaseSeneca" methodName="importarDatosBaseSeneca"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bImportarDatosBaseSeneca" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarEmailsProfesoresOtrosAnos">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="bImportarEmailsProfesoresOtrosAnos.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bImportarEmailsProfesoresOtrosAnos.toolTipText"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="bImportarEmailsProfesoresOtrosAnos" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarTutores">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarTutores" methodName="importarTutores"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bImportarTutores" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarDatosAlumnos">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarDatosAlumnos" methodName="importarDatosAlumnos"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bImportarDatosAlumnos" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bDatosBaseAlumnos">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarDatosBaseAlumnado" methodName="importarDatosBaseAlumnado"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bDatosBaseAlumnos" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarEmailsProfesoresOtrosAnos1">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="bImportarEmailsProfesoresOtrosAnos1.text"/>
+        <Property name="toolTipText" type="java.lang.String" resourceKey="bImportarEmailsProfesoresOtrosAnos1.toolTipText"/>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="name" type="java.lang.String" value="bImportarEmailsProfesoresOtrosAnos1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="jXHyperlink1">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarMatriculaciones" methodName="importarMatriculaciones"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="jXHyperlink1.text"/>
+        <Property name="name" type="java.lang.String" value="jXHyperlink1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="jXHyperlink2">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarConvivencia" methodName="importarConvivencia"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="jXHyperlink2" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarHorarios">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarHorarios" methodName="importarHorarios"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bImportarHorarios" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarCalendario">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarCalendarioEscolar" methodName="importarCalendarioEscolar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bImportarCalendario" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lInfoCodigosPendientes">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lInfoCodigosPendientes.text"/>
+        <Property name="name" type="java.lang.String" value="lInfoCodigosPendientes" noResource="true"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
