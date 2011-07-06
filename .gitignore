@@ -5,4 +5,12 @@ cfg.txt
 /log/
 /partes/
 /seneca/
-/lib/nblibraries.properties
+/install/jnlp/maimonides.ks
+/install/jnlp/Maimonides.jar
+/install/jnlp/lib/
+/src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/POSITIONS
+/src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/DOCS
+/src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/SCHEMA
+/src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/TMAP
+/src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/OFFSETS
+/src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/DOCS.TAB
