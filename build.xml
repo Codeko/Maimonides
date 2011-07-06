@@ -71,4 +71,16 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <target name="build_jnlp" description="Build and sign the jnlp enviroment" depends="clean,jar">
+        <exec dir="install/jnlp/" executable="./cp_mm.sh"></exec>
+    </target>
+    
+    <target name="build_jnlp_with_libs" description="Build and sign the jnlp enviroment including libs" depends="build_jnlp">
+        <exec dir="install/jnlp/" executable="./cp_libs.sh"></exec>
+    </target>
+    
+    <target name="-post-compile">
+        <exec executable="./rebuild-help-db.sh"/>
+    </target>
+    
 </project>
