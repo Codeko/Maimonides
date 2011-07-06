@@ -74,7 +74,7 @@
                               <Component id="panelFiltro" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
-                          <Component id="scrollFaltas" alignment="0" pref="738" max="32767" attributes="0"/>
+                          <Component id="scrollFaltas" alignment="0" pref="825" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -83,7 +83,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollFaltas" pref="325" max="32767" attributes="0"/>
+                      <Component id="scrollFaltas" pref="321" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
                           <Component id="leyendaPartes1" alignment="2" min="-2" max="-2" attributes="0"/>

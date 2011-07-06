@@ -21,14 +21,8 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
+ **/
 
-
-/*
- * PanelFaltasAlumno.java
- *
- * Created on 30-ene-2009, 18:19:28
- */
 package com.codeko.apps.maimonides.partes;
 
 import com.codeko.apps.maimonides.ICargable;
@@ -42,10 +36,11 @@ import com.codeko.apps.maimonides.partes.justificaciones.JustificacionAlumno;
 import com.codeko.swing.CdkProcesoLabel;
 import com.codeko.swing.CodekoTableModel;
 import com.codeko.util.Num;
-import com.lowagie.text.Font;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 
 import java.awt.event.KeyEvent;
@@ -70,11 +65,8 @@ import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-/**
- *
- * @author Codeko
- */
-public class PanelFaltasAlumno extends javax.swing.JPanel implements ICargable,IFiltrableAlumno {
+
+public class PanelFaltasAlumno extends javax.swing.JPanel implements ICargable, IFiltrableAlumno {
 
     CodekoTableModel<JustificacionAlumno> modelo = new CodekoTableModel<JustificacionAlumno>(new JustificacionAlumno());
     Alumno alumno = null;
@@ -349,7 +341,7 @@ public class PanelFaltasAlumno extends javax.swing.JPanel implements ICargable,I
                         row = tabla.convertRowIndexToModel(row);
                         col = tabla.convertColumnIndexToModel(col);
                         JustificacionAlumno justi = modelo.getElemento(row);
-                        LineaParteAlumno lin = justi.getLineaHora(col-3);
+                        LineaParteAlumno lin = justi.getLineaHora(col - 3);
                         firePropertyChange("asistenciaSeleccionada", null, lin);
                     }
                 }
@@ -405,7 +397,9 @@ public class PanelFaltasAlumno extends javax.swing.JPanel implements ICargable,I
     }
 
     private class CargarAsistenciaAlumnoTask extends org.jdesktop.application.Task<Object, Void> {
-        CdkProcesoLabel l=null;
+
+        CdkProcesoLabel l = null;
+
         CargarAsistenciaAlumnoTask(org.jdesktop.application.Application app) {
             super(app);
             remove(scroll);

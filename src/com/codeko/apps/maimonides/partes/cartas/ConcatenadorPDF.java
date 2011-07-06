@@ -26,6 +26,14 @@
 
 package com.codeko.apps.maimonides.partes.cartas;
 
+//No podemos trabajar con iText 5 porque jasper reports usa la version 2 que tienen rutas diferentes
+//TODO Implementar un classloader propio o recompilar jasper reports con las rutas actualizadas
+//import com.itextpdf.text.Document;
+//import com.itextpdf.text.pdf.PRAcroForm;
+//import com.itextpdf.text.pdf.PdfCopy;
+//import com.itextpdf.text.pdf.PdfImportedPage;
+//import com.itextpdf.text.pdf.PdfReader;
+//import com.itextpdf.text.pdf.SimpleBookmark;
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PRAcroForm;
 import com.lowagie.text.pdf.PdfCopy;
@@ -36,22 +44,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Copyright Codeko Informática 2008
- * www.codeko.com
- * @author Codeko
- */
+
 public class ConcatenadorPDF {
-    //TODO Migrar a iText 5
-    @SuppressWarnings("unchecked")
+
     public static void concatenar(File destino, Collection<File> archivos) {
         try {
             int pageOffset = 0;
-            ArrayList master = new ArrayList();
+            ArrayList<HashMap<String,Object>> master = new ArrayList<HashMap<String,Object>>();
             int f = 0;
             Document document = null;
             PdfCopy writer = null;
@@ -61,7 +65,7 @@ public class ConcatenadorPDF {
                 reader.consolidateNamedDestinations();
                 // we retrieve the total number of pages
                 int n = reader.getNumberOfPages();
-                List bookmarks = SimpleBookmark.getBookmark(reader);
+                List<HashMap<String,Object>> bookmarks = SimpleBookmark.getBookmark(reader);
                 if (bookmarks != null) {
                     if (pageOffset != 0) {
                         SimpleBookmark.shiftPageNumbers(bookmarks, pageOffset, null);

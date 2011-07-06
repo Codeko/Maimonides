@@ -21,14 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
-/*
- * PanelJustificaciones.java
- *
- * Created on 20 de octubre de 2008, 9:27
- */
+ **/
 package com.codeko.apps.maimonides.partes.justificaciones;
 
 import com.codeko.apps.maimonides.IPanel;
@@ -42,10 +35,10 @@ import com.codeko.util.Fechas;
 import com.codeko.util.Num;
 import com.codeko.util.Obj;
 import com.codeko.util.Str;
-import com.lowagie.text.Font;
 import com.mysql.jdbc.PreparedStatement;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.KeyEvent;
@@ -76,10 +69,6 @@ import org.jdesktop.swingx.decorator.AbstractHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-/**
- *
- * @author  Codeko
- */
 public class PanelJustificaciones extends javax.swing.JPanel implements IPanel {
 
     CodekoTableModel<JustificacionAlumno> modelo = new CodekoTableModel<JustificacionAlumno>(new JustificacionAlumno());
