@@ -2,8 +2,9 @@
 /dist/
 cfg.txt
 /build/
-/lib/
 /log/
 /partes/
 /nbproject/
 /seneca/
+/lib/CopyLibs/
+/lib/nblibraries.properties
