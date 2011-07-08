@@ -37,6 +37,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jdesktop.swingx.util.OS;
 
 /**
  * Copyright Codeko Informática 2008
@@ -49,13 +50,13 @@ public class Configuracion {
     public static final String CARPETA_INFORMES = "informes";
     public static final String CARPETA_SENECA = "seneca";
     //Contantes de acceso a los datos
-    public static final String KEY_CRIPTO = System.getProperty("maimonides.crypt_key","<@·Asdk907&8OPNiojasd'$%9kY_-");
+    public static final String KEY_CRIPTO = System.getProperty("maimonides.crypt_key", "<@·Asdk907&8OPNiojasd'$%9kY_-");
     public static final String CENTRO_WEB = "web_centro";
     public static final String CENTRO_WEB_COMPATIBLE = "web_compatible";
     public static final String WEB_USUARIO = "web_usuario";
     public static final String WEB_CLAVE = "web_clave";
     //Contanstes de ficheros
-    public static final String CONN_CFG_FILE="cfg.txt";
+    public static final String CONN_CFG_FILE = "cfg.txt";
     File archivoAccess = null;
     File carpetaPartes = null;
     File carpetaPartesDigitalizados = null;
@@ -244,7 +245,11 @@ public class Configuracion {
 
     public static File getCarpetaUsuarioMaimonides() {
         File base = javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory();
-        File maimonidesFolder = new File(base, "Maimonides");
+        String name = "Maimonides";
+        if (!OS.isWindows()) {
+            name = ".maimonides";
+        }
+        File maimonidesFolder = new File(base, name);
         maimonidesFolder.mkdirs();
         return maimonidesFolder;
     }
