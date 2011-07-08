@@ -21,8 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
+ **/
 package com.codeko.apps.maimonides.cartero;
 
 import com.codeko.apps.maimonides.conf.Configuracion;
@@ -34,6 +33,7 @@ import com.codeko.apps.maimonides.conf.mail.ConfiguracionMail;
 import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.IEmailable;
 import com.codeko.apps.maimonides.elementos.ParteFaltas;
+import com.codeko.apps.maimonides.impresion.Impresion;
 import com.codeko.apps.maimonides.impresion.informes.Informes;
 import com.codeko.apps.maimonides.impresion.informes.custom.CustomInformes;
 import com.codeko.apps.maimonides.partes.cartas.ConcatenadorPDF;
@@ -162,54 +162,10 @@ public class CarteroAlumno<T extends IAlumno> extends MaimonidesBean {
         DocumentTemplate template = null;
         try {
             String nombrePlantilla = getNombrePlantilla();
-            //Primero vemos si existe en la carpeta de usuario
-            File informesFolder = Configuracion.getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_INFORMES);
-            File customVersion = new File(informesFolder, nombrePlantilla);
-            if (customVersion.exists()) {
-                try {
-                    template = dtf.getTemplate(customVersion);
-                } catch (IOException ex) {
-                    Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            InputStream plantilla = Impresion.getResource(nombrePlantilla);
+            if (plantilla != null) {
+                template = dtf.getTemplate(plantilla);
             }
-
-            if (template == null) {
-                //Buscamos en la carpeta de instalacion
-                File plantilla = new File(Configuracion.CARPETA_INFORMES, nombrePlantilla);
-                if (plantilla != null && plantilla.exists()) {
-                    try {
-                        template = dtf.getTemplate(plantilla);
-                    } catch (IOException ex) {
-                        Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-
-            if (template == null) {
-                //Buscamos en el los informes propios dentro del jar (por si se ha distribuido un jar con 
-                //informes personalizados
-                try {
-                    InputStream plantilla = CustomInformes.class.getResourceAsStream(nombrePlantilla);//getClass().getResourceAsStream("/" + Configuracion.CARPETA_INFORMES + "/" + nombrePlantilla);
-                    if (plantilla != null) {
-                        template = dtf.getTemplate(plantilla);
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            if (template == null) {
-                //Finalmente cogemos los propios de la aplicacion
-                try {
-                    InputStream plantilla = Informes.class.getResourceAsStream(nombrePlantilla);//getClass().getResourceAsStream("/" + Configuracion.CARPETA_INFORMES + "/" + nombrePlantilla);
-                    if (plantilla != null) {
-                        template = dtf.getTemplate(plantilla);
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
             if (template == null) {
                 Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, "No se ha podido encontrar la plantilla para {0}", getNombrePlantilla());
             }

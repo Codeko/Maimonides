@@ -21,12 +21,9 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.horarios.impresion;
 
-import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.impresion.Impresion;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesBean;
@@ -51,7 +48,7 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 public class ImpresionHorarios extends MaimonidesBean {
 
-    public void imprimirHorarios(final MaimonidesBean bean, ArrayList<HorarioImprimible> datos,boolean formatoMultiple) {
+    public void imprimirHorarios(final MaimonidesBean bean, ArrayList<HorarioImprimible> datos, boolean formatoMultiple) {
         if (bean != null) {
             this.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -61,21 +58,17 @@ public class ImpresionHorarios extends MaimonidesBean {
                 }
             });
         }
-        HorarioDataSource hds=new HorarioDataSource();
+        HorarioDataSource hds = new HorarioDataSource();
         hds.setHorarios(datos);
         HorarioDataSourceProvider pdsp = new HorarioDataSourceProvider(hds);
-        imprimir(pdsp,formatoMultiple);
+        imprimir(pdsp, formatoMultiple);
     }
 
-    private void imprimir(HorarioDataSourceProvider pdsp,boolean formatoMultiple) {
+    private void imprimir(HorarioDataSourceProvider pdsp, boolean formatoMultiple) {
         try {
             firePropertyChange("progress", 0, -1);
             firePropertyChange("message", null, "Generando plantilla...");
-            String plantilla=Configuracion.CARPETA_INFORMES+"/horario.jrxml";
-            if(formatoMultiple){
-                plantilla=Configuracion.CARPETA_INFORMES+"/horario_multiple.jrxml";
-            }
-            JasperReport jasperReport = Impresion.getReport(plantilla);
+            JasperReport jasperReport = Impresion.getReport(formatoMultiple ? "horario_multiple.jrxml" : "horario.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), jrds);

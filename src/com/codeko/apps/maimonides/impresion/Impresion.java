@@ -21,23 +21,26 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.impresion;
 
 import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesBean;
+import com.codeko.apps.maimonides.cartero.CarteroAlumno;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.elementos.ParteFaltas;
 import com.codeko.apps.maimonides.elementos.Unidad;
+import com.codeko.apps.maimonides.impresion.informes.Informes;
+import com.codeko.apps.maimonides.impresion.informes.custom.CustomInformes;
 import com.codeko.apps.maimonides.partes.ParteDataSourceProvider;
 import com.codeko.apps.maimonides.partes.ParteGenericoDataSourceProvider;
 import java.awt.Desktop;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -135,7 +138,7 @@ public class Impresion extends MaimonidesBean {
         try {
             firePropertyChange("progress", 0, -1);
             firePropertyChange("message", null, "Generando plantilla...");
-            JasperReport jasperReport = Impresion.getReport(Configuracion.CARPETA_INFORMES + "/parte_generico.jrxml");
+            JasperReport jasperReport = Impresion.getReport("parte_generico.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), jrds);
@@ -158,7 +161,7 @@ public class Impresion extends MaimonidesBean {
         try {
             firePropertyChange("progress", 0, -1);
             firePropertyChange("message", null, "Generando plantilla...");
-            JasperReport jasperReport = Impresion.getReport(Configuracion.CARPETA_INFORMES + "/parte.jrxml");
+            JasperReport jasperReport = Impresion.getReport("parte.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), jrds);
@@ -182,7 +185,39 @@ public class Impresion extends MaimonidesBean {
     }
 
     public static InputStream getResource(String name) {
-        //Añadir posibilidad de recuperar el archivo desde disco en vez de desde jar
-        return Impresion.class.getResourceAsStream(name);
+        InputStream res = null;
+        //Primero vemos si existe en la carpeta de usuario
+        File informesFolder = Configuracion.getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_INFORMES);
+        File customVersion = new File(informesFolder, name);
+        if (customVersion.exists() && customVersion.canRead()) {
+            try {
+                res = new FileInputStream(customVersion);
+            } catch (IOException ex) {
+                Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (res == null) {
+            //Buscamos en la carpeta de instalacion
+            File plantilla = new File(Configuracion.CARPETA_INFORMES, name);
+            if (plantilla.exists() && plantilla.canRead()) {
+                try {
+                    res = new FileInputStream(plantilla);
+                } catch (IOException ex) {
+                    Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        if (res == null) {
+            //Buscamos en el los informes propios dentro del jar (por si se ha distribuido un jar con 
+            //informes personalizados)
+            res = CustomInformes.class.getResourceAsStream(name);
+        }
+
+        //Finalmente cogemos los propios de la aplicacion
+        if (res == null) {
+            res = Informes.class.getResourceAsStream(name);
+        }
+        return res;
     }
 }
