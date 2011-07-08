@@ -47,7 +47,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
-import java.awt.TrayIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -81,7 +80,6 @@ public class MaimonidesApp extends SingleFrameApplication {
     private static BufferedImage splashImage = null;
     private static Graphics2D splashGraphics = null;
     AnoEscolar ano = null;
-    TrayIcon trayIcon = null;
     private File ultimoArchivo = null;
     private Conector conector = new Conector();
     private CdkControlProgresos controlProgresos = new CdkControlProgresos();
@@ -259,9 +257,6 @@ public class MaimonidesApp extends SingleFrameApplication {
                 getMainFrame().setSize(800, 600);
                 GUI.centrar(getMainFrame());
             }
-            //setAno(null);
-            //TODO Corregir en versión para linux o eliminar del todo
-            //cargarIcono();
             addPropertyChangeListener(new PropertyChangeListener() {
 
                 @Override
