@@ -26,7 +26,7 @@
 
 package com.codeko.apps.maimonides.horarios.impresion;
 
-import com.codeko.apps.maimonides.Configuracion;
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.impresion.Impresion;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesBean;

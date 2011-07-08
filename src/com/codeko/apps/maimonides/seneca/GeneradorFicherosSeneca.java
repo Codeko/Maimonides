@@ -26,7 +26,7 @@
 
 package com.codeko.apps.maimonides.seneca;
 
-import com.codeko.apps.maimonides.Configuracion;
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesBean;
 import com.codeko.apps.maimonides.elementos.Actividad;

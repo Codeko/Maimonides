@@ -26,7 +26,7 @@
 
 package com.codeko.apps.maimonides.partes;
 
-import com.codeko.apps.maimonides.Configuracion;
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.MaimonidesBean;
 import com.codeko.apps.maimonides.convivencia.Expulsion;
 import com.codeko.apps.maimonides.elementos.Alumno;

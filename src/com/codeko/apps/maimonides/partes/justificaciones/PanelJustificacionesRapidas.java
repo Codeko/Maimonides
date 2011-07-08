@@ -31,7 +31,7 @@
  */
 package com.codeko.apps.maimonides.partes.justificaciones;
 
-import com.codeko.apps.maimonides.Configuracion;
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.IPanel;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesUtil;

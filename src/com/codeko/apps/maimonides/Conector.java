@@ -21,11 +21,10 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides;
 
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.mantenimiento.Mantenimiento;
 import com.codeko.util.Cripto;
@@ -36,8 +35,9 @@ import com.mysql.jdbc.Statement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -50,6 +50,7 @@ import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -67,6 +68,24 @@ public class Conector extends MaimonidesBean {
     private int errorCode = 0;
     boolean conectando = false;
     Timer controlConexion = null;
+    private static URL configURL = null;
+    private static boolean configReadOnly = false;
+
+    public static boolean isConfigReadOnly() {
+        return configReadOnly;
+    }
+
+    public static void setConfigReadOnly(boolean configReadOnly) {
+        Conector.configReadOnly = configReadOnly;
+    }
+
+    public static URL getConfigURL() {
+        return configURL;
+    }
+
+    public static void setConfigURL(URL configURL) {
+        Conector.configURL = configURL;
+    }
 
     public Timer getControlConexion() {
         if (controlConexion == null) {
@@ -102,28 +121,133 @@ public class Conector extends MaimonidesBean {
 
     }
 
-    public boolean cargarConfiguracion() {
+    public static boolean guardarConfiguracion(Properties p) {
         boolean ret = false;
+        if (!isConfigReadOnly()) {
+            if (!p.containsKey("pass") || p.getProperty("pass", "").equals("")) {
+                p.put("pass", Cripto.encriptar(p.getProperty("clave", ""), Configuracion.KEY_CRIPTO));
+            }
+            p.remove("clave");
+            if (Conector.getConfigURL() != null) {
+                FileOutputStream os = null;
+                try {
+                    File f = new File(Conector.getConfigURL().toURI());
+                    if (f != null && f.exists() && f.canWrite()) {
+                        os = new FileOutputStream(f);
+                        p.store(os, "Configuración de conexión");
+                        ret = true;
+                    } else {
+                        Logger.getLogger(Conector.class.getName()).log(Level.WARNING, "No se puede escribir en {0}, se guardar\u00e1 configuraci\u00f3n en propiedades.", f);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, "No se puede conectar con la url " + Conector.getConfigURL(), ex);
+                } finally {
+                    Obj.cerrar(os);
+                }
+            }
+            //Si algo falla lo guardamos en preferencias
+            if (ret == false) {
+                Preferences prefs = Preferences.userNodeForPackage(Conector.class);
+                prefs.put("bd", p.getProperty("bd"));
+                prefs.put("host", p.getProperty("host"));
+                prefs.put("usuario", p.getProperty("usuario"));
+                prefs.put("pass", p.getProperty("pass"));
+                ret = true;
+            }
+            MaimonidesApp.getApplication().getConector().cargarConfiguracion();
+        }
+        return ret;
+    }
+
+    public Properties getConfiguracion() {
         Properties p = new Properties();
         try {
-            if (MaimonidesApp.isJnlp()) {
-                p.load(this.getClass().getResourceAsStream("/cfg.txt"));
-            } else {
-                p.load(new FileInputStream("cfg.txt"));
+            setConfigReadOnly(false);
+            //Primero vemos si existe fichero de configuración en la carpeta de usuario
+            File configFile = new File(Configuracion.getCarpetaUsuarioMaimonides(), Configuracion.CONN_CFG_FILE);
+            Logger.getLogger(Conector.class.getName()).log(Level.INFO, "Intentando cargar configuraci\u00f3n desde {0}...", configFile.getAbsolutePath());
+            setConfigURL(configFile.toURI().toURL());
+            if (!loadPropertiesFromFile(p, configFile)) {
+                configFile = new File(Configuracion.CONN_CFG_FILE);
+                Logger.getLogger(Conector.class.getName()).log(Level.INFO, "Intentando cargar configuraci\u00f3n desde {0}...", configFile.getAbsolutePath());
+                setConfigURL(configFile.toURI().toURL());
+                //Vemos si se encuentra en la carpeta de ejecución
+                if (!loadPropertiesFromFile(p, configFile)) {
+                    //Finalmente intentamos cargarlo desde fichero de configuración dentro de los jar
+                    Logger.getLogger(Conector.class.getName()).log(Level.INFO, "Intentando cargar configuraci\u00f3n desde jar...");
+                    if (loadPropertiesFromStream(p, Configuracion.class.getResourceAsStream(Configuracion.CONN_CFG_FILE))) {
+                        setConfigURL(Configuracion.class.getResource(Configuracion.CONN_CFG_FILE));
+                        setConfigReadOnly(true);
+                    } else {
+                        Logger.getLogger(Conector.class.getName()).log(Level.INFO, "Cargando configuraci\u00f3n desde properties...");
+                        setConfigURL(null);
+                        //Si no está en ninguna las cogemos de las propiedades de usuario 
+                        //con valors por defecto de variables de sistema
+                        Preferences prefs = Preferences.userNodeForPackage(Conector.class);
+                        p.setProperty("pass", prefs.get("pass", System.getProperty("maimonides.conn.pass", "")));
+                        p.setProperty("clave", prefs.get("clave", System.getProperty("maimonides.conn.clave", "")));
+                        p.setProperty("bd", prefs.get("bd", System.getProperty("maimonides.conn.bd", "maimonides")));
+                        p.setProperty("usuario", prefs.get("usuario", System.getProperty("maimonides.conn.usuario", "root")));
+                        p.setProperty("host", prefs.get("host", System.getProperty("maimonides.conn.host", "localhost")));
+                    }
+                }
             }
-            if (p.containsKey("pass")) {
+            if (p.containsKey("pass") && !p.getProperty("pass").equals("")) {
                 p.put("clave", Cripto.desencriptar(p.getProperty("pass", ""), Configuracion.KEY_CRIPTO));
             }
-            setBaseDeDatos(p.getProperty("bd", "wo"));
+            setBaseDeDatos(p.getProperty("bd", "maimonides"));
+            setHost(p.getProperty("host", "localhost"));
+            setUsuario(p.getProperty("usuario", "root"));
+            setClave(p.getProperty("clave", ""));
+        } catch (Exception ex) {
+            setConfigURL(null);
+            Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, "Error cargando configuracion", ex);
+        }
+        return p;
+    }
+
+    public boolean cargarConfiguracion() {
+        boolean ret = false;
+        try {
+            Properties p = getConfiguracion();
+            setBaseDeDatos(p.getProperty("bd", "maimonides"));
             setHost(p.getProperty("host", "localhost"));
             setUsuario(p.getProperty("usuario", "root"));
             setClave(p.getProperty("clave", ""));
             ret = true;
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            setConfigURL(null);
             Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, "Error cargando configuracion", ex);
             ret = false;
         }
         return ret;
+    }
+
+    private static boolean loadPropertiesFromFile(Properties p, File f) {
+        FileInputStream fis = null;
+        if (f != null && f.exists() && f.canRead()) {
+            try {
+                fis = new FileInputStream(f);
+                return loadPropertiesFromStream(p, fis);
+            } catch (Exception ex) {
+                Logger.getLogger(Conector.class.getName()).log(Level.WARNING, "Error cargando configuracion de " + f, ex);
+            }
+        }
+        return false;
+    }
+
+    private static boolean loadPropertiesFromStream(Properties p, InputStream is) {
+        if (is != null) {
+            try {
+                p.load(is);
+                return true;
+            } catch (Exception ex) {
+                Logger.getLogger(Conector.class.getName()).log(Level.WARNING, "Error cargando configuracion de stream", ex);
+            } finally {
+                Obj.cerrar(is);
+            }
+        }
+        return false;
     }
 
     public int getErrorCode() {

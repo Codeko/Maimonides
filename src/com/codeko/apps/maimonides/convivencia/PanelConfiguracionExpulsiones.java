@@ -32,7 +32,7 @@
  */
 package com.codeko.apps.maimonides.convivencia;
 
-import com.codeko.apps.maimonides.Configuracion;
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.ICargable;
 import com.codeko.apps.maimonides.MaimonidesApp;
 

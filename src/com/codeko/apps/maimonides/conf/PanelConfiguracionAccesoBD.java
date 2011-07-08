@@ -21,24 +21,16 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
-/*
- * PanelConfiguracionAccesoBD.java
- *
- * Created on 21-abr-2010, 10:37:31
- */
+ **/
 package com.codeko.apps.maimonides.conf;
 
-import com.codeko.apps.maimonides.Configuracion;
+import com.codeko.apps.maimonides.Conector;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesUtil;
 import com.codeko.util.Cripto;
 import com.codeko.util.Obj;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +69,7 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
         tfUsrBD = new javax.swing.JTextField();
         tfPassBD = new javax.swing.JPasswordField();
         bGuardar = new javax.swing.JButton();
+        lInfo = new javax.swing.JLabel();
 
         setName("Form"); // NOI18N
         addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -89,7 +82,7 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
             }
         });
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelConfiguracionAccesoBD.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelConfiguracionAccesoBD.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -114,9 +107,12 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
         tfPassBD.setText(resourceMap.getString("tfPassBD.text")); // NOI18N
         tfPassBD.setName("tfPassBD"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelConfiguracionAccesoBD.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelConfiguracionAccesoBD.class, this);
         bGuardar.setAction(actionMap.get("guardar")); // NOI18N
         bGuardar.setName("bGuardar"); // NOI18N
+
+        lInfo.setIcon(resourceMap.getIcon("lInfo.icon")); // NOI18N
+        lInfo.setName("lInfo"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -137,7 +133,10 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
                             .addComponent(tfNombreBD, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                             .addComponent(tfUsrBD, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                             .addComponent(tfPassBD, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)))
-                    .addComponent(bGuardar, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lInfo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 381, Short.MAX_VALUE)
+                        .addComponent(bGuardar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -160,7 +159,9 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
                     .addComponent(tfPassBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bGuardar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bGuardar)
+                    .addComponent(lInfo))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -170,7 +171,7 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
     }//GEN-LAST:event_formAncestorAdded
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task cargar() {
+    public Task<Boolean, Void> cargar() {
         return new CargarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -186,22 +187,7 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
         protected Boolean doInBackground() {
             boolean ret = true;
             setMessage("Cargando datos de conexión...");
-            File cfg = new File("cfg.txt");
-            if (cfg.exists()) {
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(cfg);
-                    p.load(fis);
-                    //Ahora desencriptamos la clave
-                    if (p.containsKey("pass")) {
-                        p.put("clave", Cripto.desencriptar(p.getProperty("pass"), Configuracion.KEY_CRIPTO));
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(PanelConfiguracionAccesoBD.class.getName()).log(Level.SEVERE, null, ex);
-                    ret = false;
-                }
-                Obj.cerrar(fis);
-            }
+            p = MaimonidesApp.getApplication().getConector().getConfiguracion();
             return ret;
         }
 
@@ -217,11 +203,16 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
                 tfPassBD.setText(p.getProperty("clave", ""));
                 setMessage("Datos de conexión cargados correctamente.");
             }
+            if (Conector.getConfigURL() != null) {
+                lInfo.setToolTipText("Datos de conexión cargados de: " + Conector.getConfigURL());
+            } else {
+                lInfo.setToolTipText("Datos de conexión cargados de: Propiedades de usuario");
+            }
         }
     }
 
-    @Action(block = Task.BlockingScope.APPLICATION)
-    public Task guardar() {
+    @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "saveEnabled")
+    public Task<Boolean, Void> guardar() {
         return new GuardarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -241,22 +232,12 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
         protected Boolean doInBackground() {
             boolean ret = true;
             setMessage("Guardando datos de conexión...");
-            //Ahora encriptamos la clave
-            String pass = p.getProperty("clave");
-            FileOutputStream fos = null;
             try {
-                if (!pass.equals("")) {
-                    pass = Cripto.encriptar(pass, Configuracion.KEY_CRIPTO);
-                    p.put("pass", pass);
-                    p.remove("clave");
-                }
-                fos = new FileOutputStream(new File("cfg.txt"));
-                p.store(fos, "");
+                ret = Conector.guardarConfiguracion(p);
             } catch (Exception ex) {
                 Logger.getLogger(PanelConfiguracionAccesoBD.class.getName()).log(Level.SEVERE, null, ex);
                 ret = false;
             }
-            Obj.cerrar(fos);
             return ret;
         }
 
@@ -272,12 +253,23 @@ public class PanelConfiguracionAccesoBD extends javax.swing.JPanel {
             }
         }
     }
+
+    public boolean isSaveEnabled() {
+        return !Conector.isConfigReadOnly();
+    }
+
+    public void setSaveEnabled(boolean b) {
+//        boolean old = isSaveEnabled();
+//        this.saveEnabled = b;
+//        firePropertyChange("saveEnabled", old, isSaveEnabled());
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bGuardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lInfo;
     private javax.swing.JTextField tfHost;
     private javax.swing.JTextField tfNombreBD;
     private javax.swing.JPasswordField tfPassBD;

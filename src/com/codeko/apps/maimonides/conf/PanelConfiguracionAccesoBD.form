@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -40,7 +40,11 @@
                           <Component id="tfPassBD" alignment="0" pref="217" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <Component id="bGuardar" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="lInfo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="381" max="32767" attributes="0"/>
+                      <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -70,7 +74,10 @@
                   <Component id="jLabel4" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="bGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lInfo" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -131,6 +138,12 @@
           <action class="com.codeko.apps.maimonides.conf.PanelConfiguracionAccesoBD" id="guardar" methodName="guardar"/>
         </Property>
         <Property name="name" type="java.lang.String" value="bGuardar" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lInfo">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" resourceKey="lInfo.icon"/>
+        <Property name="name" type="java.lang.String" value="lInfo" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

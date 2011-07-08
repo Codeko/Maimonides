@@ -31,7 +31,6 @@
  */
 package com.codeko.apps.maimonides.conf;
 
-import com.codeko.apps.maimonides.Configuracion;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.util.Str;
 import com.codeko.util.estructuras.Par;

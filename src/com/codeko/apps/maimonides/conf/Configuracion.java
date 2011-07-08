@@ -21,11 +21,10 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
+ **/
+package com.codeko.apps.maimonides.conf;
 
-
-package com.codeko.apps.maimonides;
-
+import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.util.Num;
 import com.codeko.util.Obj;
 import com.mysql.jdbc.Connection;
@@ -50,11 +49,13 @@ public class Configuracion {
     public static final String CARPETA_INFORMES = "informes";
     public static final String CARPETA_SENECA = "seneca";
     //Contantes de acceso a los datos
-    public static final String KEY_CRIPTO = "<@·Asdk907&8OPNiojasd'$%9kY_-";
+    public static final String KEY_CRIPTO = System.getProperty("maimonides.crypt_key","<@·Asdk907&8OPNiojasd'$%9kY_-");
     public static final String CENTRO_WEB = "web_centro";
     public static final String CENTRO_WEB_COMPATIBLE = "web_compatible";
     public static final String WEB_USUARIO = "web_usuario";
     public static final String WEB_CLAVE = "web_clave";
+    //Contanstes de ficheros
+    public static final String CONN_CFG_FILE="cfg.txt";
     File archivoAccess = null;
     File carpetaPartes = null;
     File carpetaPartesDigitalizados = null;

@@ -29,6 +29,7 @@
  */
 package com.codeko.apps.maimonides;
 
+import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.cache.Cache;
 import com.codeko.apps.maimonides.conf.PanelConfiguracionAccesoBD;
 import com.codeko.apps.maimonides.mantenimiento.Mantenimiento;
