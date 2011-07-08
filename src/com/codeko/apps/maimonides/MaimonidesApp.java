@@ -40,13 +40,17 @@ import com.codeko.swing.CdkControlProgresos;
 import com.codeko.util.CTiempo;
 import com.codeko.util.GUI;
 import com.codeko.util.Str;
+import com.lowagie.text.Font;
 import com.mysql.jdbc.Connection;
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.SplashScreen;
 import java.awt.TrayIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -59,6 +63,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.prefs.Preferences;
+import javax.imageio.ImageIO;
 import javax.jnlp.ServiceManager;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -70,7 +75,11 @@ import org.jdesktop.application.TaskEvent;
 import org.jdesktop.application.TaskListener;
 
 public class MaimonidesApp extends SingleFrameApplication {
+    //Splash
 
+    private static SplashScreen splash = null;
+    private static BufferedImage splashImage = null;
+    private static Graphics2D splashGraphics = null;
     AnoEscolar ano = null;
     TrayIcon trayIcon = null;
     private File ultimoArchivo = null;
@@ -220,7 +229,9 @@ public class MaimonidesApp extends SingleFrameApplication {
 
     @Override
     protected void startup() {
+        writeSplashText("Configurando logging...");
         configurarLogging();
+        writeSplashText("Cargando configuración de conexión...");
         if (getConector().cargarConfiguracion()) {
             addExitListener(new ExitListener() {
 
@@ -239,9 +250,10 @@ public class MaimonidesApp extends SingleFrameApplication {
                 public void willExit(EventObject event) {
                 }
             });
-
+            writeSplashText("Creando interfaz gráfica...");
             MaimonidesView view = new MaimonidesView(this);
             show(view);
+            closeSplash();
             //A veces pierde el tamaño así que si tiene un tamaño no lógico se cambia al por defecto
             if (getMainFrame().getSize().getWidth() < 300 || getMainFrame().getSize().getHeight() < 300) {
                 getMainFrame().setSize(800, 600);
@@ -296,8 +308,46 @@ public class MaimonidesApp extends SingleFrameApplication {
         return Application.getInstance(MaimonidesApp.class);
     }
 
+    private static SplashScreen getSplash() {
+        if (splash == null) {
+            splash = SplashScreen.getSplashScreen();
+            if (splash != null) {
+                splashGraphics = splash.createGraphics();
+                try {
+                    splashImage = ImageIO.read(splash.getImageURL());
+                } catch (IOException ex) {
+                    Logger.getLogger(MaimonidesApp.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return splash;
+    }
+
+    private static void closeSplash() {
+        if (splash != null) {
+            try {
+                splash.close();
+                splashGraphics = null;
+                splashImage = null;
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    private static void writeSplashText(String text) {
+        if (getSplash() != null) {
+            Graphics2D g = splashGraphics;
+            g.setFont(g.getFont().deriveFont(10f));
+            g.setFont(g.getFont().deriveFont(Font.BOLD));
+            g.setColor(Color.BLUE.darker());
+            g.drawImage(splashImage, 0, 0, null);
+            g.drawString(text, (int)(getSplash().getSize().getWidth()/5)*2, getSplash().getSize().height - 20);
+            getSplash().update();
+        }
+    }
+
     public static void main(String[] args) {
-        baseArgs = args;
+        writeSplashText("Iniciando Maimónides...");
         CTiempo.setActivo(false);
         launch(MaimonidesApp.class, args);
     }
