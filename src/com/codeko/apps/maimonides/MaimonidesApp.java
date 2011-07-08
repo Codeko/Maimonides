@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * MaimonidesApp.java
  */
@@ -44,6 +42,7 @@ import com.codeko.util.GUI;
 import com.codeko.util.Str;
 import com.mysql.jdbc.Connection;
 import java.awt.Component;
+import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
 import java.awt.TrayIcon;
 import java.awt.event.WindowAdapter;
@@ -79,7 +78,7 @@ public class MaimonidesApp extends SingleFrameApplication {
     private CdkControlProgresos controlProgresos = new CdkControlProgresos();
     private Configuracion configuracion = null;
     private static Boolean debug = null;
-    private static boolean jnlp=MaimonidesApp._isJnlp();
+    private static boolean jnlp = MaimonidesApp._isJnlp();
     Usuario usuario = null;
     static boolean reiniciarTrasEditarConfig = false;
     static String[] baseArgs = null;
@@ -90,9 +89,11 @@ public class MaimonidesApp extends SingleFrameApplication {
             actualizarTitulo();
         }
     };
-    private static boolean _isJnlp(){
-        return ServiceManager.getServiceNames()!=null;
+
+    private static boolean _isJnlp() {
+        return ServiceManager.getServiceNames() != null;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -156,7 +157,7 @@ public class MaimonidesApp extends SingleFrameApplication {
     public static boolean isJnlp() {
         return jnlp;
     }
-    
+
     public static Connection getConexion() {
         return getApplication().getConector().getConexion();
     }
@@ -193,7 +194,7 @@ public class MaimonidesApp extends SingleFrameApplication {
             if (getUsuario().getProfesor() != null) {
                 infoUsr += " - " + getUsuario().getProfesor().getDescripcionObjeto();
             }
-        }        
+        }
         getMainFrame().setTitle(this.getContext().getResourceMap().getString("Application.title") + infoAno + infoUsr);
     }
 
@@ -259,12 +260,13 @@ public class MaimonidesApp extends SingleFrameApplication {
                     }
                 }
             });
-            MaimonidesUtil.ejecutarTask(this, "conectar");
-
+            //Antes de comenzar asignamos usuario nulo para esconder los menús
+            setUsuario(null);
+            MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "conectar");
         } else {
-            JOptionPane.showMessageDialog(null, "No existe configuración de conexión.\nRellene los campos de conexión y vuelva a iniciar el programa.", "Error", JOptionPane.ERROR_MESSAGE);
             reiniciarTrasEditarConfig = true;
-            MaimonidesUtil.ejecutarTask(this, "editarConexion");
+            JOptionPane.showMessageDialog(MaimonidesApp.getMaimonidesView().getFrame(), "No existe configuración de conexión.\nRellene los campos de conexión.", "Error", JOptionPane.ERROR_MESSAGE);
+            MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "editarConexion");
         }
     }
 
@@ -315,12 +317,12 @@ public class MaimonidesApp extends SingleFrameApplication {
     private void configurarLogging() {
         try {
             FileHandler fh = null;
-            if(isJnlp()){
-                fh=new FileHandler(Configuracion.getSubCarpertaUsuarioMaimonides("log")+"/mm_%g.log", 1024 * 1024 * 10, 10, true);
-            }else{
+            if (isJnlp()) {
+                fh = new FileHandler(Configuracion.getSubCarpertaUsuarioMaimonides("log") + "/mm_%g.log", 1024 * 1024 * 10, 10, true);
+            } else {
                 File f = new File("log");
                 f.mkdirs();
-                fh=new FileHandler("log/mm_%g.log", 1024 * 1024 * 10, 10, true);
+                fh = new FileHandler("log/mm_%g.log", 1024 * 1024 * 10, 10, true);
             }
             fh.setFormatter(new SimpleFormatter());
             Logger.getLogger("").addHandler(fh);
@@ -331,7 +333,7 @@ public class MaimonidesApp extends SingleFrameApplication {
 
     @Action
     public void editarConexion() {
-        if(isJnlp()){
+        if (isJnlp()) {
             JOptionPane.showMessageDialog(getMainFrame(), "No se puede editar la configuración de conexión en modo de ejecución web.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -354,7 +356,8 @@ public class MaimonidesApp extends SingleFrameApplication {
                 if (pce.getNewValue() instanceof Boolean && ((Boolean) pce.getNewValue())) {
                     f.dispose();
                     if (reiniciarTrasEditarConfig) {
-                        exit();
+                        reiniciarTrasEditarConfig = false;
+                        MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "conectar");
                     }
                 }
             }
@@ -367,7 +370,7 @@ public class MaimonidesApp extends SingleFrameApplication {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task conectar() {
+    public Task<Boolean, Void> conectar() {
         ConectarTask t = new ConectarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
         t.addTaskListener(new TaskListener<Boolean, Void>() {
 
@@ -386,12 +389,13 @@ public class MaimonidesApp extends SingleFrameApplication {
                 Boolean ret = (Boolean) te.getValue();
                 if (ret) {
                     if (operacionesPostConexion()) {
-                        MaimonidesUtil.ejecutarTask(this, "actualizarVersion");
+                        MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "actualizarVersion");
                     } else {
                         quit(null);
                     }
                 } else {
-                    MaimonidesUtil.ejecutarTask(this, "editarConexion");
+                    reiniciarTrasEditarConfig = true;
+                    MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "editarConexion");
                 }
                 getMaimonidesView().setConectado(ret);
 
@@ -504,7 +508,7 @@ public class MaimonidesApp extends SingleFrameApplication {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task actualizarVersion() {
+    public Task<Object, Void> actualizarVersion() {
         return new ActualizarVersionTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
