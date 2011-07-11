@@ -34,8 +34,6 @@ import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.IEmailable;
 import com.codeko.apps.maimonides.elementos.ParteFaltas;
 import com.codeko.apps.maimonides.impresion.Impresion;
-import com.codeko.apps.maimonides.impresion.informes.Informes;
-import com.codeko.apps.maimonides.impresion.informes.custom.CustomInformes;
 import com.codeko.apps.maimonides.partes.cartas.ConcatenadorPDF;
 import com.codeko.apps.maimonides.partes.informes.asistencia.AsistenciaAlumno;
 import com.codeko.apps.maimonides.partes.informes.asistencia.FiltroAsistenciaAlumno;
