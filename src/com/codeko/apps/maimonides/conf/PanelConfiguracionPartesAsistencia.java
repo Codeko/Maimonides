@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelConfiguracion.java
  *
@@ -89,14 +87,16 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         spCartasDiasInicio = new javax.swing.JSpinner();
+        panelSelectorArchivo1 = new com.codeko.apps.maimonides.swing.PanelSelectorArchivo();
+        lCarpetaPartes = new javax.swing.JLabel();
 
         setName("Form"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelConfiguracionPartesAsistencia.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelConfiguracionPartesAsistencia.class, this);
         bGuardar.setAction(actionMap.get("guardarDatos")); // NOI18N
         bGuardar.setName("bGuardar"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelConfiguracionPartesAsistencia.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelConfiguracionPartesAsistencia.class);
         cbComprimirPartes.setText(resourceMap.getString("cbComprimirPartes.text")); // NOI18N
         cbComprimirPartes.setName("cbComprimirPartes"); // NOI18N
 
@@ -152,17 +152,19 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
 
         spCartasDiasInicio.setName("spCartasDiasInicio"); // NOI18N
 
+        panelSelectorArchivo1.setName("panelSelectorArchivo1"); // NOI18N
+
+        lCarpetaPartes.setText(resourceMap.getString("lCarpetaPartes.text")); // NOI18N
+        lCarpetaPartes.setName("lCarpetaPartes"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(486, Short.MAX_VALUE)
-                .addComponent(bGuardar)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cbComprimirPartes)
                     .addComponent(lTiposContabilizables)
                     .addGroup(layout.createSequentialGroup()
@@ -175,36 +177,35 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
                         .addComponent(cbR))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(cbAsistenciaExpulsados, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lAsistenciaEnExpulsiones, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addContainerGap(177, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spDiasAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addContainerGap(92, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lAsistenciaEnExpulsiones, javax.swing.GroupLayout.Alignment.LEADING))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
+                        .addComponent(spDiasAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbCartasDiaSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbCartasDiaSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(spCartasNumDias, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(spCartasDiasInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel6)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addComponent(lCarpetaPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spCartasNumDias, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spCartasDiasInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)))
-                .addContainerGap(99, Short.MAX_VALUE))
+                        .addComponent(panelSelectorArchivo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +241,11 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
                     .addComponent(jLabel5)
                     .addComponent(spCartasDiasInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(panelSelectorArchivo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lCarpetaPartes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(bGuardar)
                 .addContainerGap())
         );
@@ -262,7 +267,9 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel lAsistenciaEnExpulsiones;
+    private javax.swing.JLabel lCarpetaPartes;
     private javax.swing.JLabel lTiposContabilizables;
+    private com.codeko.apps.maimonides.swing.PanelSelectorArchivo panelSelectorArchivo1;
     private javax.swing.JSpinner spCartasDiasInicio;
     private javax.swing.JSpinner spCartasNumDias;
     private javax.swing.JSpinner spDiasAviso;
@@ -274,7 +281,7 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
     }
 
     @Action(block = Task.BlockingScope.ACTION)
-    public Task guardarDatos() {
+    public Task<Object, Void> guardarDatos() {
         return new GuardarDatosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -319,14 +326,16 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
 
         @Override
         protected Object doInBackground() {
-            Iterator it = datos.keySet().iterator();
+            Configuracion cfg = MaimonidesApp.getApplication().getConfiguracion();
+            Iterator<String> it = datos.keySet().iterator();
             while (it.hasNext()) {
-                String nombre = it.next().toString();
+                String nombre = it.next();
                 String valor = datos.get(nombre);
-                MaimonidesApp.getApplication().getConfiguracion().set(nombre, valor);
+                cfg.set(nombre, valor);
             }
             //Para los tipos de faltas usamos directamente la clase
             ConfiguracionPerdidaEscolaridad.setTipoFaltasContabilizables(tipos);
+            cfg.setCarpetaPartes(panelSelectorArchivo1.getSelectedFile());
             return null;
         }
 
@@ -337,7 +346,7 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public final Task cargarDatos() {
+    public final Task<Object, Void> cargarDatos() {
         return new CargarDatosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -361,7 +370,8 @@ public class PanelConfiguracionPartesAsistencia extends javax.swing.JPanel imple
             spCartasNumDias.setValue(Num.getInt(cfg.get("cartas_faltas_num_dias", "7")));
             spCartasDiasInicio.setValue(Num.getInt(cfg.get("cartas_faltas_dias_inicio", "11")));
             cbAsistenciaExpulsados.setSelectedIndex(Num.getInt(cfg.get(ConfiguracionAsistencia.AAE_PARAMETRO, ConfiguracionAsistencia.AAE_ASIGNAR_EXPULSION + "")));
-
+            panelSelectorArchivo1.setCurrentDirectory(cfg.getCarpetaPartes());
+            panelSelectorArchivo1.setSelectedFile(cfg.getCarpetaPartes());
             return null;
         }
 
