@@ -131,16 +131,8 @@ public class Configuracion {
     public File getCarpetaPartes() {
         if (carpetaPartes == null) {
             try {
-                String nombreCarpetaPartes = get("ruta_carpeta_partes", "partes");
-                if (nombreCarpetaPartes.equals("partes")) {
-                    if (MaimonidesApp.isJnlp()) {
-                        carpetaPartes = getSubCarpertaUsuarioMaimonides("partes");
-                    } else {
-                        carpetaPartes = new File("partes");
-                    }
-                } else {
-                    carpetaPartes = new File(nombreCarpetaPartes);
-                }
+                String nombreCarpetaPartes = get("ruta_carpeta_partes", getSubCarpertaUsuarioMaimonides("partes").getAbsolutePath());
+                carpetaPartes = new File(nombreCarpetaPartes);
                 carpetaPartes.mkdirs();
             } catch (Exception e) {
             }
