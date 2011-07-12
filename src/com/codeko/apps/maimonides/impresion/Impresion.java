@@ -184,36 +184,35 @@ public class Impresion extends MaimonidesBean {
         return JasperCompileManager.compileReport(getResource(name));
     }
 
+    private static InputStream readResource(File f) {
+        InputStream res = null;
+        if (f != null && f.exists() && f.canRead()) {
+            try {
+                res = new FileInputStream(f);
+            } catch (IOException ex) {
+                Logger.getLogger(Impresion.class.getName()).log(Level.SEVERE, "Error leyendo " + f, ex);
+            }
+        }
+        return res;
+    }
+
     public static InputStream getResource(String name) {
         InputStream res = null;
-        //Primero vemos si existe en la carpeta de usuario
-        File informesFolder = Configuracion.getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_INFORMES);
-        File customVersion = new File(informesFolder, name);
-        if (customVersion.exists() && customVersion.canRead()) {
-            try {
-                res = new FileInputStream(customVersion);
-            } catch (IOException ex) {
-                Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        //Vemos si existe en la carpeta configurada
+        res=readResource(new File(MaimonidesApp.getApplication().getConfiguracion().getCarpetaTemplates(), name));
+        if (res == null) {
+            //Vemos si existe en la carpeta de usuario
+            res=readResource(new File(Configuracion.getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_INFORMES), name));
         }
         if (res == null) {
             //Buscamos en la carpeta de instalacion
-            File plantilla = new File(Configuracion.CARPETA_INFORMES, name);
-            if (plantilla.exists() && plantilla.canRead()) {
-                try {
-                    res = new FileInputStream(plantilla);
-                } catch (IOException ex) {
-                    Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            res=readResource(new File(Configuracion.CARPETA_INFORMES, name));
         }
-
         if (res == null) {
             //Buscamos en el los informes propios dentro del jar (por si se ha distribuido un jar con 
             //informes personalizados)
             res = CustomInformes.class.getResourceAsStream(name);
         }
-
         //Finalmente cogemos los propios de la aplicacion
         if (res == null) {
             res = Informes.class.getResourceAsStream(name);
