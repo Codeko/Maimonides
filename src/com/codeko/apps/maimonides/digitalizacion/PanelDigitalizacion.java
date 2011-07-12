@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelDigitalizacion.java
  *
@@ -70,14 +68,34 @@ public class PanelDigitalizacion extends javax.swing.JPanel implements IPanel {
 
     CodekoTableModel<MensajeDigitalizacion> modelo = new CodekoTableModel<MensajeDigitalizacion>(new MensajeDigitalizacion());
     JCheckBoxMenuItem miForzar = new JCheckBoxMenuItem("Forzar digitalización", false);
+    boolean cargado = false;
+    boolean running = false;
     JPopupMenu menuForzar = new JPopupMenu();
     Timer t = new Timer(2000, new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            recalcularPartesEnCarpetas();
+            if (!isRunning()) {
+                recalcularPartesEnCarpetas();
+            }
         }
     });
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isCargado() {
+        return cargado;
+    }
+
+    public void setCargado(boolean cargado) {
+        this.cargado = cargado;
+    }
     MensajeDigitalizacion mensajeActual = null;
 
     public MensajeDigitalizacion getMensajeActual() {
@@ -169,8 +187,9 @@ public class PanelDigitalizacion extends javax.swing.JPanel implements IPanel {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (tabla.getSelectedRow() > -1) {
-                    Object obj = tabla.getValueAt(tabla.getSelectedRow(), 0);
+                int selRow = tabla.getSelectedRow();
+                if (selRow > -1) {
+                    Object obj = tabla.getValueAt(selRow, 0);
                     if (obj instanceof MensajeDigitalizacion) {
                         setMensajeActual(((MensajeDigitalizacion) obj));
                     }
@@ -270,7 +289,7 @@ public class PanelDigitalizacion extends javax.swing.JPanel implements IPanel {
             }
         });
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelDigitalizacion.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelDigitalizacion.class, this);
         bDigitalizar.setAction(actionMap.get("digitalizar")); // NOI18N
         bDigitalizar.setName("bDigitalizar"); // NOI18N
 
@@ -283,7 +302,7 @@ public class PanelDigitalizacion extends javax.swing.JPanel implements IPanel {
         tabla.setName("tabla"); // NOI18N
         scrollAdvertencias.setViewportView(tabla);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelDigitalizacion.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelDigitalizacion.class);
         lInfoPartes.setText(resourceMap.getString("lInfoPartes.text")); // NOI18N
         lInfoPartes.setName("lInfoPartes"); // NOI18N
 
@@ -298,19 +317,19 @@ public class PanelDigitalizacion extends javax.swing.JPanel implements IPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollAdvertencias, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(scrollAdvertencias, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(bActuLista)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(bDigitalizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lInfoPartes, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)))
+                        .addComponent(lInfoPartes, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -322,20 +341,21 @@ public class PanelDigitalizacion extends javax.swing.JPanel implements IPanel {
                     .addComponent(bDigitalizar)
                     .addComponent(lInfoPartes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
-                    .addComponent(scrollAdvertencias, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollAdvertencias, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_formAncestorAdded
-    javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelDigitalizacion.class, this);
-    actionMap.get("cargarMensajes").actionPerformed(new ActionEvent(this, 0, "cargarMensajes"));
+    if (!isCargado()) {
+        MaimonidesUtil.ejecutarTask(this, "cargarMensajes");
+    }
 }//GEN-LAST:event_formAncestorAdded
 
-    @Action(block = Task.BlockingScope.WINDOW, enabledProperty = "partesEnCarpeta")
-    public Task digitalizar() {
+    @Action(block = Task.BlockingScope.COMPONENT, enabledProperty = "partesEnCarpeta")
+    public Task<ArrayList<MensajeDigitalizacion>, Void> digitalizar() {
         return new DigitalizarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -346,19 +366,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         DigitalizarTask(org.jdesktop.application.Application app) {
             super(app);
             setUserCanCancel(false);
-        }
-
-        @Override
-        public void cancelled() {
-//            dig.setCancelado(true);
-//            while (!dig.isTerminado()) {
-//                try {
-//                    Thread.sleep(100);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(PanelDigitalizacion.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//            modelo.addDatos(dig.getMensajes());
+            setRunning(true);
         }
 
         @Override
@@ -380,8 +388,14 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         }
 
         @Override
+        protected void finished() {
+            setPartesEnCarpeta(isPartesEnCarpeta());
+            setRunning(false);
+        }
+
+        @Override
         protected void succeeded(ArrayList<MensajeDigitalizacion> result) {
-            //modelo.addDatos(dig.getMensajes());
+            setMessage("Digitalización de partes finalizada.");
         }
     }
     private boolean partesEnCarpeta = false;
@@ -393,7 +407,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
     public void setPartesEnCarpeta(boolean b) {
         boolean old = isPartesEnCarpeta();
         this.partesEnCarpeta = b;
-        firePropertyChange("partesEnCarpeta", old, isPartesEnCarpeta());
+        firePropertyChange("partesEnCarpeta", null, isPartesEnCarpeta());
     }
     private boolean existenPartesSinIntervencion = false;
 
@@ -406,7 +420,6 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         this.existenPartesSinIntervencion = b;
         firePropertyChange("existenPartesSinIntervencion", old, isExistenPartesSinIntervencion());
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bActuLista;
     private javax.swing.JButton bDigitalizar;
@@ -423,7 +436,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task cargarMensajes() {
+    public Task<ArrayList<MensajeDigitalizacion>, Void> cargarMensajes() {
         return new CargarMensajesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -432,6 +445,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         CargarMensajesTask(org.jdesktop.application.Application app) {
             super(app);
             modelo.vaciar();
+            setCargado(true);
         }
 
         @Override
@@ -491,11 +505,11 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
             setPartesEnCarpeta(false);
             lInfoPartes.setText("No hay partes pendientes de digitalizar en la carpeta de partes.");
         }
-        lInfoPartes.setToolTipText("Carpeta:"+carpeta.getAbsolutePath());
+        lInfoPartes.setToolTipText("Carpeta:" + carpeta.getAbsolutePath());
     }
 
     @Action(block = Task.BlockingScope.ACTION)
-    public Task cargarMensajeDigitalizacion() {
+    public Task<Object, Void> cargarMensajeDigitalizacion() {
         return new CargarMensajeDigitalizacionTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
