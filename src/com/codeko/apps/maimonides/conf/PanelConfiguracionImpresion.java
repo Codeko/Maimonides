@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelConfiguracionImpresion.java
  *
@@ -76,6 +74,8 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
         cbLocalizacionOOO.setSelectedIndex(0);
         Configuracion cfg = MaimonidesApp.getApplication().getConfiguracion();
         cbImprimirPDF.setSelected(cfg.get("imprimir_en_PDF", "0").equals("1"));
+        panelSelectorArchivo1.setCurrentDirectory(cfg.getCarpetaTemplates());
+        panelSelectorArchivo1.setSelectedFile(cfg.getCarpetaTemplates());
     }
 
     /** This method is called from within the constructor to
@@ -87,26 +87,33 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lCarpetaOO = new javax.swing.JLabel();
         cbLocalizacionOOO = new javax.swing.JComboBox();
         bGuardar = new javax.swing.JButton();
         cbImprimirPDF = new javax.swing.JCheckBox();
+        panelSelectorArchivo1 = new com.codeko.apps.maimonides.swing.PanelSelectorArchivo();
+        lCarpetaTemplates = new javax.swing.JLabel();
 
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelConfiguracionImpresion.class);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelConfiguracionImpresion.class);
+        lCarpetaOO.setText(resourceMap.getString("lCarpetaOO.text")); // NOI18N
+        lCarpetaOO.setName("lCarpetaOO"); // NOI18N
 
         cbLocalizacionOOO.setEditable(true);
         cbLocalizacionOOO.setName("cbLocalizacionOOO"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelConfiguracionImpresion.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelConfiguracionImpresion.class, this);
         bGuardar.setAction(actionMap.get("guardar")); // NOI18N
         bGuardar.setName("bGuardar"); // NOI18N
 
         cbImprimirPDF.setText(resourceMap.getString("cbImprimirPDF.text")); // NOI18N
         cbImprimirPDF.setName("cbImprimirPDF"); // NOI18N
+
+        panelSelectorArchivo1.setName("panelSelectorArchivo1"); // NOI18N
+
+        lCarpetaTemplates.setText(resourceMap.getString("lCarpetaTemplates.text")); // NOI18N
+        lCarpetaTemplates.setName("lCarpetaTemplates"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -115,11 +122,15 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbLocalizacionOOO, 0, 596, Short.MAX_VALUE))
                     .addComponent(bGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lCarpetaOO)
+                            .addComponent(lCarpetaTemplates))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelSelectorArchivo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                            .addComponent(cbLocalizacionOOO, 0, 337, Short.MAX_VALUE)))
                     .addComponent(cbImprimirPDF))
                 .addContainerGap())
         );
@@ -128,18 +139,22 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lCarpetaOO)
                     .addComponent(cbLocalizacionOOO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(panelSelectorArchivo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lCarpetaTemplates))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbImprimirPDF)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                 .addComponent(bGuardar)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task guardar() {
+    public Task<Object, Void> guardar() {
         return new GuardarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -152,7 +167,9 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
 
         @Override
         protected Object doInBackground() {
-            MaimonidesApp.getApplication().getConfiguracion().set("imprimir_en_PDF", cbImprimirPDF.isSelected() ? "1" : "0");
+            Configuracion cfg = MaimonidesApp.getApplication().getConfiguracion();
+            cfg.set("imprimir_en_PDF", cbImprimirPDF.isSelected() ? "1" : "0");
+            cfg.setCarpetaTemplates(panelSelectorArchivo1.getSelectedFile());
             Object obj = cbLocalizacionOOO.getSelectedItem();
             String valor = "";
             if (obj instanceof Par) {
@@ -165,6 +182,7 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
             } else {
                 Preferences.userNodeForPackage(PanelConfiguracionImpresion.class).put("office.home", valor);
             }
+
             return null;
         }
 
@@ -177,6 +195,8 @@ public class PanelConfiguracionImpresion extends javax.swing.JPanel {
     private javax.swing.JButton bGuardar;
     private javax.swing.JCheckBox cbImprimirPDF;
     private javax.swing.JComboBox cbLocalizacionOOO;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lCarpetaOO;
+    private javax.swing.JLabel lCarpetaTemplates;
+    private com.codeko.apps.maimonides.swing.PanelSelectorArchivo panelSelectorArchivo1;
     // End of variables declaration//GEN-END:variables
 }

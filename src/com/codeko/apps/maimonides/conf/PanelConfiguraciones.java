@@ -73,7 +73,7 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
         panelConfiguracionDatosCentro1.setName("panelConfiguracionDatosCentro1"); // NOI18N
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelConfiguraciones.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelConfiguraciones.class);
         jTabbedPane1.addTab(resourceMap.getString("panelConfiguracionDatosCentro1.TabConstraints.tabTitle"), resourceMap.getIcon("panelConfiguracionDatosCentro1.TabConstraints.tabIcon"), panelConfiguracionDatosCentro1); // NOI18N
 
         panelConfiguracionMail1.setName("panelConfiguracionMail1"); // NOI18N

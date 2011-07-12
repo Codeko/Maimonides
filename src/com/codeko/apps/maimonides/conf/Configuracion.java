@@ -154,7 +154,7 @@ public class Configuracion {
     public File getCarpetaTemplates() {
         if (carpetaTemplates == null) {
             try {
-                String nombreCarpetaPartes = Preferences.userRoot().get("ruta_carpeta_templates", getSubCarpertaUsuarioMaimonides("partes").getAbsolutePath());
+                String nombreCarpetaPartes = Preferences.userRoot().get("ruta_carpeta_templates", getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_INFORMES).getAbsolutePath());
                 carpetaTemplates = new File(nombreCarpetaPartes);
                 carpetaTemplates.mkdirs();
             } catch (Exception e) {

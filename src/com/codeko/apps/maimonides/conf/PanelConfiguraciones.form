@@ -207,7 +207,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Plantillas">
+              <JTabbedPaneConstraints tabName="Plantillas SMS/VOZ">
                 <Property name="tabTitle" type="java.lang.String" resourceKey="panelConfiguracionPlantillas1.TabConstraints.tabTitle"/>
                 <Property name="tabIcon" type="javax.swing.Icon" resourceKey="panelConfiguracionPlantillas1.TabConstraints.tabIcon"/>
               </JTabbedPaneConstraints>
