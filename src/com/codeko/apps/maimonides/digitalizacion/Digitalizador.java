@@ -21,13 +21,10 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.digitalizacion;
 
 import com.codeko.apps.maimonides.MaimonidesBean;
-import com.codeko.apps.maimonides.elementos.IObjetoBD;
 import com.codeko.apps.maimonides.elementos.ParteFaltas;
 import com.codeko.apps.maimonides.excepciones.NoExisteElementoException;
 import com.codeko.util.Img;
@@ -56,7 +53,6 @@ public class Digitalizador extends MaimonidesBean {
     File carpetaGeneralPartes = null;
     File carpetaPartesProcesados = null;
     File carpetaPartesFallidos = null;
-    ArrayList<MensajeDigitalizacion> mensajes = new ArrayList<MensajeDigitalizacion>();
     ArrayList<File> archivos = null;
     boolean cancelado = false;
     boolean terminado = true;
@@ -103,10 +99,6 @@ public class Digitalizador extends MaimonidesBean {
         this.carpetaPartesProcesados = carpetaPartesProcesados;
     }
 
-    public ArrayList<MensajeDigitalizacion> getMensajes() {
-        return mensajes;
-    }
-
     public Digitalizador(File carpetaPartes, File carpetaProcesados, File carpetaFallidos) {
         setCarpetaGeneralPartes(carpetaPartes);
         setCarpetaPartesProcesados(carpetaProcesados);
@@ -114,10 +106,10 @@ public class Digitalizador extends MaimonidesBean {
     }
 
     public boolean digitalizar(final boolean forzar) {
-        getMensajes().clear();
         boolean ret = true;
         int cont = 1;
         for (File f : getArchivos()) {
+            File finalFile=f;
             p = null;
             if (isCancelado()) {
                 return ret;
@@ -129,7 +121,7 @@ public class Digitalizador extends MaimonidesBean {
             cont++;
             DigitalizacionParte digital = null;
             try {
-                digital = new DigitalizacionParte(f.getAbsolutePath()) {
+                digital = new DigitalizacionParte(finalFile.getAbsolutePath()) {
 
                     public boolean continuarProcesando(String codigoBarras) {
                         if (!forzar) {
@@ -195,7 +187,7 @@ public class Digitalizador extends MaimonidesBean {
                                 if (p.getAdvertenciasDigitalizacion().isEmpty()) {
                                     MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_OK, "Parte " + p.getDescripcionObjeto() + " digitalizado correctamente.");
                                     msg.setParte(p);
-                                    getMensajes().add(msg);
+                                    addMensaje(msg);
                                 } else {
 
                                     ArrayList<MensajeDigitalizacion> advs = p.getAdvertenciasDigitalizacion();
@@ -210,7 +202,7 @@ public class Digitalizador extends MaimonidesBean {
 //                                    }
                                     for (MensajeDigitalizacion msgAd : advs) {
                                         msgAd.setIdImagen(idImg);
-                                        getMensajes().add(msgAd);
+                                        addMensaje(msgAd);
                                     }
 
                                 }
@@ -220,66 +212,59 @@ public class Digitalizador extends MaimonidesBean {
                                     MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_IGNORADO, s);
                                     msg.setIdImagen(idImg);
                                     msg.setParte(p);
-                                    getMensajes().add(msg);
+                                    addMensaje(msg);
                                 }
                             }
-                            f.renameTo(destino);
+                            finalFile.renameTo(destino);
                         } catch (SQLException ex) {
                             MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_NO_EXISTE, "No se ha podido cargar el parte con código '" + digital.getCodigoBarras() + "'.");
                             msg.setIdImagen(idImg);
-                            getMensajes().add(msg);
+                            addMensaje(msg);
                         } catch (NoExisteElementoException e1) {
                             MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_NO_EXISTE, "No existe el parte con código '" + digital.getCodigoBarras() + "'.");
                             msg.setIdImagen(idImg);
-                            getMensajes().add(msg);
-                            f = moverFallido(f, msg);
+                            addMensaje(msg);
+                            finalFile = moverFallido(finalFile, msg);
                         }
                     } else {
                         for (String s : digital.getErrores()) {
                             MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_PARTE_FALLIDO, s);
-                            getMensajes().add(msg);
-                            f = moverFallido(f, msg);
+                            addMensaje(msg);
+                            finalFile = moverFallido(finalFile, msg);
                         }
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error procesando imagen.", ex);
                     MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_PARTE_FALLIDO, "Error procesando imagen digitalizada de parte.");
-                    getMensajes().add(msg);
-                    f = moverFallido(f, msg);
+                    addMensaje(msg);
+                    finalFile = moverFallido(finalFile, msg);
                 }
             } catch (IOException ex) {
-                //f = moverFallido(f);
-                Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error accediendo a archivo:" + f, ex);
-                MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_ERROR, "Error accediendo a archivo: " + f);
-                getMensajes().add(msg);
+                Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error accediendo a archivo:" + finalFile, ex);
+                MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_ERROR, "Error accediendo a archivo: " + finalFile);
+                addMensaje(msg);
             } catch (Exception e) {
-                //f = moverFallido(f);
-                Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error desconocido procesando parte:" + f, e);
-                Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error desconocido procesando parte:" + f, e);
-                MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_ERROR, "Error desconocido procesando parte: " + f);
-                getMensajes().add(msg);
+                Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error desconocido procesando parte:" + finalFile, e);
+                MensajeDigitalizacion msg = new MensajeDigitalizacion(MensajeDigitalizacion.TIPO_ERROR, "Error desconocido procesando parte: " + finalFile);
+                addMensaje(msg);
             } finally {
                 if (digital != null) {
                     digital.dispose();
                     digital = null;
                 }
-                ArrayList<IObjetoBD> copia = new ArrayList<IObjetoBD>();
-                for (MensajeDigitalizacion m : getMensajes()) {
-                    firePropertyChange("mensajeDigitalizacion", null, m);
-                    if (m.isMostrar()) {
-                        copia.add(m);
-                    }
-                }
-                firePropertyChange("message", null, "Guardando mensajes...");
-                guardarObjetosBD(copia);
-                getMensajes().clear();
-                copia = null;
             }
             System.gc();
             setTerminado(true);
         }
 
         return ret;
+    }
+
+    private void addMensaje(MensajeDigitalizacion m) {
+        if (m.isMostrar()) {
+            m.guardar();
+        }
+        firePropertyChange("mensajeDigitalizacion", null, m);
     }
 
     private File moverFallido(File original, MensajeDigitalizacion msg) {
@@ -312,22 +297,6 @@ public class Digitalizador extends MaimonidesBean {
         return original;
     }
 
-//    private int guardarImagenAdvertencia(File imagen) {
-//        int id = 0;
-//        try {
-//            PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("INSERT INTO advertencias_imagenes (imagen) VALUES(?)", PreparedStatement.RETURN_GENERATED_KEYS);
-//            FileInputStream fis = new FileInputStream(imagen);
-//            st.setBinaryStream(1, fis);
-//            if (st.executeUpdate() > 0) {
-//                id = (int) st.getLastInsertID();
-//            }
-//            fis.close();
-//            st.close();
-//        } catch (Exception e) {
-//            Logger.getLogger(Digitalizador.class.getName()).log(Level.SEVERE, "Error guardando imagen advertencia:" + imagen, e);
-//        }
-//        return id;
-//    }
     public ArrayList<File> getArchivos() {
         if (archivos == null) {
             archivos = new ArrayList<File>();
