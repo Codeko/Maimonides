@@ -37,6 +37,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import org.jdesktop.swingx.util.OS;
 
 /**
@@ -59,6 +60,7 @@ public class Configuracion {
     public static final String CONN_CFG_FILE = "cfg.txt";
     File archivoAccess = null;
     File carpetaPartes = null;
+    File carpetaTemplates = null;
     File carpetaPartesDigitalizados = null;
     File carpetaPartesFallidos = null;
     File carpetaCopias = null;
@@ -131,7 +133,7 @@ public class Configuracion {
     public File getCarpetaPartes() {
         if (carpetaPartes == null) {
             try {
-                String nombreCarpetaPartes = get("ruta_carpeta_partes", getSubCarpertaUsuarioMaimonides("partes").getAbsolutePath());
+                String nombreCarpetaPartes = Preferences.userRoot().get("ruta_carpeta_partes", getSubCarpertaUsuarioMaimonides("partes").getAbsolutePath());
                 carpetaPartes = new File(nombreCarpetaPartes);
                 carpetaPartes.mkdirs();
             } catch (Exception e) {
@@ -142,7 +144,32 @@ public class Configuracion {
 
     public void setCarpetaPartes(File carpetaPartes) {
         this.carpetaPartes = carpetaPartes;
-        set("ruta_carpeta_partes", this.carpetaPartes != null ? this.carpetaPartes.getAbsolutePath() : null);
+        if (carpetaPartes != null) {
+            Preferences.userRoot().put("ruta_carpeta_partes", this.carpetaPartes.getAbsolutePath());
+        } else {
+            Preferences.userRoot().remove("ruta_carpeta_partes");
+        }
+    }
+
+    public File getCarpetaTemplates() {
+        if (carpetaTemplates == null) {
+            try {
+                String nombreCarpetaPartes = Preferences.userRoot().get("ruta_carpeta_templates", getSubCarpertaUsuarioMaimonides("partes").getAbsolutePath());
+                carpetaTemplates = new File(nombreCarpetaPartes);
+                carpetaTemplates.mkdirs();
+            } catch (Exception e) {
+            }
+        }
+        return carpetaTemplates;
+    }
+
+    public void setCarpetaTemplates(File carpetaTemplates) {
+        this.carpetaTemplates = carpetaTemplates;
+        if (carpetaTemplates != null) {
+            Preferences.userRoot().put("ruta_carpeta_templates", carpetaTemplates.getAbsolutePath());
+        } else {
+            Preferences.userRoot().remove("ruta_carpeta_templates");
+        }
     }
 
     public File getCarpetaPartesDigitalizados() {
