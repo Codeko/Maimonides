@@ -21,55 +21,83 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.digitalizacion;
 
+import com.codeko.apps.maimonides.MaimonidesApp;
+import com.codeko.apps.maimonides.conf.Configuracion;
+import com.codeko.swing.CdkAutoTablaCol;
 import com.codeko.util.Num;
+import com.codeko.util.Obj;
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//TODO Limpiar 
 public class ConfiguracionParte {
-
+    @CdkAutoTablaCol(titulo="Ancho de las marcas de posicionamiento")
     private double anchoMarca = 8;
-    private double anchoParte = 539;
-    private double altoFila = 12.45;
-    private double anchoColumna = 27;
-    private double distanciaDesdeMarcaACabecera = 170.2;
-    private double distanciaDesdeMarcaAColumna = 213.1;
-    private int numColumnas = 12;
-    private double porcentajeNegroManchado = 1;
-    private double porcentajeNegroMarcado = 5;
-    private double porcentajeNegroAnulado = 60;
-    private double porcentajeNegroAnuladoDudoso = 50;
-    private double porcentajeNegroFila = 6;
-    private double margenBusquedaMarca = 70;
-    private double margenLimpiezaSuperior = 4;
-    private double margenLimpiezaLateral = 6;
-    private double margenLimpiezaPie = 8;
-    private int numFilas = 36;
-    private double inicioPie = 626;
-    private double anchoBloqueFirmas = anchoColumna * 2;
-    private double altoBloqueFirmas = 72;
-    private int numCasillasPie = 6;
-    private double porcentajeNegroFirmado = 1;
-    private String extensionImagenes = "png";
-    private boolean mostrarLogs = false;
-    private boolean mostrarMarcas = false;
-    private boolean mostrarImagenFinal = false;
+    @CdkAutoTablaCol(titulo="% de negro marcas posición")
     private double porcentajeNegroMarcasPosicion = 84;
-    private double porcentajeNegroLineaFila = 30;
-    private double anchoMuestraLinea = 15;
+    @CdkAutoTablaCol(titulo="Ancho del parte de asistencia")
+    private double anchoParte = 539;
+    @CdkAutoTablaCol(titulo="Alto de cada fila del parte")
+    private double altoFila = 12.42;
+    @CdkAutoTablaCol(titulo="Ancho de las celdas")
+    private double anchoColumna = 27.15;
+    @CdkAutoTablaCol(titulo="Distancia desde la marca de posicionamiento a la cabecera")
+    private double distanciaDesdeMarcaACabecera = 125;
+    @CdkAutoTablaCol(titulo="Distancia desde la marca de posicionamiento a la primera columna")
+    private double distanciaDesdeMarcaAColumna = 213.1;
+    @CdkAutoTablaCol(titulo="Número de columnas")
+    private int numColumnas = 12;
+    @CdkAutoTablaCol(titulo="% de negro manchado")
+    private double porcentajeNegroManchado = 1;
+    @CdkAutoTablaCol(titulo="% de negro marcado")
+    private double porcentajeNegroMarcado = 5;
+    @CdkAutoTablaCol(titulo="% de negro anulado")
+    private double porcentajeNegroAnulado = 75;
+    @CdkAutoTablaCol(titulo="% de negro dudoso")
+    private double porcentajeNegroAnuladoDudoso = 50;
+    @CdkAutoTablaCol(titulo="Margen para búsqueda de marca")
+    private double margenBusquedaMarca = 70;
+    @CdkAutoTablaCol(titulo="Margen de limpieza lateral de marca")
+    private double margenLimpiezaLateral = 6;
+    @CdkAutoTablaCol(titulo="Margen de limpieza del pie")
+    private double margenLimpiezaPie = 8;
+    @CdkAutoTablaCol(titulo="Número máximo de filas")
+    private int numFilas = 43;
+    @CdkAutoTablaCol(titulo="Posición de inicio del pie")
+    private double inicioPie = 670;
+    @CdkAutoTablaCol(titulo="Alto del bloque de firmas")
+    private double altoBloqueFirmas = 75;
+    @CdkAutoTablaCol(titulo="Número de casillas de firmas")
+    private int numCasillasPie = 6;
+    @CdkAutoTablaCol(titulo="% de negro firmado")
+    private double porcentajeNegroFirmado = 1;
+    @CdkAutoTablaCol(titulo="Extensión de imágenes de partes")
+    private String extensionImagenes = "png";
+    @CdkAutoTablaCol(titulo="Mostrar logs")
+    private boolean mostrarLogs = false;
+    @CdkAutoTablaCol(titulo="Mostrar marcas")
+    private boolean mostrarMarcas = false;
+    @CdkAutoTablaCol(titulo="Mostrar imagen final")
+    private boolean mostrarImagenFinal = false;
+    @CdkAutoTablaCol(titulo="% de negro linea fila")
+    private double porcentajeNegroLineaFila = 40;
+    @CdkAutoTablaCol(titulo="Ancho muestra linea")
+    private double anchoMuestraLinea = 10;
+    @CdkAutoTablaCol(titulo="Ancho muestra cabecera")
     private double anchoMuestraCabecera = 20;
+    @CdkAutoTablaCol(titulo="% de negro linea cabecera")
     private double porcentajeNegroLineaCab = 77;
+    @CdkAutoTablaCol(ignorar=true)
     private static ConfiguracionParte configuracion = null;
-    private static long modificacionFichero = 0;
+    @CdkAutoTablaCol(ignorar=true)
+    public static final String NOMBRE_GRUPO="digitalizacion";
 
     public double getPorcentajeNegroLineaCab() {
         return porcentajeNegroLineaCab;
@@ -93,14 +121,6 @@ public class ConfiguracionParte {
 
     public void setAnchoMuestraCabecera(double anchoMuestraCabecera) {
         this.anchoMuestraCabecera = anchoMuestraCabecera;
-    }
-
-    public static long getModificacionFichero() {
-        return modificacionFichero;
-    }
-
-    public static void setModificacionFichero(long modificacionFichero) {
-        ConfiguracionParte.modificacionFichero = modificacionFichero;
     }
 
     public double getPorcentajeNegroMarcasPosicion() {
@@ -144,47 +164,70 @@ public class ConfiguracionParte {
     }
 
     public static ConfiguracionParte getConfiguracion() {
-        if (configuracion == null) {
+        return getConfiguracion(false);
+    }
+
+    public static ConfiguracionParte getConfiguracion(boolean forzar) {
+        if (configuracion == null || forzar) {
             configuracion = new ConfiguracionParte();
+            configuracion.cargarConfiguracion();
         }
-        configuracion.cargarConfiguracion(false);
         return configuracion;
     }
 
-    public void cargarConfiguracion(boolean forzar) {
-        //TODO Esto moverlo a codekolib
-        File props = new File("partes.cfg");
-        if (props.exists() && (forzar || props.lastModified() != getModificacionFichero())) {
-            Logger.getLogger(ConfiguracionParte.class.getName()).info("Recargando configuración partes.");
-            setModificacionFichero(props.lastModified());
-            Properties p = new Properties();
-            FileInputStream is;
+    private Properties getProperties(File props) {
+        Properties tmpProp = new Properties();
+        if (props != null && props.exists() && props.canRead()) {
+            FileInputStream fis = null;
             try {
-                is = new FileInputStream(props);
-                p.load(is);
-                Iterator it = p.keySet().iterator();
-                while (it.hasNext()) {
-                    try {
-                        String k = it.next().toString();
-                        String v = p.getProperty(k).toString().trim();
-                        if (Num.esNumero(v)) {
-                            if (v.contains(".")) {
-                                this.getClass().getDeclaredField(k).setDouble(this, Num.getDouble(v));
-                            } else {
-                                this.getClass().getDeclaredField(k).setInt(this, Num.getInt(v));
-                            }
-                        } else if (v.equals("true") || v.equals("false")) {
-                            this.getClass().getDeclaredField(k).setBoolean(this, v.equals("true"));
-                        } else {
-                            this.getClass().getDeclaredField(k).set(this, v);
-                        }
-                    } catch (Exception e) {
-                        Logger.getLogger(ConfiguracionParte.class.getName()).log(Level.SEVERE, null, e);
-                    }
-                }
+                fis = new FileInputStream(props);
+                tmpProp.load(fis);
             } catch (Exception ex) {
-                Logger.getLogger(ConfiguracionParte.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConfiguracionParte.class.getName()).log(Level.SEVERE, "Error cargando propiedades de " + props, ex);
+            } finally {
+                Obj.cerrar(fis);
             }
+        }
+        return tmpProp;
+    }
+
+    public void cargarConfiguracion() {
+        //Vamos cargando las propiedades progresivamente de las diferentes localizaciones creando un archivo de 
+        // propiedades comun
+        Configuracion cfg = MaimonidesApp.getApplication().getConfiguracion();
+        //Primero de la base de datos
+        Properties finalProp = new Properties();
+        finalProp.putAll(cfg.getGroup(NOMBRE_GRUPO));
+        //Luego el fichero en la carpeta de ejecución       
+        finalProp.putAll(getProperties(new File("partes.cfg")));
+        //El de la carpeta de usuario
+        finalProp.putAll(getProperties(new File(Configuracion.getCarpetaUsuarioMaimonides(), "partes.cfg")));
+        //Y finalmente la carpeta de partes
+        finalProp.putAll(getProperties(new File(cfg.getCarpetaPartes(), "partes.cfg")));
+        //Una vez cargadas todas las propiedades rellenamos la clase de configuracion
+        try {
+            Iterator<Object> it = finalProp.keySet().iterator();
+            while (it.hasNext()) {
+                try {
+                    String k = it.next().toString();
+                    String v = finalProp.getProperty(k).toString().trim();
+                    if (Num.esNumero(v)) {
+                        if (v.contains(".")) {
+                            this.getClass().getDeclaredField(k).setDouble(this, Num.getDouble(v));
+                        } else {
+                            this.getClass().getDeclaredField(k).setInt(this, Num.getInt(v));
+                        }
+                    } else if (v.equals("true") || v.equals("false")) {
+                        this.getClass().getDeclaredField(k).setBoolean(this, v.equals("true"));
+                    } else {
+                        this.getClass().getDeclaredField(k).set(this, v);
+                    }
+                } catch (Exception e) {
+                    Logger.getLogger(ConfiguracionParte.class.getName()).log(Level.SEVERE, null, e);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ConfiguracionParte.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -232,11 +275,7 @@ public class ConfiguracionParte {
     }
 
     public double getAnchoBloqueFirmas() {
-        return anchoBloqueFirmas;
-    }
-
-    public void setAnchoBloqueFirmas(double anchoBloqueFirmas) {
-        this.anchoBloqueFirmas = anchoBloqueFirmas;
+        return getAnchoColumna() * 2;
     }
 
     public double getPorcentajeNegroAnuladoDudoso() {
@@ -287,28 +326,6 @@ public class ConfiguracionParte {
         this.anchoParte = anchoParte;
     }
 
-//    public double getMargenSuperior() {
-//        return margenSuperior;
-//    }
-//
-//    public void setMargenSuperior(int margenSuperior) {
-//        this.margenSuperior = margenSuperior;
-//    }
-//
-//    public double getMargenLateral() {
-//        return margenLateral;
-//    }
-//
-//    public void setMargenLateral(int margenLateral) {
-//        this.margenLateral = margenLateral;
-//    }
-//
-//    public double getAltoParte() {
-//        return altoParte;
-//    }
-//    public void setAltoParte(int altoParte) {
-//        this.altoParte = altoParte;
-//    }
     public double getAltoFila() {
         return altoFila;
     }
@@ -365,14 +382,6 @@ public class ConfiguracionParte {
         this.porcentajeNegroAnulado = porcentajeNegroAnulado;
     }
 
-    public double getPorcentajeNegroFila() {
-        return porcentajeNegroFila;
-    }
-
-    public void setPorcentajeNegroFila(int porcentajeNegroFila) {
-        this.porcentajeNegroFila = porcentajeNegroFila;
-    }
-
     public double getMargenBusquedaMarca() {
         return margenBusquedaMarca;
     }
@@ -388,12 +397,8 @@ public class ConfiguracionParte {
     public void setMargenLimpiezaLateral(double margenLimpiezaLateral) {
         this.margenLimpiezaLateral = margenLimpiezaLateral;
     }
-
-    public double getMargenLimpiezaSuperior() {
-        return margenLimpiezaSuperior;
-    }
-
-    public void setMargenLimpiezaSuperior(double margenLimpiezaSuperior) {
-        this.margenLimpiezaSuperior = margenLimpiezaSuperior;
+    
+    public Object getValor(Field f,String nombre) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+        return f.get(this);
     }
 }

@@ -440,7 +440,7 @@ public class DigitalizacionParte extends MaimonidesBean {
                             int offSet = getProporcionado((getConf().getAnchoColumna()) * x);
                             int[] bloque = getBloque(anchoBloque, offSet, fila.getPix(), ancho);
                             mostrarMarcasLinea(iniCol, offSet, fila, anchoBloque);
-                            int margenSuperior = fila.getAlto() / 3;//getProporcionado(getConf().getMargenLimpiezaSuperior());
+                            int margenSuperior = fila.getAlto() / 3;
                             int margenLateral = getProporcionado(getConf().getMargenLimpiezaLateral());
                             int nuevoAnchoCasilla = anchoBloque - (margenLateral * 2);
                             bloque = UtilImgParte.matrizToArray(UtilImgParte.extraerRectanguloDeMatriz(UtilImgParte.arrayToMatriz(bloque,
@@ -579,7 +579,7 @@ public class DigitalizacionParte extends MaimonidesBean {
                         } else if (filasSaltadas > 0) {
                             //Si hay menos entonces podemos calcular dividiento
                             log("Generando " + filasSaltadas + " filas artificialmente.");
-                            alto = alto / filasSaltadas;
+                            alto /= filasSaltadas;
                             for (int i = 0; i < filasSaltadas; i++) {
                                 FilaDig f = new FilaDig(getFilaX(iniAnterior, alto), alto, countFilas, iniAnterior);
                                 filas.add(f);

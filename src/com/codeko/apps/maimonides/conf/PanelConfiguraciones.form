@@ -214,6 +214,19 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="com.codeko.apps.maimonides.conf.PanelConfiguracionDigitalizacion" name="panelConfiguracionDigitalizacion1">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="panelConfiguracionDigitalizacion1" noResource="true"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Digitalizaci&#xf3;n partes">
+                <Property name="tabTitle" type="java.lang.String" resourceKey="panelConfiguracionDigitalizacion1.TabConstraints.tabTitle"/>
+                <Property name="tabIcon" type="javax.swing.Icon" resourceKey="panelConfiguracionDigitalizacion1.TabConstraints.tabIcon"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

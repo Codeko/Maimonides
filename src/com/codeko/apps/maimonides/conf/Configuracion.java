@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
@@ -244,6 +245,37 @@ public class Configuracion {
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, "Error recuperando configuración: [" + nombre + ":" + porDefecto + "]", ex);
         }
         return porDefecto;
+    }
+
+    public Properties getGroup(String prefix) {
+        Properties p = new Properties();
+        PreparedStatement st = null;
+        ResultSet res = null;
+        try {
+            if (!Beans.isDesignTime()) {
+                st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT nombre,valor FROM config WHERE nombre LIKE CONCAT(?,'.%')");
+                st.setString(1, prefix);
+                res = st.executeQuery();
+                while (res.next()) {
+                    String nombre = res.getString("nombre");
+                    String valor = res.getString("valor");
+                    nombre = nombre.replace(prefix + ".", "");
+                    p.setProperty(nombre, valor);
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, "Error recuperando configuración de grupo: " + prefix, ex);
+        } finally {
+            Obj.cerrar(st, res);
+        }
+        return p;
+    }
+
+    public void setGrupo(String prefix, Properties valores) {
+        for (String k : valores.stringPropertyNames()) {
+            set(prefix + "." + k, valores.getProperty(k));
+        }
     }
 
     public static HashMap<String, Object> getDatosBaseImpresion() {

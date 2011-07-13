@@ -22,7 +22,6 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="bGuardar" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="cbComprimirPartes" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="lTiposContabilizables" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -65,19 +64,19 @@
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="lCarpetaPartes" min="-2" pref="190" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelSelectorArchivo1" max="32767" attributes="0"/>
-                  </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="459" max="32767" attributes="0"/>
+              <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="cbComprimirPartes" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -113,12 +112,7 @@
                   <Component id="spCartasDiasInicio" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="panelSelectorArchivo1" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="lCarpetaPartes" alignment="2" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace pref="69" max="32767" attributes="0"/>
               <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -259,17 +253,6 @@
     <Component class="javax.swing.JSpinner" name="spCartasDiasInicio">
       <Properties>
         <Property name="name" type="java.lang.String" value="spCartasDiasInicio" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="com.codeko.apps.maimonides.swing.PanelSelectorArchivo" name="panelSelectorArchivo1">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="panelSelectorArchivo1" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lCarpetaPartes">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="lCarpetaPartes.text"/>
-        <Property name="name" type="java.lang.String" value="lCarpetaPartes" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
