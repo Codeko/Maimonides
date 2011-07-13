@@ -98,6 +98,7 @@ public class PanelGeneracionExpulsiones extends javax.swing.JPanel implements IP
         });
         tabla.setAutoCreateRowSorter(true);
         tabla.setRowFilter(filter);
+        MaimonidesUtil.addMenuTabla(tabla, "Propuestas de expulsión");
     }
 
     private void cursoFilerChanged() {
