@@ -13,7 +13,7 @@ $codebase = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI'])
 <jnlp
     spec="6.0+"
     codebase="<?= $codebase ?>"
-    version="2.10"
+    version="2.10.RC1"
     href="jnlp.php">
     <information>
         <title>Maimónides</title>
