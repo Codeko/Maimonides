@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.seneca;
 
 import com.codeko.apps.maimonides.conf.Configuracion;
@@ -214,14 +212,9 @@ public class GeneradorFicherosSeneca extends MaimonidesBean {
 
     public File getCarpetaSalida() {
         if (carpetaSalida == null) {
-            if (MaimonidesApp.isJnlp()) {
-                carpetaSalida=Configuracion.getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_SENECA);
-                carpetaSalida=new File(carpetaSalida,"faltas");
-            } else {
-                carpetaSalida = new File(Configuracion.CARPETA_SENECA+"/faltas/");
-            }
+            carpetaSalida = Configuracion.getSubCarpertaUsuarioMaimonides(Configuracion.CARPETA_SENECA);
+            carpetaSalida = new File(carpetaSalida, "faltas");
             carpetaSalida.mkdirs();
-
         }
         return carpetaSalida;
     }

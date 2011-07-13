@@ -63,7 +63,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.prefs.Preferences;
 import javax.imageio.ImageIO;
-import javax.jnlp.ServiceManager;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
@@ -85,7 +84,6 @@ public class MaimonidesApp extends SingleFrameApplication {
     private CdkControlProgresos controlProgresos = new CdkControlProgresos();
     private Configuracion configuracion = null;
     private static Boolean debug = null;
-    private static boolean jnlp = MaimonidesApp._isJnlp();
     Usuario usuario = null;
     static boolean reiniciarTrasEditarConfig = false;
     static String[] baseArgs = null;
@@ -96,10 +94,6 @@ public class MaimonidesApp extends SingleFrameApplication {
             actualizarTitulo();
         }
     };
-
-    private static boolean _isJnlp() {
-        return ServiceManager.getServiceNames() != null;
-    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -161,9 +155,6 @@ public class MaimonidesApp extends SingleFrameApplication {
         return debug;
     }
 
-    public static boolean isJnlp() {
-        return jnlp;
-    }
 
     public static Connection getConexion() {
         return getApplication().getConector().getConexion();
@@ -336,7 +327,7 @@ public class MaimonidesApp extends SingleFrameApplication {
             g.setFont(g.getFont().deriveFont(Font.BOLD));
             g.setColor(Color.BLUE.darker());
             g.drawImage(splashImage, 0, 0, null);
-            g.drawString(text, (int)(getSplash().getSize().getWidth()/5)*2, getSplash().getSize().height - 20);
+            g.drawString(text, (int) (getSplash().getSize().getWidth() / 5) * 2, getSplash().getSize().height - 20);
             getSplash().update();
         }
     }
@@ -362,13 +353,9 @@ public class MaimonidesApp extends SingleFrameApplication {
     private void configurarLogging() {
         try {
             FileHandler fh = null;
-            if (isJnlp()) {
-                fh = new FileHandler(Configuracion.getSubCarpertaUsuarioMaimonides("log") + "/mm_%g.log", 1024 * 1024 * 10, 10, true);
-            } else {
-                File f = new File("log");
-                f.mkdirs();
-                fh = new FileHandler("log/mm_%g.log", 1024 * 1024 * 10, 10, true);
-            }
+            File f = Configuracion.getSubCarpertaUsuarioMaimonides("log");
+            f.mkdirs();
+            fh = new FileHandler(f + "/mm_%g.log", 1024 * 1024 * 10, 10, true);
             fh.setFormatter(new SimpleFormatter());
             Logger.getLogger("").addHandler(fh);
         } catch (Exception ex) {
@@ -378,10 +365,6 @@ public class MaimonidesApp extends SingleFrameApplication {
 
     @Action
     public void editarConexion() {
-        if (isJnlp()) {
-            JOptionPane.showMessageDialog(getMainFrame(), "No se puede editar la configuración de conexión en modo de ejecución web.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
         final JFrame f = new JFrame("Editor de configuración de conexión");
         f.setName("FrameEditorConexion");
         f.addWindowListener(new WindowAdapter() {

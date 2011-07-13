@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.usr;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
@@ -181,13 +179,9 @@ public class Permisos {
             //Menu archivo
             String mmView = MaimonidesView.class.getCanonicalName() + ".";
             acceso.put(mmView + "quit", Rol.ROL_NULO);
-            if(MaimonidesApp.isJnlp()){
-                acceso.put(mmView + "editarConexion", Rol.ROL_ADMIN);
-                acceso.put(getNombre(PanelConfiguracionAccesoBD.class),  Rol.ROL_ADMIN);
-            }else{
-                acceso.put(mmView + "editarConexion", Rol.ROL_NULO);
-                acceso.put(getNombre(PanelConfiguracionAccesoBD.class),  Rol.ROL_NULO);
-            }
+
+            acceso.put(mmView + "editarConexion", Rol.ROL_NULO);
+            acceso.put(getNombre(PanelConfiguracionAccesoBD.class), Rol.ROL_NULO);
 
             //acceso.put("com.codeko.apps.maimonides.MaimonidesView.mostrarPanelConfiguracion", Rol.ROL_ADMIN);
 
