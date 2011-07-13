@@ -270,10 +270,10 @@ public class MaimonidesUtil {
                             }
                             Style s = new Style();
                             s.setBorder(Border.THIN);
-                            Font f = new Font(10, "Arial", false);
-                            s.setFont(f);
+                            Font f = new Font(8, "Arial", false);
+                            s.setFont(f);        
                             if (max > 40) {
-                                f = new Font(8, "Arial", false);
+                                f = new Font(7, "Arial", false);
                                 s.setFont(f);
                             }
                             s.setVerticalAlign(VerticalAlign.TOP);
