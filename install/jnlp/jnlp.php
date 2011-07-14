@@ -7,8 +7,8 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 //Propiedades de configuración de la aplicación
 $properties = array();
-echo '<?xml version="1.0" encoding="utf-8"?>';
-$codebase = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']);
+echo '<?xml version="1.0" encoding="UTF-8"?>';
+$codebase = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI'])."/";
 ?>
 <jnlp
     spec="6.0+"
@@ -29,25 +29,23 @@ $codebase = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI'])
             <menu submenu="Maimónides"/>
         </shortcut>
     </information>
-    <update check="always"/>
     <security>
         <all-permissions/>
     </security>
+    <update check="always"/>
     <resources>
         <j2se version="1.6+" java-vm-args="-Xmx512m"/>
-        <property name="jnlp.packEnabled" value="true"/>
-        <property name="sun.awt.disableMixing" value="true"/>
-        <?php
-        foreach ($properties As $k => $v) {
-            echo "<property name=\"$k\" value=\"$v\"/>";
-        }
-        ?>
-        <jar href="Maimonides.jar" main="true"/>
+        <jar href="Maimonides.jar" size="<?=filesize("Maimonides.jar")?>" main="true"/>
         <?php
         foreach (scandir("lib") As $name) {
             if (strlen($name) > 4 && substr($name, -4) == ".jar") {
-                echo "<jar href=\"lib/" . $name . "\"/>\n";
+                echo "<jar size=\"".filesize("lib/".$name)."\" href=\"lib/" . $name . "\"/>\n";
             }
+        }
+        ?>
+        <?php
+        foreach ($properties As $k => $v) {
+            echo "<property name=\"$k\" value=\"$v\"/>";
         }
         ?>
     </resources>
