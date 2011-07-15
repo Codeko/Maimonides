@@ -155,7 +155,6 @@ public class MaimonidesApp extends SingleFrameApplication {
         return debug;
     }
 
-
     public static Connection getConexion() {
         return getApplication().getConector().getConexion();
     }
@@ -436,7 +435,8 @@ public class MaimonidesApp extends SingleFrameApplication {
 
             @Override
             public void cancelled(TaskEvent te) {
-                //throw new UnsupportedOperationException("Not supported yet.");
+                reiniciarTrasEditarConfig = true;
+                MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "editarConexion");
             }
 
             @Override
@@ -473,7 +473,7 @@ public class MaimonidesApp extends SingleFrameApplication {
             firePropertyChange("setIniciado", null, true);
             setMessage("Conectando con la base de datos...");
             firePropertyChange("setMensaje", null, "Conectando con la base de datos...");
-            setUserCanCancel(false);
+            //setUserCanCancel(false);
 
         }
 
