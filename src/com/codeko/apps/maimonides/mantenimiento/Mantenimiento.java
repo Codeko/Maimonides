@@ -65,11 +65,14 @@ public class Mantenimiento extends MaimonidesBean {
     public void mantenimiento() {
         getMensajes().clear();
         //Primero ejecutamos las actualizaciones de base de datos
+        firePropertyChange("message", null, "Revisando actualizaciones...");
         actualizar();
         //Luego el mantenimeinto de base de datos
+        firePropertyChange("message", null, "Realizando mantenimiento de la base de datos...");
         mantenimientoBD();
         //Luego el mantenimiento de ficheros.
-        mantenimientoCopiasDeSeguridadRestauracion();
+//        firePropertyChange("message", null, "Realizando mantenimiento de ficheros...");
+//        mantenimientoCopiasDeSeguridadRestauracion();
         //Luego el mantenimeinto de partes escaneados
         //TODO Configurar si se debe aplicar esto y cada cuanto tiempo
 //        mantenimientoPartesEscaneados();
