@@ -71,16 +71,80 @@
     nbproject/build-impl.xml file. 
 
     -->
-    <target name="build_jnlp" description="Build and sign the jnlp enviroment" depends="clean,jar">
-        <exec dir="install/jnlp/" executable="./cp_mm.sh"></exec>
+    <property file="src/com/codeko/apps/maimonides/resources/MaimonidesApp.properties"/>
+    <target name="-post-jar">
+        <copy todir="${dist.dir}">
+            <fileset dir="." includes="license.txt"/>
+        </copy>
     </target>
-    
-    <target name="build_jnlp_with_libs" description="Build and sign the jnlp enviroment including libs" depends="build_jnlp">
-        <exec dir="install/jnlp/" executable="./cp_libs.sh"></exec>
-    </target>
-    
     <target name="-post-compile">
         <exec executable="./rebuild-help-db.sh"/>
     </target>
+    <target name="pre_installers" depends="clean,jar">
+        <mkdir dir="install/dist/${Application.version}${Application.subversion}"/>
+    </target>
+    <target name="build_jnlp" description="Build and sign the jnlp enviroment" depends="pre_installers">
+        <exec dir="install/jnlp/" executable="./build_jnlp.sh">
+            <arg value="${Application.version}${Application.subversion}"/>
+        </exec>
+    </target>
     
+    <target name="build_packages" description="Build compressed packages" depends="pre_installers">
+        <zip    destfile="install/dist/${Application.version}${Application.subversion}/${Application.name}_${Application.version}${Application.subversion}.zip"
+                basedir="dist/"
+                excludes="readme.txt"
+        />
+        <tar destfile="install/dist/${Application.version}${Application.subversion}/${Application.name}_${Application.version}${Application.subversion}.tar.gz" compression="gzip">
+            <zipfileset src="install/dist/${Application.version}${Application.subversion}/${Application.name}_${Application.version}${Application.subversion}.zip"/>
+        </tar>
+    </target>
+    
+    <target name="build_window_installers" description="Build windows installers and updater" depends="pre_installers">
+        <exec dir="install/windows/" executable="./make_installer.sh">
+            <arg value="${Application.version}${Application.subversion}"/>
+        </exec>
+    </target>
+    
+    
+    <path id="ant_classpath">
+        <fileset dir="lib/CopyLibs/" includes="*.jar"/>
+    </path>
+    <taskdef resource="ant_deb_task.properties" classpathref="ant_classpath"/>
+    <target name="build_deb" description="Build deb binary package" depends="pre_installers">  
+        <desktopentry
+            toFile="dist/Maimonides.desktop"
+            name="Maimonides"
+            comment="Gestión de centros escolares compatible con Séneca."
+            exec="'java'  -Xms128m -Xmx768m  -cp '.;./lib/*' -jar Maimonides.jar"
+            path="/usr/share/${package.name}"
+            icon="/usr/share/icons/hicolor/scalable/apps/${package.name}.svg"
+            categories="Utility;Java"
+        />
+        <exec dir="install/deb/" executable="./copy_data.sh">
+        </exec>
+        <deb    todir="install/dist/${Application.version}${Application.subversion}" 
+                package="${package.name}" 
+                section="misc" 
+                depends="sun-java6-jre, libreoffice-writer | openoffice.org-writer"
+                homepage="${Application.homepage}"
+                >
+            <version upstream="${Application.version}${Application.subversion}"/>
+            <maintainer name="Codeko" email="codeko@codeko.com"/>
+            <description synopsis="Gestión para centros escolares compatible con Séneca">
+                    Maimónides es una aplicación de gestión para centros escolares completamente integrada con Séneca (aunque no es necesario usar Séneca para poder usar Maimónides).
+                    Permite la gestión de todos los datos de alumnos, profesores, horarios, faltas de asistencia, partes de convivencia, expulsiones, notificaciones a tutores etc...
+                    Dispone de un sistema de digitalización de partes que permite introducir los partes de asistencia impresos directamente en el programa.
+                    Todos los datos de Maimónides se pueden importar o exporta a Séneca de forma que no es necesario introducir los datos en dos sitios.
+                    Visita la web de Maimónides para consultar más información, tutoriales, etc.
+            </description>
+            <tarfileset dir="install/deb/data" prefix="usr/share/${package.name}">
+                <include name="lib/*.jar"/>
+                <include name="*.jar"/>
+                <include name="license.txt"/>
+            </tarfileset>
+            <tarfileset file="dist/Maimonides.desktop" prefix="usr/share/applications"/>
+            <tarfileset file="install/deb/${package.name}.svg" prefix="/usr/share/icons/hicolor/scalable/apps"/>
+        </deb>
+    </target>
+    <target name="all_installers" description="Build all installers" depends="build_jnlp,build_packages,build_window_installers,build_deb"/>  
 </project>
