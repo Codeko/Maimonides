@@ -14,3 +14,6 @@ cfg.txt
 /src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/TMAP
 /src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/OFFSETS
 /src/com/codeko/apps/maimonides/ayuda/JavaHelpSearch/DOCS.TAB
+/install/dist/
+/install/deb/data/
+/install/windows/maimonides.exe
