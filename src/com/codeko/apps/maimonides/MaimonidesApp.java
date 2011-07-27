@@ -32,7 +32,6 @@ import com.codeko.apps.maimonides.cache.Cache;
 import com.codeko.apps.maimonides.conf.PanelConfiguracionAccesoBD;
 import com.codeko.apps.maimonides.mantenimiento.Mantenimiento;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
-import com.codeko.apps.maimonides.mantenimiento.Backup;
 import com.codeko.apps.maimonides.mantenimiento.PanelMensajesActualizacion;
 import com.codeko.apps.maimonides.usr.GestorUsuarioClave;
 import com.codeko.apps.maimonides.usr.Usuario;
@@ -56,7 +55,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.EventObject;
-import java.util.GregorianCalendar;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -551,21 +549,21 @@ public class MaimonidesApp extends SingleFrameApplication {
 
         @Override
         protected Object doInBackground() {
-            Backup b = new Backup();
-            //TODO Volver a activar esto
-            if (false && b.esNecesarioHacerBackup()) {
-                b.addPropertyChangeListener(new PropertyChangeListener() {
-
-                    @Override
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                    }
-                });
-                File f = b.hacerBackup(true);
-                if (f != null && f.exists() && f.length() > 0) {
-                    getConfiguracion().setUltimoBackup(new GregorianCalendar());
-                }
-            }
+//            Backup b = new Backup();
+//            //TODO Volver a activar esto
+//            if (false && b.esNecesarioHacerBackup()) {
+//                b.addPropertyChangeListener(new PropertyChangeListener() {
+//
+//                    @Override
+//                    public void propertyChange(PropertyChangeEvent evt) {
+//                        firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+//                    }
+//                });
+//                File f = b.hacerBackup(true);
+//                if (f != null && f.exists() && f.length() > 0) {
+//                    getConfiguracion().setUltimoBackup(new GregorianCalendar());
+//                }
+//            }
             c = new Mantenimiento();
             c.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -574,7 +572,6 @@ public class MaimonidesApp extends SingleFrameApplication {
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
                 }
             });
-
             c.mantenimiento();
             return null;
         }
