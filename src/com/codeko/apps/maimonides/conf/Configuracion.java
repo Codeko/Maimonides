@@ -315,7 +315,7 @@ public class Configuracion {
         return getLocal(null, name, defaultValue);
     }
 
-    public static String getLocal(Class<Object> userClass, String name, String defaultValue) {
+    public static String getLocal(Class userClass, String name, String defaultValue) {
         if (userClass != null) {
             return Preferences.userNodeForPackage(userClass).get(name, defaultValue);
         }
@@ -326,7 +326,7 @@ public class Configuracion {
         setLocal(null, name, value);
     }
 
-    public static void setLocal(Class<Object> userClass, String name, String value) {
+    public static void setLocal(Class userClass, String name, String value) {
         if (userClass != null) {
             Preferences.userNodeForPackage(userClass).put(name, value);
         } else {
