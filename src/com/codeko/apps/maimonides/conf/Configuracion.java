@@ -310,4 +310,27 @@ public class Configuracion {
         f.mkdirs();
         return f;
     }
+
+    public static String getLocal(String name, String defaultValue) {
+        return getLocal(null, name, defaultValue);
+    }
+
+    public static String getLocal(Class<Object> userClass, String name, String defaultValue) {
+        if (userClass != null) {
+            return Preferences.userNodeForPackage(userClass).get(name, defaultValue);
+        }
+        return Preferences.userRoot().get(name, defaultValue);
+    }
+
+    public static void setLocal(String name, String value) {
+        setLocal(null, name, value);
+    }
+
+    public static void setLocal(Class<Object> userClass, String name, String value) {
+        if (userClass != null) {
+            Preferences.userNodeForPackage(userClass).put(name, value);
+        } else {
+            Preferences.userRoot().put(name, value);
+        }
+    }
 }
