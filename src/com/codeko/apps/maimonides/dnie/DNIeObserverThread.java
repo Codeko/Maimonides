@@ -37,71 +37,93 @@ import javax.smartcardio.CardTerminal;
  */
 public final class DNIeObserverThread extends MaimonidesBean implements Runnable {
 
-        private static final int CARD_WAIT = 1000;
-        private CardTerminal cardTerminal = null;
-        private Card card = null;
+    private static final int CARD_WAIT = 1000;
+    private CardTerminal cardTerminal = null;
+    private Card card = null;
 
-        public DNIeObserverThread(CardTerminal ct) {
-            setCardTerminal(ct);
-        }
+    public DNIeObserverThread(CardTerminal ct) {
+        setCardTerminal(ct);
+    }
 
-        @Override
-        public void run() {
-            try {
-                //Verificamos la tarjeta actual conectada
-                checkCard();
-                //Esperamos a que se conecte o desconecte la tarjeta
-                if (getCardTerminal().isCardPresent()) {
-                    while (getCardTerminal().isCardPresent() && !Thread.interrupted()) {
-                        getCardTerminal().waitForCardAbsent(CARD_WAIT);
-                    }
-
-                } else {
-                    while (!getCardTerminal().isCardPresent() && !Thread.interrupted()) {
-                        getCardTerminal().waitForCardPresent(CARD_WAIT);
-                    }
-                }
-            } catch (CardException ex) {
-                Logger.getLogger(DNIeObserverThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (!Thread.interrupted()) {
-                //Volvemos a realizar el proceso
-                run();
-            }
-        }
-
-        private void checkCard() throws CardException {
+    @Override
+    public void run() {
+        try {
+            //Verificamos la tarjeta actual conectada
+            checkCard();
+            //Esperamos a que se conecte o desconecte la tarjeta
             if (getCardTerminal().isCardPresent()) {
-                Card tmpCard = getCardTerminal().connect("T=0");
+                while (getCardTerminal().isCardPresent() && !Thread.interrupted()) {
+                    getCardTerminal().waitForCardAbsent(CARD_WAIT);
+                    Logger.getLogger(DNIeObserverThread.class.getName()).finer("Tarjeta todavía insertada. Esperando.");
+                }
+
+            } else {
+                while (!getCardTerminal().isCardPresent() && !Thread.interrupted()) {
+                    getCardTerminal().waitForCardPresent(CARD_WAIT);
+                    Logger.getLogger(DNIeObserverThread.class.getName()).finer("Tarjeta todavía NO insertada. Esperando.");
+                }
+            }
+        } catch (CardException ex) {
+            Logger.getLogger(DNIeObserverThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (!Thread.interrupted()) {
+            //Volvemos a realizar el proceso
+            run();
+        }
+    }
+
+    private void checkCard() throws CardException {
+        Logger.getLogger(DNIeObserverThread.class.getName()).info("Verificando estado de tarjeta...");
+        if (getCardTerminal().isCardPresent()) {
+            Logger.getLogger(DNIeObserverThread.class.getName()).info("Hay tarjeta.");
+            Card tmpCard = null;
+            try {
+                tmpCard = getCardTerminal().connect("T=0");
                 if (!tmpCard.equals(getCard())) {
+                    Logger.getLogger(DNIeObserverThread.class.getName()).info("La tarjeta es nueva.");
                     if (getCard() != null) {
-                        firePropertyChange("cardDisconnected", null,new DNIe(getCardTerminal(),getCard()));
+                        Logger.getLogger(DNIeObserverThread.class.getName()).info("Se ha quitado la tarjeta anterior. Notificando...");
+                        firePropertyChange("cardDisconnected", null, new DNIe(getCardTerminal()));
                         setCard(null);
                     }
                     setCard(tmpCard);
-                    firePropertyChange("cardConnected", null, new DNIe(getCardTerminal(),getCard()));
+                    Logger.getLogger(DNIeObserverThread.class.getName()).info("Notificando nueva tarjeta");
+                    firePropertyChange("cardConnected", null, new DNIe(getCardTerminal()));
                 }
-            } else {
-                if (getCard() != null) {
-                    firePropertyChange("cardDisconnected", null,new DNIe(getCardTerminal(),getCard()));
-                    setCard(null);
+            } catch (CardException ex) {
+                Logger.getLogger(DNIeObserverThread.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                if (tmpCard != null) {
+                    try {
+                        tmpCard.disconnect(false);
+                    } catch (CardException ex) {
+                        Logger.getLogger(DNIeObserverThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
-        }
-
-        public CardTerminal getCardTerminal() {
-            return cardTerminal;
-        }
-
-        private void setCardTerminal(CardTerminal cardTerminal) {
-            this.cardTerminal = cardTerminal;
-        }
-
-        public Card getCard() {
-            return card;
-        }
-
-        private void setCard(Card card) {
-            this.card = card;
+        } else {
+            Logger.getLogger(DNIeObserverThread.class.getName()).info("No hay tarjeta.");
+            if (getCard() != null) {
+                Logger.getLogger(DNIeObserverThread.class.getName()).info("Se ha quitado la tarjeta. Notificando...");
+                firePropertyChange("cardDisconnected", null, new DNIe(getCardTerminal()));
+                setCard(null);
+            }
         }
     }
+
+    public CardTerminal getCardTerminal() {
+        return cardTerminal;
+    }
+
+    private void setCardTerminal(CardTerminal cardTerminal) {
+        this.cardTerminal = cardTerminal;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    private void setCard(Card card) {
+        this.card = card;
+    }
+}

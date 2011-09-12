@@ -30,6 +30,7 @@ package com.codeko.apps.maimonides;
 import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.cache.Cache;
 import com.codeko.apps.maimonides.conf.PanelConfiguracionAccesoBD;
+import com.codeko.apps.maimonides.dnie.DNIeLoginManager;
 import com.codeko.apps.maimonides.mantenimiento.Mantenimiento;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.mantenimiento.PanelMensajesActualizacion;
@@ -118,6 +119,10 @@ public class MaimonidesApp extends SingleFrameApplication {
             }
         }
 
+    }
+    
+    public boolean isLoggedIn(){
+        return getUsuario()!=null;
     }
 
     private void asignarAnoEscolarUsuario() {
@@ -522,6 +527,7 @@ public class MaimonidesApp extends SingleFrameApplication {
             JOptionPane.showMessageDialog(getMainFrame(), "La versión de Maimónides que está ejecutando (" + Mantenimiento.getAplicationVersion() + ") es anterior a la versión del servidor (" + Mantenimiento.getBDVersion() + ").\nLo más probable es que este ejecutando una copia antigua de Maimónides, actualice la aplicación.\nMaimónides se cerrará ahora.", "Error de versiones", JOptionPane.ERROR_MESSAGE);
             ret = false;
         }
+        DNIeLoginManager.init();
         //Ahora preguntamos el usuario y clave
         if (ret) {
             ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();

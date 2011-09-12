@@ -178,16 +178,16 @@ public class Permisos {
             //Primero los elementos del menu y sus paneles asociados
             //Menu archivo
             String mmView = MaimonidesView.class.getCanonicalName() + ".";
-            acceso.put(mmView + "quit", Rol.ROL_NULO);
+            acceso.put(mmView + "quit", Rol.ROL_TODOS ^ Rol.ROLES_EXTERNOS);
 
-            acceso.put(mmView + "editarConexion", Rol.ROL_NULO);
-            acceso.put(getNombre(PanelConfiguracionAccesoBD.class), Rol.ROL_NULO);
+            acceso.put(mmView + "editarConexion", Rol.ROL_TODOS ^ Rol.ROLES_EXTERNOS);
+            acceso.put(getNombre(PanelConfiguracionAccesoBD.class), Rol.ROL_TODOS ^ Rol.ROLES_EXTERNOS);
 
             //acceso.put("com.codeko.apps.maimonides.MaimonidesView.mostrarPanelConfiguracion", Rol.ROL_ADMIN);
 
             //Menu herramientas
-            acceso.put(mmView + "inicio", Rol.ROL_DIRECTIVO | Rol.ROL_PROFESOR | Rol.ROL_JEFE_ESTUDIOS);
-            acceso.put(getNombre(PanelInicio.class), Rol.ROL_DIRECTIVO | Rol.ROL_PROFESOR | Rol.ROL_JEFE_ESTUDIOS);
+            acceso.put(mmView + "inicio", Rol.ROL_NULO);
+            acceso.put(getNombre(PanelInicio.class), Rol.ROL_NULO);
 
             //acceso.put("com.codeko.apps.maimonides.MaimonidesView.backup", Rol.ROL_ADMIN);
             acceso.put(mmView + "mostrarPanelImportacionInicialDatos", Rol.ROL_JEFE_ESTUDIOS);

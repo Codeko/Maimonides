@@ -41,6 +41,7 @@ import javax.smartcardio.TerminalFactory;
  */
 public class DNIeObserver extends MaimonidesBean {
 
+    private static DNIeObserver activeDNIeObserver = null;
     private static final byte[] DNIe_ATR = {
         (byte) 0x3B, (byte) 0x7F, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x6A, (byte) 0x44,
         (byte) 0x4E, (byte) 0x49, (byte) 0x65, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
@@ -50,6 +51,19 @@ public class DNIeObserver extends MaimonidesBean {
         (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
         (byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFF};
     private boolean daemon = true;
+    ThreadGroup tg = new ThreadGroup("CardObservers");
+    private boolean started = false;
+
+    private DNIeObserver() {
+    }
+
+    private boolean isStarted() {
+        return started;
+    }
+
+    private void setStarted(boolean started) {
+        this.started = started;
+    }
 
     private boolean isDaemon() {
         return daemon;
@@ -59,62 +73,130 @@ public class DNIeObserver extends MaimonidesBean {
         this.daemon = daemon;
     }
 
-    public void start() throws CardException {
+    private void start() throws CardException {
 
         TerminalFactory factory = TerminalFactory.getDefault();
         List<CardTerminal> terminals = factory.terminals().list();
-        ThreadGroup tg = new ThreadGroup("CardObservers");
+
         PropertyChangeListener pcl = new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
                 DNIe dni = (DNIe) pce.getNewValue();
-                boolean isDNIe = isDNIe(dni.getCard());
-                if (isDNIe) {
-                    if ("cardDisconnected".equals(pce.getPropertyName())) {
-                        firePropertyChange("dnieDisconnected", null, dni);
-                    } else if ("cardConnected".equals(pce.getPropertyName())) {
-                        try {
-                            dni.loadPublicData();
-                            dni.setPin("V8N284dB");
-                            firePropertyChange("dnieConnected", null, dni);
-                            System.out.println("Autentificado:" + dni.validar());
-                        } catch (CardException ex) {
-                            Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                Logger.getLogger(DNIeObserverThread.class.getName()).log(Level.INFO, "Notificaci\u00f3n. {0}: {1}", new Object[]{pce.getPropertyName(), pce.getNewValue()});
+                if ("cardDisconnected".equals(pce.getPropertyName())) {
+                    //TODO Verificar que ha estado conectado
+                    firePropertyChange("dnieDisconnected", null, dni);
+                } else if ("cardConnected".equals(pce.getPropertyName())) {
+                    try {
+                        //Por alguna razon si no se hace una pausa no accede bien a la tarjeta
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    firePropertyChange("message", null, "Nueva tarjeta detectada...");
+                    boolean isDNIe = isDNIe(dni.getCardTerminal());
+                    firePropertyChange("message", null, "Verificando que sea DNIe...");
+                    if (isDNIe) {
+                        firePropertyChange("message", null, "Es DNIe. Leyendo datos de tarjeta...");
+                        if (dni.loadPublicData()) {
+                            firePropertyChange("message", null, "Nuevo DNIe detectado correctamente.");
+                            firePropertyChange("dnieConnected", null, dni);
+                        } else {
+                            firePropertyChange("message", null, "Ha habido algún error accediendo a los datos de la tarjeta.");
+                        }
+                    } else {
+                        firePropertyChange("message", null, "No es DNIe. Ignorando.");
+                    }
+                } else {
+                    firePropertyChange(pce.getPropertyName(), pce.getOldValue(), pce.getNewValue());
                 }
             }
         };
+        setStarted(true);
         for (CardTerminal ct : terminals) {
             DNIeObserverThread dt = new DNIeObserverThread(ct);
             Thread t = new Thread(tg, dt);
+            t.setPriority(Thread.MIN_PRIORITY);
             dt.addPropertyChangeListener(pcl);
             t.setDaemon(isDaemon());
             t.start();
         }
     }
 
-    public static boolean isDNIe(Card card) {
-        boolean isDNIe = false;
-        byte[] atrCard = card.getATR().getBytes();
-        if (atrCard.length == DNIe_ATR.length) {
-            isDNIe = true;
-            int j = 0;
-            while (j < DNIe_ATR.length && isDNIe) {
-                if ((atrCard[j] & DNIe_MASK[j]) != (DNIe_ATR[j] & DNIe_MASK[j])) {
-                    isDNIe = false;
-                }
-                j++;
+    private void stop() {
+        tg.interrupt();
+        setStarted(false);
+    }
+
+    public static void startObserver() {
+        if (activeDNIeObserver == null) {
+            activeDNIeObserver = new DNIeObserver();
+        }
+        if (!activeDNIeObserver.isStarted()) {
+            try {
+                activeDNIeObserver.start();
+            } catch (CardException ex) {
+                Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            isDNIe = false;
+        }
+    }
+
+    public static void stopObserver() {
+        if (activeDNIeObserver != null && activeDNIeObserver.isStarted()) {
+            activeDNIeObserver.stop();
+        }
+    }
+
+    public static void addPropertyListener(PropertyChangeListener pcl) {
+        startObserver();
+        activeDNIeObserver.addPropertyChangeListener(pcl);
+    }
+
+    private boolean isDNIe(CardTerminal cardTerminal) {
+        boolean isDNIe = false;
+        Card card = null;
+        try {
+            firePropertyChange("message", null, "Conectándose a la tarjeta...");
+            card = cardTerminal.connect("T=0");
+            firePropertyChange("message", null, "Verificando si es DNIe...");
+            byte[] atrCard = card.getATR().getBytes();
+            if (atrCard.length == DNIe_ATR.length) {
+                isDNIe = true;
+                int j = 0;
+                while (j < DNIe_ATR.length && isDNIe) {
+                    if ((atrCard[j] & DNIe_MASK[j]) != (DNIe_ATR[j] & DNIe_MASK[j])) {
+                        isDNIe = false;
+                    }
+                    j++;
+                }
+            } else {
+                isDNIe = false;
+            }
+
+        } catch (CardException ex) {
+            Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (card != null) {
+                try {
+                    card.disconnect(false);
+                } catch (CardException ex) {
+                    Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return isDNIe;
     }
 
     public static void main(String[] args) {
         DNIeObserver d = new DNIeObserver();
+        d.addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                System.out.println(pce.getPropertyName() + ": " + pce.getNewValue());
+            }
+        });
         d.setDaemon(false);
         try {
             d.start();

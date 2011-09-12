@@ -37,7 +37,14 @@ public abstract class Rol {
     public static final int ROL_JEFE_ESTUDIOS=4;
     public static final int ROL_DIRECTIVO=8;
     public static final int ROL_TUTOR=16;
-
+    public static final int ROL_ALUMNO=32;
+    public static final int ROL_PADRE=64;
+    
+    public static final int ROLES_EXTERNOS=ROL_ALUMNO | ROL_PADRE;
+    
+    public static final int ROL_TODOS=ROL_ADMIN | ROL_PROFESOR | ROL_JEFE_ESTUDIOS | ROL_DIRECTIVO | ROL_TUTOR | ROL_ALUMNO | ROL_PADRE;
+        
+        
     public static String getTextoRoles(int roles){
         StringBuilder sb=new StringBuilder();
         boolean primero=true;
@@ -68,6 +75,20 @@ public abstract class Rol {
             }
             primero=false;
             sb.append("Dir");
+        }
+        if((roles&ROL_ALUMNO)==ROL_ALUMNO){
+            if(!primero){
+                sb.append("/");
+            }
+            primero=false;
+            sb.append("Alu.");
+        }
+        if((roles&ROL_PADRE)==ROL_PADRE){
+            if(!primero){
+                sb.append("/");
+            }
+            primero=false;
+            sb.append("Padres");
         }
         return sb.toString();
     }

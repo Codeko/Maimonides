@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.usr;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
@@ -65,24 +63,28 @@ public class GestorUsuarioClave {
         panel.validate();
         panel.setDatos(getUsuario(), isRecordar() ? getClave() : "", isRecordar());
         int op = JOptionPane.showConfirmDialog(MaimonidesApp.getApplication().getMainFrame(), panel, "Acceso a Maimónides", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        while (!ret && op == JOptionPane.OK_OPTION) {
-            setRecordar(panel.isRecordar());
-            setUsuario(panel.getUsuario());
-            setClave(panel.getClave());
-            ret = Usuario.login(panel.getUsuario(), panel.getClave());
-            if (!ret) {
-                panel.setError(true);
-                op = JOptionPane.showConfirmDialog(MaimonidesApp.getApplication().getMainFrame(), panel, "Acceso a Maimónides", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (MaimonidesApp.getApplication().getUsuario() == null) {
+            while (!ret && op == JOptionPane.OK_OPTION) {
+                setRecordar(panel.isRecordar());
+                setUsuario(panel.getUsuario());
+                setClave(panel.getClave());
+                ret = Usuario.login(panel.getUsuario(), panel.getClave());
+                if (!ret) {
+                    panel.setError(true);
+                    op = JOptionPane.showConfirmDialog(MaimonidesApp.getApplication().getMainFrame(), panel, "Acceso a Maimónides", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                }
             }
+        }else{
+            ret=true;
         }
         return ret;
     }
 
-    public boolean isRecordar() {
+    private boolean isRecordar() {
         return recordar;
     }
 
-    public void setRecordar(boolean recordar) {
+    private void setRecordar(boolean recordar) {
         Preferences.userNodeForPackage(this.getClass()).put("recordar", recordar + "");
         this.recordar = recordar;
         if (!recordar) {
@@ -94,7 +96,7 @@ public class GestorUsuarioClave {
         return clave;
     }
 
-    public void setClave(String clave) {
+    private void setClave(String clave) {
         if (isRecordar()) {
             Preferences.userNodeForPackage(this.getClass()).put("clave", Cripto.encriptar(clave));
         } else {
@@ -107,7 +109,7 @@ public class GestorUsuarioClave {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    private void setUsuario(String usuario) {
         Preferences.userNodeForPackage(this.getClass()).put("usuario", usuario);
         this.usuario = usuario;
     }

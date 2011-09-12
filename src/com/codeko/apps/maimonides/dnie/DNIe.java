@@ -24,6 +24,7 @@
  **/
 package com.codeko.apps.maimonides.dnie;
 
+import com.codeko.apps.maimonides.MaimonidesBean;
 import javax.smartcardio.Card;
 import javax.smartcardio.CardChannel;
 import javax.smartcardio.CardException;
@@ -31,6 +32,7 @@ import javax.smartcardio.CardTerminal;
 import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
 import com.codeko.apps.maimonides.conf.Configuracion;
+import com.codeko.util.Obj;
 import java.io.BufferedOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,7 +70,7 @@ import org.bouncycastle.ocsp.SingleResp;
  *
  * @author Codeko <codeko@codeko.com>
  */
-public class DNIe {
+public class DNIe extends MaimonidesBean {
 
     private static final String confLinux = "name=OpenSC-OpenDNIe\nlibrary=/usr/lib/opensc-pkcs11.so\n";
     private static final String confWindows = "name=OpenSC-OpenDNIe\r\nlibrary=C:\\WINDOWS\\system32\\opensc-pkcs11.dll\r\n";
@@ -77,13 +79,11 @@ public class DNIe {
     private static final String certFirma = "CertFirmaDigital";
     KeyStore keyStore = null;
     private CardTerminal cardTerminal = null;
-    private Card card = null;
     private String nif = null;
     private String fullName = null;
     private String pin = null;
 
-    public DNIe(CardTerminal ct, Card c) {
-        setCard(c);
+    public DNIe(CardTerminal ct) {
         setCardTerminal(ct);
     }
 
@@ -121,14 +121,6 @@ public class DNIe {
         this.nif = nif;
     }
 
-    public Card getCard() {
-        return card;
-    }
-
-    private void setCard(Card card) {
-        this.card = card;
-    }
-
     public CardTerminal getCardTerminal() {
         return cardTerminal;
     }
@@ -137,25 +129,36 @@ public class DNIe {
         this.cardTerminal = cardTerminal;
     }
 
-    public boolean loadPublicData() throws CardException {
-        CardChannel ch = getCard().getBasicChannel();
+    public boolean loadPublicData() {
+        firePropertyChange("message", null, "Conectando con la tarjeta...");
+        Card c = null;
+        CardChannel ch = null;
         try {
-            int offset = 0;
+            System.setProperty("sun.security.smartcardio.t0GetResponse", "false");
 
-            byte[] command = new byte[]{(byte) 0x00, (byte) 0xa4, (byte) 0x04, (byte) 0x00, (byte) 0x0b, (byte) 0x4D, (byte) 0x61, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x72, (byte) 0x2E, (byte) 0x46, (byte) 0x69, (byte) 0x6C, (byte) 0x65};
-            ResponseAPDU r = ch.transmit(new CommandAPDU(command));
-            if ((byte) r.getSW() != (byte) 0x9000) {
-                System.out.println("SW incorrecto");
-                return false;
-            }
+            c = getCardTerminal().connect("T=0");
+            ch = c.getBasicChannel();
+            firePropertyChange("message", null, "Leyendo datos públicos de la tarjeta...");
+
+           
+            int offset = 0;
+            byte[] command =null;
+            ResponseAPDU r=null;
+//            command = new byte[]{(byte) 0x00, (byte) 0xa4, (byte) 0x04, (byte) 0x00, (byte) 0x0b, (byte) 0x4D, (byte) 0x61, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x72, (byte) 0x2E, (byte) 0x46, (byte) 0x69, (byte) 0x6C, (byte) 0x65};
+//            r = ch.transmit(new CommandAPDU(command));
+//            System.out.println(r.getSW());
+//            if ((byte) r.getSW() != (byte) 0x9000) {
+//                System.out.println("SW incorrecto");
+//                return false;
+//            }
 
             //Seleccionamos el directorio PKCS#15 5015
             command = new byte[]{(byte) 0x00, (byte) 0xA4, (byte) 0x00, (byte) 0x00, (byte) 0x02, (byte) 0x50, (byte) 0x15};
             r = ch.transmit(new CommandAPDU(command));
-
+            
             if ((byte) r.getSW() != (byte) 0x9000) {
-                System.out.println("SW incorrecto");
-                return false;
+                System.out.println("SW incorrecto P1: "+r.getSW());
+                //return false;
             }
 
             //Seleccionamos el Certificate Directory File (CDF) del DNIe 6004
@@ -163,10 +166,22 @@ public class DNIe {
             r = ch.transmit(new CommandAPDU(command));
 
             if ((byte) r.getSW() != (byte) 0x9000) {
-                System.out.println("SW incorrecto");
-                return false;
+                System.out.println("SW incorrecto p2: "+r.getSW());
+                //return false;
             }
-
+            
+//            command = new byte[]{(byte) 0x00, (byte) 0xB0, (byte) 0x01, (byte) 0x00, (byte) 0xFF};
+//            r = ch.transmit(new CommandAPDU(command));
+//            System.out.append("Nombre: " + new String(r.getData()));
+//            
+            
+//            r = ch.transmit(new CommandAPDU(new BigInteger("00CA02C200", 16).toByteArray()));
+//            System.out.append("Nombre: " + new String(r.getData()));
+//            r = ch.transmit(new CommandAPDU(new BigInteger("00CA02D009", 16).toByteArray()));
+//            System.out.append("\r\nDNI: " + new String(r.getData()));
+//            r = ch.transmit(new CommandAPDU(new BigInteger("00CA02E109", 16).toByteArray()));
+//            System.out.append("\r\nIDESP: " + new String(r.getData()));
+            
             //Leemos FF bytes del archivo
             command = new byte[]{(byte) 0x00, (byte) 0xB0, (byte) 0x00, (byte) 0x00, (byte) 0xFF};
             r = ch.transmit(new CommandAPDU(command));
@@ -174,14 +189,15 @@ public class DNIe {
 
             if ((byte) r.getSW() == (byte) 0x9000) {
                 byte[] r2 = r.getData();
-                try {
-                    String s = new String(r2);
-                    int porcent = s.indexOf("%");
-                    int fin = s.indexOf("(", porcent);
-                    setFullName(s.substring(porcent + 1, fin));
-                } catch (Exception ex) {
-                    Logger.getLogger(DNIe.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+//                    String s = new String(r2);
+//                    System.out.println(s);
+//                    int porcent = s.indexOf("%");
+//                    int fin = s.indexOf("(", porcent);
+//                    setFullName(s.substring(porcent + 1, fin));
+//                } catch (Exception ex) {
+//                    Logger.getLogger(DNIe.class.getName()).log(Level.SEVERE, null, ex);
+//                }
 
                 if (r2[4] == 0x30) {
                     offset = 4;
@@ -195,7 +211,7 @@ public class DNIe {
                 if (r2[offset] == (byte) 0xA1) {
                     //El certificado empieza aquí
                     byte[] r3 = new byte[9];
-
+                    //118
                     //Nos posicionamos en el byte donde empieza el NIF y leemos sus 9 bytes
                     for (int z = 0; z < 9; z++) {
                         r3[z] = r2[109 + z];
@@ -208,7 +224,14 @@ public class DNIe {
         } catch (Exception e) {
             Logger.getLogger(DNIe.class.getName()).log(Level.SEVERE, null, e);
         } finally {
-            getCard().disconnect(false);
+            if (c != null) {
+                try {
+                    c.disconnect(false);
+                } catch (CardException ex) {
+                    Logger.getLogger(DNIe.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            Obj.cerrar(ch);
         }
         return false;
     }
@@ -405,5 +428,10 @@ public class DNIe {
         fis.close();
         /* firmamos los datos y retornamos el resultado */
         return sig.sign();
+    }
+
+    @Override
+    public String toString() {
+        return getFullName() + "(" + getNif() + ")";
     }
 }

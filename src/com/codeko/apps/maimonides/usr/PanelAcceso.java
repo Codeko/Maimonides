@@ -21,13 +21,17 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.usr;
 
+import com.codeko.apps.maimonides.MaimonidesApp;
+import com.codeko.apps.maimonides.dnie.DNIeLoginManager;
 import com.codeko.util.Str;
 import java.awt.Font;
+import java.awt.Window;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.SwingUtilities;
 
 /**
  * Panel para la petición de usuario y clave 
@@ -42,6 +46,32 @@ public class PanelAcceso extends javax.swing.JPanel {
         lError.setFont(lError.getFont().deriveFont(Font.BOLD));
         lTitulo.setFont(lTitulo.getFont().deriveFont(Font.BOLD));
         lTitulo.setFont(lTitulo.getFont().deriveFont(lTitulo.getFont().getSize() + 2));
+        MaimonidesApp.getApplication().addPropertyChangeListener("usuario", new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                if (pce.getNewValue() != null) {
+                    Window w = SwingUtilities.getWindowAncestor(lInfo);
+                    if (w != null) {
+                        w.dispose();
+                    }
+                }
+            }
+        });
+
+        DNIeLoginManager.getLoginManager().addPropertyChangeListener("message", new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent pce) {
+                final PropertyChangeEvent pce2 = pce;
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        lInfo.setText(pce2.getNewValue() + "");
+                    }
+                });
+            }
+        });
     }
 
     public void setDatos(String usuario, String clave, boolean recordad) {
@@ -54,7 +84,7 @@ public class PanelAcceso extends javax.swing.JPanel {
         return tfusuario.getText().trim();
     }
 
-    public void setError(boolean error) {
+    public final void setError(boolean error) {
         lError.setVisible(error);
     }
 
@@ -82,10 +112,12 @@ public class PanelAcceso extends javax.swing.JPanel {
         cbRecordar = new javax.swing.JCheckBox();
         lError = new javax.swing.JLabel();
         lTitulo = new javax.swing.JLabel();
+        lIntro = new javax.swing.JLabel();
+        lInfo = new javax.swing.JLabel();
 
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelAcceso.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelAcceso.class);
         lUsuario.setText(resourceMap.getString("lUsuario.text")); // NOI18N
         lUsuario.setName("lUsuario"); // NOI18N
 
@@ -120,6 +152,12 @@ public class PanelAcceso extends javax.swing.JPanel {
         lTitulo.setText(resourceMap.getString("lTitulo.text")); // NOI18N
         lTitulo.setName("lTitulo"); // NOI18N
 
+        lIntro.setText(resourceMap.getString("lIntro.text")); // NOI18N
+        lIntro.setName("lIntro"); // NOI18N
+
+        lInfo.setText(resourceMap.getString("lInfo.text")); // NOI18N
+        lInfo.setName("lInfo"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,19 +165,21 @@ public class PanelAcceso extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                    .addComponent(lError, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfusuario, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lClave, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfClave, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                    .addComponent(lInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                    .addComponent(lError, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                    .addComponent(lIntro, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                    .addComponent(lTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(91, 91, 91)
-                        .addComponent(cbRecordar, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)))
+                        .addComponent(cbRecordar, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lClave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                            .addComponent(lUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfusuario, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                            .addComponent(tfClave, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -148,7 +188,9 @@ public class PanelAcceso extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lError)
+                .addComponent(lIntro, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lError, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,6 +201,8 @@ public class PanelAcceso extends javax.swing.JPanel {
                     .addComponent(lClave))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbRecordar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lInfo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -168,13 +212,14 @@ public class PanelAcceso extends javax.swing.JPanel {
     }//GEN-LAST:event_tfusuarioFocusGained
 
     private void tfClaveFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfClaveFocusGained
-       tfClave.selectAll();
+        tfClave.selectAll();
     }//GEN-LAST:event_tfClaveFocusGained
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox cbRecordar;
     private javax.swing.JLabel lClave;
     private javax.swing.JLabel lError;
+    private javax.swing.JLabel lInfo;
+    private javax.swing.JLabel lIntro;
     private javax.swing.JLabel lTitulo;
     private javax.swing.JLabel lUsuario;
     private javax.swing.JPasswordField tfClave;

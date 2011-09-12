@@ -394,7 +394,11 @@ public class MaimonidesView extends FrameView {
         if (u != null) {
             roles = u.getRoles();
             rolesEfectivos = u.getRolesEfectivos();
+            miEditarMisDatos.setVisible(!u.isUsuarioVirtual());
+            miRolesActivos.setVisible(!u.isUsuarioVirtual());
         }
+        //TODO Los menús se tienen que generar dinamicamente
+        
         miRolesAdmin.setVisible((roles & Rol.ROL_ADMIN) == Rol.ROL_ADMIN);
         miRolesDirectivo.setVisible((roles & Rol.ROL_DIRECTIVO) == Rol.ROL_DIRECTIVO);
         miRolesJE.setVisible((roles & Rol.ROL_JEFE_ESTUDIOS) == Rol.ROL_JEFE_ESTUDIOS);
@@ -404,7 +408,6 @@ public class MaimonidesView extends FrameView {
         miRolesDirectivo.setSelected((rolesEfectivos & Rol.ROL_DIRECTIVO) == Rol.ROL_DIRECTIVO);
         miRolesJE.setSelected((rolesEfectivos & Rol.ROL_JEFE_ESTUDIOS) == Rol.ROL_JEFE_ESTUDIOS);
         miRolesProfesor.setSelected((rolesEfectivos & Rol.ROL_PROFESOR) == Rol.ROL_PROFESOR);
-
 
         cambiandoUsuario = false;
         if (u != null) {
@@ -464,7 +467,7 @@ public class MaimonidesView extends FrameView {
         MaimonidesApp.getApplication().show(aboutBox);
     }
 
-    private PropertyChangeListener getControlMensajes() {
+    public PropertyChangeListener getControlMensajes() {
         if (control == null) {
             control = new java.beans.PropertyChangeListener() {
 

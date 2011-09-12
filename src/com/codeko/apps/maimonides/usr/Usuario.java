@@ -21,13 +21,12 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.usr;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.cache.Cache;
+import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.ObjetoBD;
 import com.codeko.apps.maimonides.elementos.Profesor;
 import com.codeko.apps.maimonides.elementos.Unidad;
@@ -71,6 +70,12 @@ public class Usuario extends ObjetoBD {
     GregorianCalendar fechaAlta = new GregorianCalendar();
     @CdkAutoTablaCol(ignorar = true)
     GregorianCalendar fechaBaja = null;
+    @CdkAutoTablaCol(ignorar = true)
+    Alumno alumno = null;
+    @CdkAutoTablaCol(ignorar = true)
+    boolean DNIe = false;
+    @CdkAutoTablaCol(ignorar = true)
+    boolean usuarioVirtual = false;
 
     public Usuario() {
         MaimonidesApp.getApplication().addPropertyChangeListener("anoEscolar", new PropertyChangeListener() {
@@ -93,6 +98,22 @@ public class Usuario extends ObjetoBD {
             Obj.cerrar(st, res);
             throw new InvalidParameterException("No existe ningun usuario con ID " + id);
         }
+    }
+
+    public boolean isDNIe() {
+        return this.DNIe;
+    }
+
+    public void setDNIe(boolean isDNIe) {
+        this.DNIe = isDNIe;
+    }
+
+    public boolean isUsuarioVirtual() {
+        return usuarioVirtual;
+    }
+
+    public void setUsuarioVirtual(boolean usuarioVirtual) {
+        this.usuarioVirtual = usuarioVirtual;
     }
 
     public static Usuario getUsuario(int id) throws Exception {
@@ -172,6 +193,14 @@ public class Usuario extends ObjetoBD {
         //setRolesEfectivos(null);
     }
 
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
+    }
+
     public Integer getRoles() {
         return roles;
     }
@@ -190,7 +219,7 @@ public class Usuario extends ObjetoBD {
                 if (p != null) {
                     Unidad u = Unidad.getUnidadPorTutor(p.getId());
                     if (u != null) {
-                        rolesEfectivos = rolesEfectivos | Rol.ROL_TUTOR;
+                        rolesEfectivos |= Rol.ROL_TUTOR;
                     }
                 }
             }
@@ -304,16 +333,18 @@ public class Usuario extends ObjetoBD {
             PreparedStatement st = null;
             ResultSet rs = null;
             try {
-                st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("SELECT profesor_id FROM usuarios_profesores WHERE usuario_id=? AND ano=?");
-                st.setInt(1, getId());
-                st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
-                rs = st.executeQuery();
-                if (rs.next()) {
-                    int idProf = rs.getInt("profesor_id");
-                    Profesor p = Profesor.getProfesor(idProf);
-                    setProfesor(p);
-                } else {
-                    setProfesor(null);
+                if (!isUsuarioVirtual()) {
+                    st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("SELECT profesor_id FROM usuarios_profesores WHERE usuario_id=? AND ano=?");
+                    st.setInt(1, getId());
+                    st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
+                    rs = st.executeQuery();
+                    if (rs.next()) {
+                        int idProf = rs.getInt("profesor_id");
+                        Profesor p = Profesor.getProfesor(idProf);
+                        setProfesor(p);
+                    } else {
+                        setProfesor(null);
+                    }
                 }
             } catch (Exception ex) {
                 Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -386,10 +417,12 @@ public class Usuario extends ObjetoBD {
     }
 
     @Override
-    public String toString(){
-        String ret=getNombre();
-        if(getProfesor()!=null){
-            ret=getProfesor().getNombreEmail();
+    public String toString() {
+        String ret = getNombre();
+        if (getProfesor() != null) {
+            ret = getProfesor().getNombreEmail();
+        } else if (getAlumno() != null) {
+            ret = getAlumno().getNombreFormateado();
         }
         return ret;
     }

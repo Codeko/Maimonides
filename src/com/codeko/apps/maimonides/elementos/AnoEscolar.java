@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.elementos;
 
 import com.codeko.apps.maimonides.*;
@@ -61,19 +59,46 @@ public class AnoEscolar extends MaimonidesBean implements IObjetoTabla, Cloneabl
         }
     }
 
+    public static AnoEscolar getAnoEscolar() {
+        Statement st = null;
+        ResultSet res = null;
+        try {
+            st = (Statement) MaimonidesApp.getApplication().getConector().getConexion().createStatement();
+            res = st.executeQuery("SELECT id FROM anos ORDER BY ano DESC LIMIT 0,1");
+            Integer id = null;
+            if (res.next()) {
+                id = res.getInt("id");
+            }
+            if (id != null) {
+                Object obj = Cache.get(AnoEscolar.class, id);
+                if (obj != null) {
+                    return (AnoEscolar) obj;
+                } else {
+                    AnoEscolar a = new AnoEscolar(id);
+                    return a;
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AnoEscolar.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Obj.cerrar(st, res);
+        }
+        return null;
+    }
+
     public AnoEscolar() {
     }
 
-    private AnoEscolar(int ano) throws SQLException, NoExisteElementoException {
+    private AnoEscolar(int id) throws SQLException, NoExisteElementoException {
         PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT * FROM anos WHERE id=? LIMIT 1");
-        st.setInt(1, ano);
+        st.setInt(1, id);
         ResultSet res = st.executeQuery();
         if (res.next()) {
             cargarDesdeResultSet(res);
             Obj.cerrar(st, res);
         } else {
             Obj.cerrar(st, res);
-            throw new NoExisteElementoException("No existe el año escolar " + ano);
+            throw new NoExisteElementoException("No existe el año escolar " + id);
         }
     }
 

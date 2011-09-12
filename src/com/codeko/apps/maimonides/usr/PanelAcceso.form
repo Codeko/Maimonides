@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -19,24 +19,27 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lTitulo" pref="411" max="32767" attributes="0"/>
-                  <Component id="lError" pref="411" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="lUsuario" pref="79" max="32767" attributes="2"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfusuario" pref="320" max="32767" attributes="1"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="lClave" pref="79" max="32767" attributes="2"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfClave" pref="320" max="32767" attributes="1"/>
-                  </Group>
+                  <Component id="lInfo" alignment="0" pref="403" max="32767" attributes="0"/>
+                  <Component id="lError" alignment="0" pref="403" max="32767" attributes="0"/>
+                  <Component id="lIntro" alignment="0" pref="403" max="32767" attributes="0"/>
+                  <Component id="lTitulo" alignment="0" pref="403" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-                      <Component id="cbRecordar" pref="320" max="32767" attributes="0"/>
+                      <Component id="cbRecordar" pref="312" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="lClave" alignment="0" pref="69" max="32767" attributes="1"/>
+                          <Component id="lUsuario" alignment="0" pref="69" max="32767" attributes="1"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="tfusuario" pref="308" max="32767" attributes="1"/>
+                          <Component id="tfClave" pref="308" max="32767" attributes="1"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -46,22 +49,26 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="lTitulo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lError" min="-2" max="-2" attributes="0"/>
+              <Component id="lIntro" min="-2" pref="18" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lError" min="-2" pref="26" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="tfusuario" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="tfClave" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lClave" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="cbRecordar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lInfo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -117,6 +124,18 @@
         <Property name="icon" type="javax.swing.Icon" resourceKey="lTitulo.icon"/>
         <Property name="text" type="java.lang.String" resourceKey="lTitulo.text"/>
         <Property name="name" type="java.lang.String" value="lTitulo" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lIntro">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lIntro.text"/>
+        <Property name="name" type="java.lang.String" value="lIntro" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lInfo">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="lInfo.text"/>
+        <Property name="name" type="java.lang.String" value="lInfo" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>
