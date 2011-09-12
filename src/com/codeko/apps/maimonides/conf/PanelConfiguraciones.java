@@ -68,6 +68,7 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
         panelConfiguracionImpresion1 = new com.codeko.apps.maimonides.conf.PanelConfiguracionImpresion();
         panelConfiguracionPlantillas1 = new com.codeko.apps.maimonides.conf.PanelConfiguracionPlantillas();
         panelConfiguracionDigitalizacion1 = new com.codeko.apps.maimonides.conf.PanelConfiguracionDigitalizacion();
+        panelConfiguracionDNIe1 = new com.codeko.apps.maimonides.dnie.config.PanelConfiguracionDNIe();
 
         setName("Form"); // NOI18N
 
@@ -119,6 +120,9 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
         panelConfiguracionDigitalizacion1.setName("panelConfiguracionDigitalizacion1"); // NOI18N
         jTabbedPane1.addTab(resourceMap.getString("panelConfiguracionDigitalizacion1.TabConstraints.tabTitle"), resourceMap.getIcon("panelConfiguracionDigitalizacion1.TabConstraints.tabIcon"), panelConfiguracionDigitalizacion1); // NOI18N
 
+        panelConfiguracionDNIe1.setName("panelConfiguracionDNIe1"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("panelConfiguracionDNIe1.TabConstraints.tabTitle"), resourceMap.getIcon("panelConfiguracionDNIe1.TabConstraints.tabIcon"), panelConfiguracionDNIe1); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,6 +144,7 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
     private javax.swing.JTabbedPane jTabbedPane2;
     private com.codeko.apps.maimonides.seneca.PanelConfigSeneca panelConfigSeneca1;
     private com.codeko.apps.maimonides.convivencia.PanelConfiguracionConvivencia panelConfiguracionConvivencia1;
+    private com.codeko.apps.maimonides.dnie.config.PanelConfiguracionDNIe panelConfiguracionDNIe1;
     private com.codeko.apps.maimonides.conf.PanelConfiguracionDatosCentro panelConfiguracionDatosCentro1;
     private com.codeko.apps.maimonides.conf.PanelConfiguracionDigitalizacion panelConfiguracionDigitalizacion1;
     private com.codeko.apps.maimonides.convivencia.PanelConfiguracionExpulsiones panelConfiguracionExpulsiones1;

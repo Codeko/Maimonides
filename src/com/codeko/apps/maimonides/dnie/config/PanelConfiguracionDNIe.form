@@ -1,0 +1,134 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Events>
+    <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="formAncestorAdded"/>
+  </Events>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jXTitledSeparator1" alignment="0" pref="430" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="cbRutaOpenSC" min="-2" pref="237" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="lSepConfigLibs" alignment="1" pref="430" max="32767" attributes="0"/>
+                  <Component id="cbDNIeGlobal" alignment="0" pref="430" max="32767" attributes="0"/>
+                  <Component id="cbDNIeLocal" alignment="0" pref="430" max="32767" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="cbSolicitarClave" alignment="0" max="32767" attributes="1"/>
+                      <Component id="jXTitledSeparator2" alignment="0" pref="422" max="32767" attributes="1"/>
+                  </Group>
+                  <Component id="bGuardar" alignment="1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lSepConfigLibs" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="cbRutaOpenSC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jXTitledSeparator1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cbDNIeGlobal" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cbDNIeLocal" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jXTitledSeparator2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cbSolicitarClave" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="73" max="32767" attributes="0"/>
+              <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="org.jdesktop.swingx.JXTitledSeparator" name="lSepConfigLibs">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Bibliotecas de acceso a DNIe"/>
+        <Property name="name" type="java.lang.String" value="lSepConfigLibs" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cbRutaOpenSC">
+      <Properties>
+        <Property name="editable" type="boolean" value="true"/>
+        <Property name="name" type="java.lang.String" value="cbRutaOpenSC" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ruta a OpenSC-OpenDNIe"/>
+        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXTitledSeparator" name="jXTitledSeparator1">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Activaci&#xf3;n de DNIe"/>
+        <Property name="name" type="java.lang.String" value="jXTitledSeparator1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="cbDNIeGlobal">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Acceso con DNIe activado globalmente"/>
+        <Property name="name" type="java.lang.String" value="cbDNIeGlobal" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="cbDNIeLocal">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Acceso con DNIe activado en este equipo"/>
+        <Property name="name" type="java.lang.String" value="cbDNIeLocal" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="org.jdesktop.swingx.JXTitledSeparator" name="jXTitledSeparator2">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="Solicitar clave de DNIe"/>
+        <Property name="name" type="java.lang.String" value="jXTitledSeparator2" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cbSolicitarClave">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="Solicitar clave siempre"/>
+            <StringItem index="1" value="Solicitar s&#xf3;lo para usuarios externos (Alumnos/Padres)"/>
+          </StringArray>
+        </Property>
+        <Property name="name" type="java.lang.String" value="cbSolicitarClave" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="bGuardar">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.dnie.config.PanelConfiguracionDNIe" id="guardar" methodName="guardar"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bGuardar" noResource="true"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

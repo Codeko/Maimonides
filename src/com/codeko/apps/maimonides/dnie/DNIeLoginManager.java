@@ -26,7 +26,6 @@ package com.codeko.apps.maimonides.dnie;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesBean;
-import com.codeko.apps.maimonides.MaimonidesView;
 import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.usr.Rol;
@@ -54,7 +53,6 @@ public class DNIeLoginManager extends MaimonidesBean {
 
     public static void init() {
         if (Configuracion.isDNIeAccessEnabled()) {
-            DNIeObserver.addPropertyListener(MaimonidesApp.getMaimonidesView().getControlMensajes());
             DNIeObserver.addPropertyListener(new PropertyChangeListener() {
 
                 @Override

@@ -257,7 +257,7 @@ public class DNIe extends MaimonidesBean {
     }
 
     private static byte[] getConfig() throws Exception {
-        String customConfig = Configuracion.getLocal(DNIe.class, "custom_opensc_config", "");
+        String customConfig = com.codeko.apps.maimonides.dnie.Configuracion.getOpenSCPath();
         if (!customConfig.trim().equals("")) {
             return customConfig.getBytes();
         } else if (OS.isLinux()) {

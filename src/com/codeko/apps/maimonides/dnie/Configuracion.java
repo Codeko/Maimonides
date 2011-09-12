@@ -26,6 +26,7 @@ package com.codeko.apps.maimonides.dnie;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.util.Num;
+import com.codeko.util.Str;
 
 /**
  *
@@ -33,16 +34,19 @@ import com.codeko.util.Num;
  */
 public class Configuracion extends com.codeko.apps.maimonides.conf.Configuracion {
 
-    public static final int DNIE_PASS_POLICY_NO_PASS = 0;
+    public static final int DNIE_PASS_POLICY_NO_PASS = 2;
     public static final int DNIE_PASS_POLICY_PASS_FOR_EXTERNAL = 1;
-    public static final int DNIE_PASS_POLICY_PASS_FOR_ALL = 2;
+    public static final int DNIE_PASS_POLICY_PASS_FOR_ALL = 0;
 
     public static boolean isGlobalDNIeAccessEnabled() {
-        return Num.getInt(MaimonidesApp.getApplication().getConfiguracion().get("dnie_enabled", "1")) > 0;
+        return Num.getInt(MaimonidesApp.getApplication().getConfiguracion().get("dnie_enabled", "0")) > 0;
     }
-
+    
+    public static boolean isLocalDNIeAccessEnabled() {
+        return Num.getInt(getLocal(Configuracion.class, "dnie_enabled", "1")) > 0 ;
+    }
     public static boolean isDNIeAccessEnabled() {
-        return Num.getInt(getLocal(Configuracion.class, "dnie_enabled", "1")) > 0 && isGlobalDNIeAccessEnabled();
+        return isLocalDNIeAccessEnabled() && isGlobalDNIeAccessEnabled();
     }
 
     public static void setDNIeAccessEnabled(boolean enabled) {
@@ -59,5 +63,13 @@ public class Configuracion extends com.codeko.apps.maimonides.conf.Configuracion
 
     public static void setDNIePassPolicy(int policy) {
         MaimonidesApp.getApplication().getConfiguracion().set("dnie_pass_policy", "" + policy);
+    }
+
+    public static void setOpenSCPath(String path) {
+        Configuracion.setLocal(DNIe.class,"custom_opensc_config", Str.noNulo(path).trim());
+    }
+    
+    public static String getOpenSCPath(){
+        return Configuracion.getLocal(DNIe.class, "custom_opensc_config", "");
     }
 }
