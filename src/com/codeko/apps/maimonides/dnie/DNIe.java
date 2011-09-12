@@ -31,7 +31,6 @@ import javax.smartcardio.CardException;
 import javax.smartcardio.CardTerminal;
 import javax.smartcardio.CommandAPDU;
 import javax.smartcardio.ResponseAPDU;
-import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.util.Obj;
 import java.io.BufferedOutputStream;
 import java.util.logging.Level;
