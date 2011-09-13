@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelInfoPartes.java
  *
@@ -53,8 +51,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -172,7 +170,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     @Action
-    public Task actualizarEstados() {
+    public Task<ArrayList<Component>, Void> actualizarEstados() {
         return new ActualizarEstadosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -199,7 +197,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         this.cargado = cargado;
     }
 
-    private class ActualizarEstadosTask extends org.jdesktop.application.Task<Vector<Component>, Void> {
+    private class ActualizarEstadosTask extends org.jdesktop.application.Task<ArrayList<Component>, Void> {
 
         ActualizarEstadosTask(org.jdesktop.application.Application app) {
             super(app);
@@ -211,13 +209,14 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         }
 
         @Override
-        protected Vector<Component> doInBackground() {
-            Vector<Component> comps = new Vector<Component>();
+        protected ArrayList<Component> doInBackground() {
+            ArrayList<Component> comps = new ArrayList<Component>();
             verificarBotonImpresion();
             try {
                 firePropertyChange("message", null, "Verificando mensajes de digitalización...");
                 //Vemos si hay mensajes pendiente
-                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT count(*) FROM partes_advertencias");
+                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT count(pa.*) FROM partes_advertencias AS pa JOIN partes AS p ON pa.parte_id=p.id WHERE p.ano=?");
+                st.setInt(1, MaimonidesApp.getApplication().getAnoEscolar().getId());
                 ResultSet res = st.executeQuery();
                 int num = 0;
                 if (res.next()) {
@@ -294,7 +293,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
         }
 
         @Override
-        protected void succeeded(Vector<Component> result) {
+        protected void succeeded(ArrayList<Component> result) {
             panelMensajes.removeAll();
             for (Component c : result) {
                 panelMensajes.add(Box.createRigidArea(new Dimension(10, 10)));
@@ -321,7 +320,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
     }
 
     @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "partesNoImpresos")
-    public Task imprimirPartes() {
+    public Task<Object, Void> imprimirPartes() {
         return new ImprimirPartesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 

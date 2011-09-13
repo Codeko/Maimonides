@@ -465,7 +465,8 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
             }
             try {
                 boolean haySinIntervencion = false;
-                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT * FROM partes_advertencias ");
+                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT pa.* FROM partes_advertencias AS pa JOIN partes AS p ON pa.parte_id=p.id WHERE p.ano=? ");
+                st.setInt(1, MaimonidesApp.getApplication().getAnoEscolar().getId());
                 ResultSet res = st.executeQuery();
                 while (res.next()) {
                     MensajeDigitalizacion m = new MensajeDigitalizacion();
