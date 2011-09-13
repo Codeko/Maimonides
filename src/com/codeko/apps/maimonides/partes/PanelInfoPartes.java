@@ -215,7 +215,7 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
             try {
                 firePropertyChange("message", null, "Verificando mensajes de digitalización...");
                 //Vemos si hay mensajes pendiente
-                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT count(pa.*) FROM partes_advertencias AS pa JOIN partes AS p ON pa.parte_id=p.id WHERE p.ano=?");
+                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT count(*) FROM partes_advertencias AS pa JOIN partes AS p ON pa.parte_id=p.id WHERE p.ano=?");
                 st.setInt(1, MaimonidesApp.getApplication().getAnoEscolar().getId());
                 ResultSet res = st.executeQuery();
                 int num = 0;
