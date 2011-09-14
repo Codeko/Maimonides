@@ -69,6 +69,7 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
         panelConfiguracionPlantillas1 = new com.codeko.apps.maimonides.conf.PanelConfiguracionPlantillas();
         panelConfiguracionDigitalizacion1 = new com.codeko.apps.maimonides.conf.PanelConfiguracionDigitalizacion();
         panelConfiguracionDNIe1 = new com.codeko.apps.maimonides.dnie.config.PanelConfiguracionDNIe();
+        panelConfiguracionAcceso1 = new com.codeko.apps.maimonides.usr.config.PanelConfiguracionAcceso();
 
         setName("Form"); // NOI18N
 
@@ -123,15 +124,18 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
         panelConfiguracionDNIe1.setName("panelConfiguracionDNIe1"); // NOI18N
         jTabbedPane1.addTab(resourceMap.getString("panelConfiguracionDNIe1.TabConstraints.tabTitle"), resourceMap.getIcon("panelConfiguracionDNIe1.TabConstraints.tabIcon"), panelConfiguracionDNIe1); // NOI18N
 
+        panelConfiguracionAcceso1.setName("panelConfiguracionAcceso1"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("panelConfiguracionAcceso1.TabConstraints.tabTitle"), resourceMap.getIcon("panelConfiguracionAcceso1.TabConstraints.tabIcon"), panelConfiguracionAcceso1); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -143,6 +147,7 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private com.codeko.apps.maimonides.seneca.PanelConfigSeneca panelConfigSeneca1;
+    private com.codeko.apps.maimonides.usr.config.PanelConfiguracionAcceso panelConfiguracionAcceso1;
     private com.codeko.apps.maimonides.convivencia.PanelConfiguracionConvivencia panelConfiguracionConvivencia1;
     private com.codeko.apps.maimonides.dnie.config.PanelConfiguracionDNIe panelConfiguracionDNIe1;
     private com.codeko.apps.maimonides.conf.PanelConfiguracionDatosCentro panelConfiguracionDatosCentro1;

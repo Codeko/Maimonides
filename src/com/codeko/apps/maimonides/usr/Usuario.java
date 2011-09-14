@@ -30,6 +30,7 @@ import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.ObjetoBD;
 import com.codeko.apps.maimonides.elementos.Profesor;
 import com.codeko.apps.maimonides.elementos.Unidad;
+import com.codeko.apps.maimonides.seneca.SenecaUserLoginTask;
 import com.codeko.swing.CdkAutoTabla;
 import com.codeko.swing.CdkAutoTablaCol;
 import com.codeko.util.Cripto;
@@ -189,6 +190,9 @@ public class Usuario extends ObjetoBD {
     public void setProfesor(Profesor profesor) {
         Profesor old = this.profesor;
         this.profesor = profesor;
+        if(profesor!=null){
+            this.setNombre(profesor.getDescripcionObjeto());
+        }
         firePropertyChange("profesor", old, profesor);
         //setRolesEfectivos(null);
     }
@@ -345,6 +349,21 @@ public class Usuario extends ObjetoBD {
                     } else {
                         setProfesor(null);
                     }
+                }else if(!getNombre().isEmpty() && (getRoles()&Rol.ROL_PROFESOR)==Rol.ROL_PROFESOR){
+                    //Si es un usuario virtual cargamos el profesor por el nombre
+                    st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("SELECT * FROM profesores WHERE CONCAT(apellido1,' ',apellido2,', ',nombre)=? AND ano=? ");
+                    st.setString(1, getNombre());
+                    st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
+                    rs = st.executeQuery();
+                    if (rs.next()) {
+                        Profesor p = new Profesor();
+                        p.cargarDesdeResultSet(rs);
+                        setProfesor(p);
+                    } else {
+                        setProfesor(null);
+                    }
+                }else if(isDNIe()){
+                    //TODO Implementar carga por DNIe
                 }
             } catch (Exception ex) {
                 Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -373,6 +392,7 @@ public class Usuario extends ObjetoBD {
 
     public static boolean login(String usr, String pass) {
         boolean ret = false;
+        
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
@@ -391,17 +411,25 @@ public class Usuario extends ObjetoBD {
         } catch (Exception ex) {
             Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Creamos un usuario estandar para tener siempre acceso
-        if (!ret && usr.equals("codeko") && Cripto.md5(pass).equals("e8214457b9a1e0f6c47b6d1146261a01")) {
-            ret = true;
-            Usuario u = new Usuario();
-            u.setNombre("Codeko");
-            u.setRoles(Rol.ROL_ADMIN | Rol.ROL_DIRECTIVO | Rol.ROL_JEFE_ESTUDIOS | Rol.ROL_PROFESOR);
-            u.setId(-1);
-            MaimonidesApp.getApplication().setUsuario(u);
+        
+        if(!ret && Configuracion.isLoginWithSeneca()){
+            SenecaUserLoginTask task=new SenecaUserLoginTask(MaimonidesApp.getApplication(),usr,pass);
+            task.doLogin();
+            //TODO Sería mejor que la función que llama a esta se encargue de escuchar los resultados
+            //En vez de este bucle
+            while(!task.isDone()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            ret=task.ret;
         }
         return ret;
     }
+    
+
 
     public static String getIUA() {
         String usr = "0:";

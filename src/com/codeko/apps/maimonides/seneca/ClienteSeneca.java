@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.seneca;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
@@ -38,6 +36,8 @@ import com.codeko.apps.maimonides.elementos.Profesor;
 import com.codeko.apps.maimonides.elementos.TramoHorario;
 import com.codeko.apps.maimonides.elementos.Unidad;
 import com.codeko.apps.maimonides.seneca.operaciones.envioFicherosFaltas.GestorEnvioFaltas;
+import com.codeko.apps.maimonides.usr.Rol;
+import com.codeko.apps.maimonides.usr.Usuario;
 import com.codeko.util.Archivo;
 import com.codeko.util.Fechas;
 import com.codeko.util.Num;
@@ -50,6 +50,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -102,8 +103,11 @@ import org.jdesktop.application.Task;
 //TODO Implementar que todas las respuestas se revisen y se busquen cadenas como 'excecido tiempo de inactividad y esas cosa
 public class ClienteSeneca extends MaimonidesBean {
 
+    private static ScriptEngine engine = null;
     final static String PERFIL_DIRECCION = "Dirección";
     final static String PERFIL_PROFESOR = "Profesorado";
+    final static int COD_PERFIL_DIRECCION = 161;
+    final static int COD_PERFIL_PROFESOR = 2;
     boolean loggeado = false;
     String usuario = null;// "gr7693gr";
     String clave = null;// "gr7693gr";
@@ -115,7 +119,7 @@ public class ClienteSeneca extends MaimonidesBean {
     boolean debugMode = false;
     String ultimoError = "";
     Exception ultimaExcepcion = null;
-    String perfilActivo = PERFIL_DIRECCION;
+    String perfilActivo = null;
 
     public ClienteSeneca(String usuario, String clave) {
         setUsuario(usuario);
@@ -203,13 +207,13 @@ public class ClienteSeneca extends MaimonidesBean {
     public String getClaveCodificada() {
         if (claveCodificada == null) {
             try {
-                String js = Archivo.getContenido(this.getClass().getResource("resources/cifrado.js"), "latin1");
-                ScriptEngineManager manager = new ScriptEngineManager();
-                ScriptEngine engine = manager.getEngineByName("js");
-                //Añadimos al script la llamada a la funcion
-                js += "\ncifrar('" + getClave() + "');";
-                //Y recuperamos el contenido
-                claveCodificada = engine.eval(js).toString();
+                if (engine == null) {
+                    String js = Archivo.getContenido(this.getClass().getResource("resources/cifrado.js"), "latin1");
+                    ScriptEngineManager manager = new ScriptEngineManager();
+                    engine = manager.getEngineByName("js");
+                    engine.eval(js);
+                }
+                claveCodificada = engine.eval("cifrar('" + getClave() + "');").toString();
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -300,6 +304,90 @@ public class ClienteSeneca extends MaimonidesBean {
         return hacerLogin(1);
     }
 
+    private String cargarDatosUsuarioActual() throws IOException {
+
+        firePropertyChange("message", null, "Cargando datos de usuario");
+        HttpGet get = new HttpGet(getUrlBase() + "BarraNavegacion.jsp");
+        Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando datos de usuario.");
+        HttpResponse response = getCliente().execute(get);
+        String texto = EntityUtils.toString(response.getEntity());
+        Source source = new Source(texto);
+        Element el=source.getElementById("usuario");
+        if(el!=null){
+            String content=el.getContent().getTextExtractor().toString();
+            return content.substring(0, content.indexOf(")"));
+        }
+        return "";
+    }
+
+    private void cargarPerfil() throws UnsupportedEncodingException, IOException {
+        firePropertyChange("message", null, "Cargando perfil " + getPerfilActivo());
+        //Lo seleccionamos
+        HttpPost post = new HttpPost(getUrlBase() + "PuestosOrigenPerfil.jsp?D_PERFIL=" + URLEncoder.encode(getPerfilActivo(), "UTF-8") + "&rndval=72277307");
+        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("CPERFILES", (getPerfilActivo().equals(PERFIL_DIRECCION)?COD_PERFIL_DIRECCION:COD_PERFIL_PROFESOR) + ""));
+        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Seleccionando perfil {0}", getPerfilActivo());
+        HttpResponse response = getCliente().execute(post);
+        String texto = EntityUtils.toString(response.getEntity());
+        if (isDebugMode()) {
+            System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+        }
+        if (isOk(response, texto, false)) {
+            //Hacemos esto porque se envía la fecha de toma de posesión y no la sabemos
+            String src = "document.location.replace('CargarPerfil.jsp?".toLowerCase();
+            int posIni = texto.toLowerCase().indexOf(src) + src.length();
+            int posFin = texto.indexOf("')", posIni);
+            String qs = texto.substring(posIni, posFin);
+            HttpGet get = new HttpGet(getUrlBase() + "CargarPerfil.jsp?" + qs);
+            Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando perfil de Séneca.");
+            response = getCliente().execute(get);
+            texto = EntityUtils.toString(response.getEntity());
+            if (isDebugMode()) {
+                System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+            }
+            setLoggeado(isOk(response, texto, false));
+        }
+    }
+
+    private void seleccionarPerfil() throws UnsupportedEncodingException, IOException {
+        firePropertyChange("message", null, "Cargando lista de perfiles");
+        //Ahora tenemos que elegir el perfil
+        HttpPost post = new HttpPost(getUrlBase() + "Perfiles.jsp?rndval=72277307");
+        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("USUARIO", getUsuario()));
+        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando lista de perfile de Séneca.");
+        HttpResponse response = getCliente().execute(post);
+        String texto = EntityUtils.toString(response.getEntity());
+        if (isDebugMode()) {
+            System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+        }
+        if (isOk(response, texto, false)) {
+            //tenemos que seleccionar el perfil activo si no existe
+            if(texto.indexOf(PERFIL_DIRECCION)!=-1){
+                setPerfilActivo(PERFIL_DIRECCION);
+            }else if(texto.indexOf(PERFIL_PROFESOR)!=-1){
+                setPerfilActivo(PERFIL_PROFESOR);
+            }else{
+                setPerfilActivo(null);
+            }
+            
+            if (getPerfilActivo()!=null) {
+                cargarPerfil();
+            } else {
+                setLoggeado(false);
+                setUltimoError("No se ha podido seleccionar el perfil '" + getPerfilActivo() + "'.");
+                setUltimaExcepcion(null);
+            }
+        } else {
+            setLoggeado(false);
+            setUltimoError("No se ha podido seleccionar el perfil de usuario.");
+            setUltimaExcepcion(null);
+        }
+
+    }
+
     public boolean hacerLogin(int intento) {
         if (!isLoggeado()) {
             if (getCliente() != null) {
@@ -328,57 +416,8 @@ public class ClienteSeneca extends MaimonidesBean {
                     texto = EntityUtils.toString(response.getEntity());
                     setLoggeado((response.getStatusLine().getStatusCode() == 200 && texto.indexOf("IdenUsu.jsp?INCORRECTO") == -1));
                     if (isLoggeado()) {
-                        firePropertyChange("message", null, "Cargando perfil Séneca: Dirección");
-                        //Ahora tenemos que elegir el perfil
-                        post = new HttpPost(getUrlBase() + "Perfiles.jsp?rndval=AEKVLCHKPMPMQWDRAE");
-                        nameValuePairs = new ArrayList<NameValuePair>(1);
-                        nameValuePairs.add(new BasicNameValuePair("USUARIO", getUsuario()));
-                        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                        Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando lista de perfile de Séneca.");
-                        response = getCliente().execute(post);
-                        texto = EntityUtils.toString(response.getEntity());
-                        if (isDebugMode()) {
-                            System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
-                        }
-                        if (isOk(response, texto, false)) {
-                            if (texto.indexOf(getPerfilActivo()) != -1) {
-                                //Lo seleccionamos
-                                post = new HttpPost(getUrlBase() + "PuestosOrigenPerfil.jsp?D_PERFIL=Direcci%F3n&rndval=PMPMKVPMLCKVDRQWGSKV&");
-                                nameValuePairs = new ArrayList<NameValuePair>(1);
-                                nameValuePairs.add(new BasicNameValuePair("CPERFILES", "161"));
-                                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                                Logger.getLogger(ClienteSeneca.class.getName()).info("Seleccionando perfil de Séneca.");
-                                response = getCliente().execute(post);
-                                texto = EntityUtils.toString(response.getEntity());
-                                if (isDebugMode()) {
-                                    System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
-                                }
-                                if (isOk(response, texto, false)) {
-                                    //Hacemos esto porque se envía la fecha de toma de posesión y no la sabemos
-                                    String src = "document.location.replace('CargarPerfil.jsp?".toLowerCase();
-                                    int posIni = texto.toLowerCase().indexOf(src) + src.length();
-                                    int posFin = texto.indexOf("')", posIni);
-                                    String qs = texto.substring(posIni, posFin);
-                                    get = new HttpGet(getUrlBase() + "CargarPerfil.jsp?" + qs);
-                                    Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando perfil de Séneca.");
-                                    response = getCliente().execute(get);
-                                    texto = EntityUtils.toString(response.getEntity());
-                                    if (isDebugMode()) {
-                                        System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
-                                    }
-                                    setLoggeado(isOk(response, texto, false));
-                                }
-                            } else {
-                                setLoggeado(false);
-                                setUltimoError("No se ha podido seleccionar el perfil '" + getPerfilActivo() + "'.");
-                                setUltimaExcepcion(null);
-                            }
-                        } else {
-                            setLoggeado(false);
-                            setUltimoError("No se ha podido seleccionar el perfil de usuario.");
-                            setUltimaExcepcion(null);
-                        }
+                        //TODO Por alguna razon esto falla siempre la primera vez y funciona la segunda
+                        seleccionarPerfil();
                     } else {
                         setUltimoError("No se ha podido hacer login: Usuario o clave no válidos.");
                         setUltimaExcepcion(null);
@@ -1072,5 +1111,33 @@ public class ClienteSeneca extends MaimonidesBean {
             System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
         }
         return isOk(response, texto);
+    }
+
+    public Usuario senecaUserLogin() {
+        Usuario u = null;
+        if (hacerLogin()) {
+            u = new Usuario();
+            u.setUsuarioVirtual(true);
+            u.setNombre(getUsuario());
+            u.setRoles(Rol.ROL_PROFESOR);
+            try {
+                String datosUsuario=cargarDatosUsuarioActual();
+                if(!Str.noNulo(datosUsuario).trim().equals("")){
+                    if(datosUsuario.contains(PERFIL_DIRECCION)){
+                        u.setRoles(Rol.ROL_PROFESOR | Rol.ROL_DIRECTIVO | Rol.ROL_JEFE_ESTUDIOS);
+                    }
+                    datosUsuario=datosUsuario.replace(PERFIL_DIRECCION, "");
+                    datosUsuario=datosUsuario.replace(PERFIL_PROFESOR, "");
+                    datosUsuario=datosUsuario.replace("(", "");
+                    datosUsuario=datosUsuario.replace(")", "");
+                    u.setNombre(datosUsuario.trim());
+                    //Con el nombre asignado la ficha se encarga automáticamente de cargar el profesor asociado
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        hacerLogout();
+        return u;
     }
 }

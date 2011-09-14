@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * MaimonidesView.java
  */
@@ -397,7 +395,7 @@ public class MaimonidesView extends FrameView {
             miEditarMisDatos.setVisible(!u.isUsuarioVirtual());
         }
         //TODO Los menús se tienen que generar dinamicamente
-        
+
         miRolesAdmin.setVisible((roles & Rol.ROL_ADMIN) == Rol.ROL_ADMIN);
         miRolesDirectivo.setVisible((roles & Rol.ROL_DIRECTIVO) == Rol.ROL_DIRECTIVO);
         miRolesJE.setVisible((roles & Rol.ROL_JEFE_ESTUDIOS) == Rol.ROL_JEFE_ESTUDIOS);
@@ -409,8 +407,15 @@ public class MaimonidesView extends FrameView {
         miRolesProfesor.setSelected((rolesEfectivos & Rol.ROL_PROFESOR) == Rol.ROL_PROFESOR);
 
         cambiandoUsuario = false;
+
         if (u != null) {
-            inicio();
+            //Vemos si en este punto existe año escolar
+            if (MaimonidesApp.getApplication().getAnoEscolar() == null) {
+                JOptionPane.showMessageDialog(this.getFrame(), "No existe ningún año escolar activo.\nPara poder trabajar necesita especificar el año escolar.\nPor favor asigne el año escolar activo.", "Año escolar activo", JOptionPane.WARNING_MESSAGE);
+                configAnoEscolar();
+            } else {
+                inicio();
+            }
         }
     }
 
@@ -983,10 +988,10 @@ public class MaimonidesView extends FrameView {
         this.conectado = b;
         firePropertyChange("conectado", old, isConectado());
         //Vemos si en este punto existe año escolar
-        if (b && (b != old) && MaimonidesApp.getApplication().getAnoEscolar() == null) {
-            JOptionPane.showMessageDialog(this.getFrame(), "No existe ningún año escolar activo.\nPara poder trabajar necesita especificar el año escolar.\nPor favor asigne el año escolar activo.", "Año escolar activo", JOptionPane.WARNING_MESSAGE);
-            configAnoEscolar();
-        }
+//        if (b && (b != old) && MaimonidesApp.getApplication().getAnoEscolar() == null) {
+//            JOptionPane.showMessageDialog(this.getFrame(), "No existe ningún año escolar activo.\nPara poder trabajar necesita especificar el año escolar.\nPor favor asigne el año escolar activo.", "Año escolar activo", JOptionPane.WARNING_MESSAGE);
+//            configAnoEscolar();
+//        }
     }
     private boolean anoAsignado = false;
 
@@ -1290,7 +1295,7 @@ public class MaimonidesView extends FrameView {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task<Void, Void>  mostrarFichaElemento() {
+    public Task<Void, Void> mostrarFichaElemento() {
         return new MostrarElementoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -1304,7 +1309,7 @@ public class MaimonidesView extends FrameView {
         @Override
         protected Void doInBackground() {
             if (getElementoActivo() instanceof Alumno) {
-                Alumno a=(Alumno) getElementoActivo();
+                Alumno a = (Alumno) getElementoActivo();
                 setMessage("Abriendo ficha de " + a + "...");
                 fichasAlumnos();
                 JComponent c = getPanel(PanelAlumnos2.class, "Alumnos");
@@ -1312,15 +1317,15 @@ public class MaimonidesView extends FrameView {
                     PanelAlumnos2 p = (PanelAlumnos2) c;
                     p.mostrarAlumno(a);
                 }
-            }else if(getElementoActivo() instanceof ParteConvivencia){
-                ParteConvivencia p=(ParteConvivencia)getElementoActivo();
+            } else if (getElementoActivo() instanceof ParteConvivencia) {
+                ParteConvivencia p = (ParteConvivencia) getElementoActivo();
                 mostrarPartesConvivencia();
-                JComponent c = getPanel(PanelPartes.class,"Partes de convivencia");
+                JComponent c = getPanel(PanelPartes.class, "Partes de convivencia");
                 if (c instanceof PanelPartes) {
                     PanelPartes pp = (PanelPartes) c;
                     pp.setParte(p);
                 }
-            }else{
+            } else {
                 setMessage("No se ha podido abrir la ficha de " + getElementoActivo().getNombreObjeto() + ".");
             }
             return null;
@@ -1337,7 +1342,7 @@ public class MaimonidesView extends FrameView {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "anoAsignado")
-    public Task exportarFicheroHorariosSeneca() {
+    public Task<File, Void> exportarFicheroHorariosSeneca() {
         return new ExportarFicheroHorariosSenecaTask(getApplication());
     }
 

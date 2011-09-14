@@ -120,9 +120,9 @@ public class MaimonidesApp extends SingleFrameApplication {
         }
 
     }
-    
-    public boolean isLoggedIn(){
-        return getUsuario()!=null;
+
+    public boolean isLoggedIn() {
+        return getUsuario() != null;
     }
 
     private void asignarAnoEscolarUsuario() {
@@ -190,10 +190,7 @@ public class MaimonidesApp extends SingleFrameApplication {
         }
         String infoUsr = " ";
         if (getUsuario() != null) {
-            infoUsr = " :: " + getUsuario().getNombre();
-            if (getUsuario().getProfesor() != null) {
-                infoUsr += " - " + getUsuario().getProfesor().getDescripcionObjeto();
-            }
+            infoUsr = " :: " + getUsuario();
         }
         getMainFrame().setTitle(this.getContext().getResourceMap().getString("Application.title") + infoAno + infoUsr);
     }
@@ -418,11 +415,7 @@ public class MaimonidesApp extends SingleFrameApplication {
             public void succeeded(TaskEvent te) {
                 Boolean ret = (Boolean) te.getValue();
                 if (ret) {
-                    if (operacionesPostConexion()) {
-                        MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "actualizarVersion");
-                    } else {
-                        quit(null);
-                    }
+                    operacionesPostConexion();
                 } else {
                     reiniciarTrasEditarConfig = true;
                     MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "editarConexion");
@@ -520,6 +513,24 @@ public class MaimonidesApp extends SingleFrameApplication {
         }
     }
 
+    private class LoginTask extends org.jdesktop.application.Task<Boolean, Void> {
+
+        LoginTask(org.jdesktop.application.Application app) {
+            super(app);
+        }
+
+        @Override
+        protected Boolean doInBackground() {
+            boolean ret = false;
+            ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();
+            return ret;
+        }
+
+        @Override
+        protected void succeeded(Boolean result) {
+        }
+    }
+
     private boolean operacionesPostConexion() {
         boolean ret = true;
         //Vemos si la versión del programa es la misma que la versión de la base de datos
@@ -530,9 +541,58 @@ public class MaimonidesApp extends SingleFrameApplication {
         DNIeLoginManager.init();
         //Ahora preguntamos el usuario y clave
         if (ret) {
-            ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();
+            //ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();
+            MaimonidesUtil.ejecutarTask(this, "hacerLogin");
         }
         return ret;
+    }
+
+    @Action(block = Task.BlockingScope.NONE)
+    public Task<Boolean, Void> hacerLogin() {
+        LoginTask t = new LoginTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
+        t.addTaskListener(new TaskListener<Boolean, Void>() {
+
+            @Override
+            public void doInBackground(TaskEvent te) {
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void process(TaskEvent te) {
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void succeeded(TaskEvent te) {
+                Boolean ret = (Boolean) te.getValue();
+                if (ret) {
+                    MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "actualizarVersion");
+                } else {
+                    quit(null);
+                }
+            }
+
+            @Override
+            public void failed(TaskEvent te) {
+                quit(null);
+            }
+
+            @Override
+            public void cancelled(TaskEvent te) {
+                quit(null);
+            }
+
+            @Override
+            public void interrupted(TaskEvent te) {
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void finished(TaskEvent te) {
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        return t;
     }
 
     public static MaimonidesView getMaimonidesView() {
