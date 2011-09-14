@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.elementos;
 
 import com.codeko.apps.maimonides.*;
@@ -100,7 +98,7 @@ public class Unidad extends ObjetoBDConCod implements Comparable<Unidad> {
     public static Unidad getUnidad(AnoEscolar ano, int codigo) {
         Unidad u = null;
         try {
-            u=new Unidad(ano, codigo);
+            u = new Unidad(ano, codigo);
         } catch (Exception ex) {
             Logger.getLogger(Unidad.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -526,5 +524,46 @@ public class Unidad extends ObjetoBDConCod implements Comparable<Unidad> {
     @Override
     public String getTabla() {
         return "unidades";
+    }
+
+    public void cargarDatosImportacionDesdeNombre(String nombre) {
+        this.setCursoGrupo(nombre);
+        this.setNombreOriginal(nombre);
+        //La letra de la unidad suele ser el último caracter
+        this.setGrupo(("" + nombre.charAt(nombre.length() - 1)).toUpperCase());
+        //Si no es una letra de la A a la Z la desasignamos
+        if (this.getGrupo().charAt(0) < 'A' || this.getGrupo().charAt(0) > 'Z') {
+            this.setGrupo("-");
+        }
+        if(this.getPosicion()==0){
+            this.setPosicion(this.getGrupo().charAt(0)-'A'+1);
+        }
+        nombre=nombre.trim();
+        //1º PCPI A
+        nombre=nombre.replace("º", "");
+        //Ahora tenemos que asignar el curso y el grupo
+        int pos = nombre.lastIndexOf("-");
+        if (pos == -1) {
+            pos = nombre.lastIndexOf(" ");
+        }
+        if (pos == -1) {
+            pos = nombre.lastIndexOf(".");
+        }
+        if (pos == -1) {
+            this.setCurso("-");
+        } else {
+            //Quitamos los posibles numeros del curso
+            String tmpCurso = nombre.substring(0, pos);
+            tmpCurso=tmpCurso.trim().replace(" ", "");
+            this.setCurso(tmpCurso);
+//            StringBuilder cadena = new StringBuilder("");
+//            for (int i = 0; i < tmpCurso.length(); i++) {
+//                char car = tmpCurso.charAt(i);
+//                if (!Num.esNumero(car)) {
+//                    cadena.append(car);
+//                }
+//            }
+//            this.setCurso(cadena.toString());
+        }
     }
 }

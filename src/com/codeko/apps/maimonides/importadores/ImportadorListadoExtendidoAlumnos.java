@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.importadores;
 
 import com.codeko.apps.maimonides.MaimonidesBean;
@@ -48,6 +46,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 /**
  * Copyright Codeko Informática 2008
@@ -118,18 +118,18 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
 
     public boolean importar() {
         boolean ret = false;
-
+        boolean crearCursosUnidades = true;
         try {
             FileInputStream fis = new FileInputStream(getArchivoAlumnosSeneca());
             POIFSFileSystem fs = new POIFSFileSystem(fis);
             HSSFWorkbook wb = new HSSFWorkbook(fs);
             HSSFSheet sheet = wb.getSheetAt(0);
-            Iterator rows = sheet.rowIterator();
+            Iterator<Row> rows = sheet.rowIterator();
             //La primera linea es de cabeceras y la saltamos
             //Las 5 primeras lineas no nos interesan
             for (int i = 0; i < 5; i++) {
                 HSSFRow row = (HSSFRow) rows.next();
-                Iterator cells = row.cellIterator();
+                Iterator<Cell> cells = row.cellIterator();
                 HSSFCell cell = (HSSFCell) cells.next();
                 String c = cell.toString();
                 if (c.toLowerCase().equals("Alumno/a".toLowerCase())) {
@@ -140,7 +140,7 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
             while (rows.hasNext() && !isCancelado()) {
                 HSSFRow row = (HSSFRow) rows.next();
-                Iterator cells = row.cellIterator();
+                Iterator<Cell> cells = row.cellIterator();
                 Alumno a = null;
                 boolean borrar = false;
                 int pos = -1;
@@ -239,6 +239,30 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
                             case 13://Unidad
                                 try {
                                     Unidad u = Unidad.getUnidadPorNombreOriginal(getAno(), c);
+                                    if (crearCursosUnidades && u == null) {
+                                        Curso cursoActual = Curso.getCurso(getAno(), sCurso);
+                                        if (cursoActual == null) {
+                                            cursoActual = new Curso(getAno());
+                                            cursoActual.setDescripcion(sCurso);
+                                            cursoActual.setCurso(sCurso.charAt(0) + "");
+                                            cursoActual.guardar();
+                                        }
+                                        u = new Unidad();
+                                        u.setAnoEscolar(getAno());
+                                        u.setIdCurso(cursoActual.getId());
+                                        u.setDescripcion(sCurso);
+                                        u.cargarDatosImportacionDesdeNombre(c);
+                                        u.guardar();
+                                        if (!(cursoActual.getCurso().length() > 1)) {
+                                            if (u.getCurso().startsWith(cursoActual.getCurso())) {
+                                                cursoActual.setCurso(u.getCurso());
+                                            } else {
+                                                cursoActual.setCurso(cursoActual.getCurso() + u.getCurso());
+                                            }
+                                            cursoActual.guardar();
+                                        }
+                                    }
+
                                     if (u != null) {
                                         a.setUnidad(u);
                                         //de aquí tenemos que sacar el curso

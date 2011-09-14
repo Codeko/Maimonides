@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.elementos;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
@@ -82,6 +80,26 @@ public class Curso extends ObjetoBDConCod {
             Curso h = new Curso(id);
             return h;
         }
+    }
+
+    public static Curso getCurso(AnoEscolar ano, String nombreCurso) {
+        Curso c = null;
+        try {
+            //TODO Implementar cache en este constructor
+            PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT * FROM cursos WHERE ano=? AND descripcion=?");
+            st.setInt(1, ano.getId());
+            st.setString(2, nombreCurso);
+            ResultSet res = st.executeQuery();
+            if (res.next()) {
+                c = new Curso(ano);
+                c.cargarDesdeResultSet(res);
+            }
+            Obj.cerrar(st, res);
+        } catch (Exception ex) {
+            Logger.getLogger(Curso.class.getName()).log(Level.SEVERE, null, ex);
+            c = null;
+        }
+        return c;
     }
 
     public Curso(AnoEscolar ano, String nombreCurso) throws Exception {

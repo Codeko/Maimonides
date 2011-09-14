@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.importadores;
 
 import com.codeko.apps.maimonides.elementos.Materia;
@@ -198,6 +196,7 @@ public class ImportadorDatosGeneralesSeneca extends MaimonidesBean {
                         setAnoEscolar(a);
                     }
                 } else if (tipoGrupo.startsWith("CURSO_")) {
+                    //TODO Se puede dar que ya exista el curso y haya que actualizarlo
                     ArrayList<DatoXML> datos = (getDatos(elementoGrupo));
                     int codigo = -1;
                     String nombre = "";
@@ -208,7 +207,10 @@ public class ImportadorDatosGeneralesSeneca extends MaimonidesBean {
                             nombre = d.getValor();
                         }
                     }
-                    Curso c = new Curso(getAnoEscolar());
+                    Curso c = Curso.getCurso(getAnoEscolar(), nombre);
+                    if (c == null) {
+                        c = new Curso(getAnoEscolar());
+                    }
                     c.setCodigo(codigo);
                     c.setDescripcion(nombre);
                     c.setCurso(nombre.charAt(0) + "");
@@ -262,6 +264,7 @@ public class ImportadorDatosGeneralesSeneca extends MaimonidesBean {
                     tramos.add(m);
                 } else if (tipoGrupo.startsWith("UNIDAD_CURSO_")) {
                     ArrayList<DatoXML> datos = (getDatos(elementoGrupo));
+
                     Unidad u = new Unidad();
                     //La posición la da el nombre UNIDAD_CURSO_#
                     u.setPosicion(Num.getInt(Num.limpiar(tipoGrupo)));
@@ -278,36 +281,12 @@ public class ImportadorDatosGeneralesSeneca extends MaimonidesBean {
                             }
                         } else if (d.getNombre().equals("T_NOMBRE")) {
                             String nombre = d.getValor();
-                            u.setCursoGrupo(nombre);
-                            u.setNombreOriginal(nombre);
-                            //La letra de la unidad suele ser el último caracter
-                            u.setGrupo(("" + nombre.charAt(nombre.length() - 1)).toUpperCase());
-                            //Si no es una letra de la A a la Z la desasignamos
-                            if (u.getGrupo().charAt(0) < 'A' || u.getGrupo().charAt(0) > 'Z') {
-                                u.setGrupo("-");
+                            //Si ya existe una unidad con ese nombre le asignamos el nuevo valor
+                            Unidad uTmp = Unidad.getUnidadPorNombreOriginal(getAnoEscolar(), nombre);
+                            if (uTmp != null) {
+                                u.setId(uTmp.getId());
                             }
-                            //Ahora tenemos que asignar el curso y el grupo
-                            int pos = nombre.indexOf("-");
-                            if (pos == -1) {
-                                pos = nombre.trim().indexOf(" ");
-                            }
-                            if (pos == -1) {
-                                pos = nombre.trim().indexOf(".");
-                            }
-                            if (pos == -1) {
-                                u.setCurso("-");
-                            } else {
-                                //Quitamos los posibles numeros del curso
-                                String curso = nombre.substring(0, pos);
-                                StringBuilder cadena = new StringBuilder("");
-                                for (int i = 0; i < curso.length(); i++) {
-                                    char car = curso.charAt(i);
-                                    if (!Num.esNumero(car)) {
-                                        cadena.append(car);
-                                    }
-                                }
-                                u.setCurso(cadena.toString());
-                            }
+                            u.cargarDatosImportacionDesdeNombre(nombre);
                         }
                     }
                     if (!unidades.contains(u)) {
@@ -326,7 +305,7 @@ public class ImportadorDatosGeneralesSeneca extends MaimonidesBean {
                                     if (pos != -1) {
                                         nombre = nombre.substring(0, pos).trim();
                                     }
-                                    nombre = nombre + " (Mixto)";
+                                    nombre += " (Mixto)";
                                     u2.setDescripcion(nombre);
                                 }
                             }
@@ -435,7 +414,11 @@ public class ImportadorDatosGeneralesSeneca extends MaimonidesBean {
                             u.setIdCurso(c.getId());
                             //Si tiene más de dos caracteres es que ya se le ha asignado
                             if (!(c.getCurso().length() > 1)) {
-                                c.setCurso(c.getCurso() + u.getCurso());
+                                if (u.getCurso().startsWith(c.getCurso())) {
+                                    c.setCurso(u.getCurso());
+                                } else {
+                                    c.setCurso(c.getCurso() + u.getCurso());
+                                }
                             }
                             Logger.getLogger(ImportadorDatosGeneralesSeneca.class.getName()).log(Level.FINE, "Asignado ID CURSO {0} a Unidad {1}", new Object[]{c.getId(), u.getCodigo()});
                         }

@@ -234,7 +234,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }// </editor-fold>//GEN-END:initComponents
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarDatosBaseSeneca() {
+    public Task<Object, Void> importarDatosBaseSeneca() {
         return new ImportarDatosBaseSenecaTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class), ImportadorDatosGeneralesSeneca.TODO);
     }
 
@@ -244,7 +244,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarTutores() {
+    public Task<Object, Void> importarTutores() {
         return new ImportarTutoresTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -340,7 +340,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarDatosAlumnos() {
+    public Task<Boolean, Void> importarDatosAlumnos() {
         return new ImportarDatosAlumnosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -476,7 +476,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarDatosBaseAlumnado() {
+    public Task<Object, Void> importarDatosBaseAlumnado() {
         return new ImportarDatosBaseAlumnadoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -668,12 +668,12 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarMatriculaciones() {
+    public Task<Object, Void> importarMatriculaciones() {
         return new ImportarMatriculacionesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarHorarios() {
+    public Task<Object, Void> importarHorarios() {
         return new ImportarHorariosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -788,7 +788,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarConvivencia() {
+    public Task<Object, Void> importarConvivencia() {
         return new ImportarConvivenciaTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -832,8 +832,8 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task importarCalendarioEscolar() {
-        Task t = new TaskImportarCalendarioDesdeSeneca(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
+    public Task<Integer, Void> importarCalendarioEscolar() {
+        Task<Integer, Void> t = new TaskImportarCalendarioDesdeSeneca(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
         return t;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
