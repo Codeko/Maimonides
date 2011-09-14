@@ -90,6 +90,7 @@ public class PanelAlumnos2 extends javax.swing.JPanel implements IPanel {
 
     public void mostrarAlumno(Alumno a) {
         panelFichaAlumno.setAlumno(a);
+        pestanas.setSelectedComponent(panelFichaAlumno);
     }
 
     /** This method is called from within the constructor to

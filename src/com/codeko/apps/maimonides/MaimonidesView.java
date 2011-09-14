@@ -1291,7 +1291,7 @@ public class MaimonidesView extends FrameView {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task mostrarFichaElemento() {
+    public Task<Void, Void>  mostrarFichaElemento() {
         return new MostrarElementoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 

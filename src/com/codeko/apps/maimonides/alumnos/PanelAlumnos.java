@@ -75,6 +75,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
     public PanelAlumnos() {
         initComponents();
         MaimonidesUtil.addMenuTabla(tabla, "Listado de alumnos");
+        MaimonidesUtil.implementarAccesoFichaAlumno(tabla);
         tabla.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tabla.getColumnExt("Código").setVisible(false);
         tabla.getColumnExt("N.Escolar").setVisible(false);
@@ -328,7 +329,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task cargarAlumnos() {
+    public Task<Object, Void> cargarAlumnos() {
         return new CargarAlumnosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -422,7 +423,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
     }
 
     @Action(block = Task.BlockingScope.ACTION, enabledProperty = "alumnoSeleccionado")
-    public Task borrarAlumnos() {
+    public Task<ArrayList<Alumno>, Void> borrarAlumnos() {
         return new BorrarAlumnosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -464,7 +465,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "hayEnviosWeb")
-    public Task enviarWeb() {
+    public Task<Short, Void> enviarWeb() {
         return new EnviarWebTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -539,7 +540,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task actualizar() {
+    public Task<Boolean, Void> actualizar() {
         boolean fichero = false;
         //Tenemos que ver si se van a actualizar desde fichero o desde Séneca
         int op = JOptionPane.showOptionDialog(MaimonidesApp.getApplication().getMainFrame(), "¿Desde donde desea actualizar los datos de alumnos?", "Actualizar datos de alumnos", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Desde fichero", "Desde Séneca", "Cancelar"}, "Desde Séneca");

@@ -34,6 +34,7 @@ import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import com.codeko.apps.maimonides.alumnos.IAlumno;
+import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.impresion.JRModeloTablaDS;
 import com.codeko.swing.CodekoAutoTableModel;
@@ -639,6 +640,8 @@ public class MaimonidesUtil {
                             if (el instanceof IAlumno) {
                                 IAlumno iAl = (IAlumno) el;
                                 MaimonidesApp.getMaimonidesView().mostrarFichaAlumno(iAl.getAlumno());
+                            }else if(el instanceof Alumno){
+                                MaimonidesApp.getMaimonidesView().mostrarFichaAlumno((Alumno)el);
                             }
                         }
                     }
