@@ -53,7 +53,7 @@ import org.jdesktop.application.Task;
  * @author codeko
  */
 public class PanelClasesDelDia extends javax.swing.JPanel implements ICargable {
-
+    PanelClasesDelDia auto=this;
     boolean cargado = false;
 
     /** Creates new form PanelClasesDelDia */
@@ -89,7 +89,7 @@ public class PanelClasesDelDia extends javax.swing.JPanel implements ICargable {
     }//GEN-LAST:event_formAncestorAdded
 
     @Action(block = Task.BlockingScope.ACTION)
-    public Task actualizar() {
+    public Task<ArrayList<Component>, Void> actualizar() {
         return new ActualizarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -135,10 +135,14 @@ public class PanelClasesDelDia extends javax.swing.JPanel implements ICargable {
         @Override
         protected void succeeded(ArrayList<Component> result) {
             removeAll();
-            for (Component c : result) {
-                add(c);
+            if(result.isEmpty()){
+                getParent().remove(auto);
+            }else{
+                for (Component c : result) {
+                    add(c);
+                }
+                updateUI();
             }
-            updateUI();
         }
     }
 
