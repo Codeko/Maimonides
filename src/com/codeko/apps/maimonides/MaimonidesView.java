@@ -395,7 +395,6 @@ public class MaimonidesView extends FrameView {
             roles = u.getRoles();
             rolesEfectivos = u.getRolesEfectivos();
             miEditarMisDatos.setVisible(!u.isUsuarioVirtual());
-            miRolesActivos.setVisible(!u.isUsuarioVirtual());
         }
         //TODO Los menús se tienen que generar dinamicamente
         
@@ -467,7 +466,7 @@ public class MaimonidesView extends FrameView {
         MaimonidesApp.getApplication().show(aboutBox);
     }
 
-    public PropertyChangeListener getControlMensajes() {
+    public final PropertyChangeListener getControlMensajes() {
         if (control == null) {
             control = new java.beans.PropertyChangeListener() {
 
