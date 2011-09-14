@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelInfoConfiguracion.java
  *
@@ -55,7 +53,7 @@ import org.jdesktop.swingx.JXHyperlink;
 public class PanelInfoConfiguracion extends javax.swing.JPanel implements ICargable {
 
     boolean cargado = false;
-
+    PanelInfoConfiguracion auto=this;
     /** Creates new form PanelInfoConfiguracion */
     public PanelInfoConfiguracion() {
         initComponents();
@@ -117,7 +115,7 @@ public class PanelInfoConfiguracion extends javax.swing.JPanel implements ICarga
     }
 
     @Action(block = Task.BlockingScope.ACTION)
-    public Task actualizar() {
+    public Task<ArrayList<Component>, Void> actualizar() {
         return new ActualizarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -177,11 +175,15 @@ public class PanelInfoConfiguracion extends javax.swing.JPanel implements ICarga
         @Override
         protected void succeeded(ArrayList<Component> result) {
             removeAll();
-            for (Component c : result) {
-                add(c);
-                add(Box.createRigidArea(new Dimension(10, 6)));
+            if (result.isEmpty()) {
+                getParent().remove(auto);
+            } else {
+                for (Component c : result) {
+                    add(c);
+                    add(Box.createRigidArea(new Dimension(10, 6)));
+                }
+                updateUI();
             }
-            updateUI();
         }
     }
 }

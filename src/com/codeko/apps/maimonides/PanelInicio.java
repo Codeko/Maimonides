@@ -36,7 +36,6 @@ import com.codeko.apps.maimonides.elementos.Profesor;
 import com.codeko.apps.maimonides.elementos.Unidad;
 import com.codeko.apps.maimonides.inicio.PanelAlertasConvivencia;
 import com.codeko.apps.maimonides.inicio.PanelAlertasPerdidaEscolaridad;
-import com.codeko.apps.maimonides.mantenimiento.PanelInfoCopiasSeguridad;
 import com.codeko.apps.maimonides.partes.PanelInfoPartes;
 import com.codeko.apps.maimonides.profesores.PanelClasesDelDia;
 import com.codeko.apps.maimonides.seneca.PanelInfoSeneca;
