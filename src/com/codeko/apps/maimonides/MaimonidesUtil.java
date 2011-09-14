@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides;
 
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
@@ -35,16 +33,22 @@ import ar.com.fdvs.dj.domain.builders.FastReportBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
+import com.codeko.apps.maimonides.alumnos.IAlumno;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.impresion.JRModeloTablaDS;
+import com.codeko.swing.CodekoAutoTableModel;
+import com.codeko.swing.CodekoTableModel;
 import com.codeko.swing.tablas.MouseListenerOpcionesTabla;
 import com.codeko.util.Fechas;
 import com.codeko.util.Obj;
 import com.codeko.util.Str;
 import com.mysql.jdbc.PreparedStatement;
 import java.awt.Desktop;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -67,7 +71,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeNode;
@@ -271,7 +277,7 @@ public class MaimonidesUtil {
                             Style s = new Style();
                             s.setBorder(Border.THIN);
                             Font f = new Font(8, "Arial", false);
-                            s.setFont(f);        
+                            s.setFont(f);
                             if (max > 40) {
                                 f = new Font(7, "Arial", false);
                                 s.setFont(f);
@@ -549,10 +555,11 @@ public class MaimonidesUtil {
         }
     }
 
-    public static boolean dialogoGuardarArchivo(String titulo,File archivo,String extension) {
+    public static boolean dialogoGuardarArchivo(String titulo, File archivo, String extension) {
         boolean ret = false;
-        extension=extension.toLowerCase();
+        extension = extension.toLowerCase();
         JFileChooser jfc = new JFileChooser(MaimonidesApp.getApplication().getUltimoArchivo()) {
+
             @Override
             public void approveSelection() {
                 File f = getSelectedFile();
@@ -578,7 +585,7 @@ public class MaimonidesUtil {
             }
         };
         jfc.setDialogTitle(titulo);
-        jfc.setFileFilter(new FileNameExtensionFilter("Ficheros "+(extension.toUpperCase()), extension, extension.toUpperCase()));
+        jfc.setFileFilter(new FileNameExtensionFilter("Ficheros " + (extension.toUpperCase()), extension, extension.toUpperCase()));
 
         File f = null;
         boolean cancelar = false;
@@ -586,8 +593,8 @@ public class MaimonidesUtil {
             int op = jfc.showSaveDialog(MaimonidesApp.getApplication().getMainFrame());
             if (op == JFileChooser.APPROVE_OPTION) {
                 f = jfc.getSelectedFile();
-                if (!f.getName().toLowerCase().endsWith("."+extension)) {
-                    f = new File(f.getParentFile(), f.getName() + "."+extension);
+                if (!f.getName().toLowerCase().endsWith("." + extension)) {
+                    f = new File(f.getParentFile(), f.getName() + "." + extension);
                 }
                 if (f.exists()) {
                     f.delete();
@@ -598,8 +605,45 @@ public class MaimonidesUtil {
         }
         if (f != null && !f.exists() && !cancelar) {
             MaimonidesApp.getApplication().setUltimoArchivo(f);
-            ret=archivo.renameTo(f);
+            ret = archivo.renameTo(f);
         }
         return ret;
+    }
+
+    public static void implementarAccesoFichaAlumno(final JTable tabla) {
+        tabla.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(evt)) {
+                    CodekoTableModel modelo = null;
+                    CodekoAutoTableModel modelo2 = null;
+                    if (tabla.getModel() instanceof CodekoTableModel) {
+                        modelo = (CodekoTableModel) tabla.getModel();
+                    } else if (tabla.getModel() instanceof CodekoAutoTableModel) {
+                        modelo2 = (CodekoAutoTableModel) tabla.getModel();
+                    }
+                    //Sería bueno unir en una interfaz estos dos modelos
+                    if (modelo != null || modelo2 != null) {
+                        //tenemos que ver la fila donde se ha hecho clic
+                        Point p = evt.getPoint();
+                        int row = tabla.rowAtPoint(p);
+                        if (row > -1) {
+                            row = tabla.convertRowIndexToModel(row);
+                            Object el = null;
+                            if (modelo != null) {
+                                el = modelo.getElemento(row);
+                            } else {
+                                el = modelo2.getElemento(row);
+                            }
+                            if (el instanceof IAlumno) {
+                                IAlumno iAl = (IAlumno) el;
+                                MaimonidesApp.getMaimonidesView().mostrarFichaAlumno(iAl.getAlumno());
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 }

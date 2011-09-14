@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelFaltaAsistenciaAlumnos.java
  *
@@ -65,10 +63,12 @@ public class PanelCartasAsistencia extends javax.swing.JPanel implements IPanel 
 
     CodekoTableModel<AsistenciaAlumno> modelo = new CodekoTableModel<AsistenciaAlumno>(new AsistenciaAlumno(new Alumno()));
     boolean cargado = false;
-    PanelCartasAsistencia auto=this;
+    PanelCartasAsistencia auto = this;
+
     /** Creates new form PanelFaltaAsistenciaAlumnos */
     public PanelCartasAsistencia() {
         initComponents();
+        MaimonidesUtil.implementarAccesoFichaAlumno(tabla);
         tabla.getColumnExt("Código").setVisible(false);
         //Hay que asignar las fechas de la última semana
         //TODO Esto debería ser configurable
@@ -121,7 +121,7 @@ public class PanelCartasAsistencia extends javax.swing.JPanel implements IPanel 
     }
 
     @Action
-    public Task actualizar() {
+    public Task<ArrayList<AsistenciaAlumno>, Void> actualizar() {
         return new ActualizarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -175,7 +175,7 @@ public class PanelCartasAsistencia extends javax.swing.JPanel implements IPanel 
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task enviar() {
+    public Task<Boolean, Void> enviar() {
         return new EnviarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -237,7 +237,7 @@ public class PanelCartasAsistencia extends javax.swing.JPanel implements IPanel 
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task enviarSeleccionados() {
+    public Task<Boolean, Void> enviarSeleccionados() {
         return new EnviarSeleccionadosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 

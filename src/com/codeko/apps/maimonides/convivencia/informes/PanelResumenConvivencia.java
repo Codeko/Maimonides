@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelResumenConvivencia.java
  *
@@ -32,7 +30,6 @@
 package com.codeko.apps.maimonides.convivencia.informes;
 
 import com.codeko.apps.maimonides.IPanel;
-import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesUtil;
 import com.codeko.apps.maimonides.convivencia.TipoConducta;
 import com.codeko.apps.maimonides.elementos.Curso;
@@ -42,13 +39,11 @@ import com.codeko.apps.maimonides.usr.Permisos;
 import com.codeko.apps.maimonides.usr.Rol;
 import com.codeko.swing.CodekoAutoTableModel;
 import com.codeko.util.Fechas;
-import java.awt.Point;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 
@@ -63,6 +58,7 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
     /** Creates new form PanelResumenConvivencia */
     public PanelResumenConvivencia() {
         initComponents();
+        MaimonidesUtil.implementarAccesoFichaAlumno(tabla);
         MaimonidesUtil.setFormatosFecha(tfFechaDesde, false);
         MaimonidesUtil.addMenuTabla(tabla, "Resumen de convivencia");
         cbTipoParte.addItem("Todos");
@@ -88,7 +84,7 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
     }
 
     @Action(block = Task.BlockingScope.WINDOW)
-    public Task actualizar() {
+    public Task<ArrayList<DatoResumenConvivencia>, Void> actualizar() {
         return new ActualizarTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -181,18 +177,13 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
         tabla.setModel(modelo);
         tabla.setColumnControlVisible(true);
         tabla.setName("tabla"); // NOI18N
-        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(tabla);
 
         panelCentral.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         panelFiltro.setName("panelFiltro"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelResumenConvivencia.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelResumenConvivencia.class);
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
@@ -255,7 +246,7 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
                             .addComponent(cbProfesores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
                             .addComponent(cbTipoParte, 0, 262, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelConductasParte1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
+                .addComponent(panelConductasParte1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
         );
         panelFiltroLayout.setVerticalGroup(
             panelFiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +271,7 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
                     .addComponent(lProfesor)
                     .addComponent(cbProfesores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(75, Short.MAX_VALUE))
-            .addComponent(panelConductasParte1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+            .addComponent(panelConductasParte1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
         );
 
         panelCentral.add(panelFiltro, java.awt.BorderLayout.PAGE_START);
@@ -291,7 +282,7 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
         jToolBar1.setRollover(true);
         jToolBar1.setName("jToolBar1"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelResumenConvivencia.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelResumenConvivencia.class, this);
         bActualizar.setAction(actionMap.get("actualizar")); // NOI18N
         bActualizar.setFocusable(false);
         bActualizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -301,21 +292,6 @@ public class PanelResumenConvivencia extends javax.swing.JPanel implements IPane
 
         add(jToolBar1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-        if (evt.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(evt)) {
-            //tenemos que ver la fila donde se ha hecho clic
-            Point p = evt.getPoint();
-            int row = tabla.rowAtPoint(p);
-            if (row > -1) {
-                row = tabla.convertRowIndexToModel(row);
-                DatoResumenConvivencia drc = modelo.getElemento(row);
-                if (drc != null) {
-                    MaimonidesApp.getMaimonidesView().mostrarFichaAlumno(drc.getAlumno());
-                }
-            }
-        }
-    }//GEN-LAST:event_tablaMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bActualizar;
     private com.codeko.apps.maimonides.cursos.CbCursos cbCursos1;

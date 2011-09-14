@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -60,9 +60,6 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaMouseClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -113,7 +110,7 @@
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="panelConductasParte1" pref="233" max="32767" attributes="0"/>
+                      <Component id="panelConductasParte1" pref="210" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -145,7 +142,7 @@
                       </Group>
                       <EmptySpace pref="75" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="panelConductasParte1" alignment="0" pref="209" max="32767" attributes="0"/>
+                  <Component id="panelConductasParte1" alignment="0" pref="217" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
