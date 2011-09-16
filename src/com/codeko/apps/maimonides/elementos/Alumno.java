@@ -724,12 +724,18 @@ public class Alumno extends ObjetoBDConCod implements IObjetoTabla, IEmailable {
             setApellido1(res.getString("apellido1"));
             setApellido2(res.getString("apellido2"));
             try {
-                setUnidad(res.getInt("unidad_id"));
+                int u=res.getInt("unidad_id");
+                if(u>0){
+                    setUnidad(u);
+                }
             } catch (Exception e) {
                 Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, "Error cargando unidad de alumno desde resultset", e);
             }
             try {
-                setIdCurso(res.getInt("curso_id"));
+                int c=res.getInt("curso_id");
+                if(c>0){
+                    setIdCurso(c);
+                }
             } catch (Exception e) {
                 Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, "Error cargando curso de alumno desde resultset", e);
             }
