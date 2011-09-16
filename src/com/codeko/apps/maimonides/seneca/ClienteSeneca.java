@@ -1181,7 +1181,6 @@ public class ClienteSeneca extends MaimonidesBean {
                         valor=valor.trim();
                         String nombre = e.getContent().getTextExtractor().toString();
                         nombre = nombre.replace(valor, "").trim();
-                        System.out.println(nombre + ":" + valor);
                         if ("Denominación genérica:".equals(nombre)) {
                             prefijoNombreCentro = valor;
                         } else if (mapaTitulos.containsKey(nombre)) {
