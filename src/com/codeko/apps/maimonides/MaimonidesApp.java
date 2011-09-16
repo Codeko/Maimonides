@@ -61,6 +61,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.prefs.Preferences;
+import javax.help.SwingHelpUtilities;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -333,6 +334,7 @@ public class MaimonidesApp extends SingleFrameApplication {
 
     public static void main(String[] args) {
         writeSplashText("Iniciando Maimónides...");
+        SwingHelpUtilities.setContentViewerUI("javax.help.plaf.basic.BasicNativeContentViewerUI");
         CTiempo.setActivo(false);
         launch(MaimonidesApp.class, args);
     }
