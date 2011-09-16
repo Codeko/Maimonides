@@ -36,6 +36,7 @@
       <SubComponents>
         <Component class="com.codeko.apps.maimonides.cursos.PanelArbolUnidades" name="panelArbolUnidades1">
           <Properties>
+            <Property name="mostrarAlumnosSinUnidad" type="boolean" value="true"/>
             <Property name="name" type="java.lang.String" value="panelArbolUnidades1" noResource="true"/>
           </Properties>
           <Constraints>

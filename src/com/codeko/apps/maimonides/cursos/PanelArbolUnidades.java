@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelArbolUnidades.java
  *
@@ -34,9 +32,11 @@ package com.codeko.apps.maimonides.cursos;
 import com.codeko.apps.maimonides.ICargable;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesUtil;
+import com.codeko.apps.maimonides.elementos.Curso;
 import com.codeko.apps.maimonides.elementos.Unidad;
 import com.codeko.apps.maimonides.usr.Permisos;
 import com.codeko.util.Obj;
+import com.codeko.util.estructuras.Par;
 import com.mysql.jdbc.PreparedStatement;
 import java.beans.Beans;
 import java.sql.ResultSet;
@@ -62,7 +62,8 @@ public class PanelArbolUnidades extends javax.swing.JPanel implements ICargable 
     boolean cargado = false;
     PanelArbolUnidades auto = this;
     boolean autoOcultar = true;
-    boolean mostrarElementoRaiz=false;
+    boolean mostrarElementoRaiz = false;
+    boolean mostrarAlumnosSinUnidad = false;
 
     /** Creates new form PanelArbolUnidades */
     public PanelArbolUnidades() {
@@ -88,6 +89,14 @@ public class PanelArbolUnidades extends javax.swing.JPanel implements ICargable 
         arbol.setShowsRootHandles(true);
     }
 
+    public boolean isMostrarAlumnosSinUnidad() {
+        return mostrarAlumnosSinUnidad;
+    }
+
+    public void setMostrarAlumnosSinUnidad(boolean mostrarAlumnosSinUnidad) {
+        this.mostrarAlumnosSinUnidad = mostrarAlumnosSinUnidad;
+    }
+
     public boolean isAutoOcultar() {
         return autoOcultar;
     }
@@ -100,11 +109,11 @@ public class PanelArbolUnidades extends javax.swing.JPanel implements ICargable 
         return mostrarElementoRaiz;
     }
 
-    public void setNombreElementoRaiz(String nombre){
+    public void setNombreElementoRaiz(String nombre) {
         nodoBase.setUserObject(nombre);
     }
 
-    public String getNombreElementoRaiz(){
+    public String getNombreElementoRaiz() {
         return nodoBase.getUserObject().toString();
     }
 
@@ -112,8 +121,6 @@ public class PanelArbolUnidades extends javax.swing.JPanel implements ICargable 
         this.mostrarElementoRaiz = mostrarElementoRaiz;
         arbol.setRootVisible(mostrarElementoRaiz);
     }
-
-
 
     //TODO Esto sería interesante moverlo a util
     private Object getObjetoArbol(TreePath path) {
@@ -229,7 +236,7 @@ private void arbolAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_arbolAncestorAdded
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task cargarUnidades() {
+    public Task<Object, Void> cargarUnidades() {
         return new CargarUnidadesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -267,19 +274,33 @@ private void arbolAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRS
         @Override
         protected Object doInBackground() {
             if (!Beans.isDesignTime()) {
+                PreparedStatement st = null;
+                ResultSet res = null;
                 try {
+                    ArrayList<Par<String,Integer>> sinUnidad = new ArrayList<Par<String,Integer>>();
                     //tenemos que recuperar todos los cursos y las unidades de estos
                     String filtro = "";
                     Unidad ud = Permisos.getFiltroUnidad();
                     if (ud != null) {
                         filtro = " AND u.id=? ";
+                    } else if (isMostrarAlumnosSinUnidad()) {
+                        //Sólo mostramos los alumnos sin unidad si no hay filtro de unidad y está configurado para que se muestren
+                        String sql = "SELECT distinct c.curso As curso, c.id AS id FROM alumnos AS a LEFT JOIN cursos AS c ON c.id=a.curso_id WHERE a.unidad_id IS NULL AND a.ano=?";
+                        st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement(sql);
+                        st.setInt(1, MaimonidesApp.getApplication().getAnoEscolar().getId());
+                        res = st.executeQuery();
+                        while (res.next()) {
+                            Par<String,Integer> p=new Par<String,Integer>(res.getString("curso"), res.getInt("id"));
+                            sinUnidad.add(p);
+                        }
+                        Obj.cerrar(res,st);
                     }
-                    PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT distinct u.* FROM unidades AS u LEFT JOIN cursos AS c ON c.curso=u.curso WHERE u.ano=? " + filtro + " ORDER BY c.posicion,u.posicion");
+                    st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT distinct u.* FROM unidades AS u LEFT JOIN cursos AS c ON c.curso=u.curso WHERE u.ano=? " + filtro + " ORDER BY c.posicion,u.posicion");
                     st.setInt(1, MaimonidesApp.getApplication().getAnoEscolar().getId());
                     if (ud != null) {
                         st.setInt(2, ud.getId());
                     }
-                    ResultSet res = st.executeQuery();
+                    res = st.executeQuery();
                     String ultimoCurso = null;
                     DefaultMutableTreeNode nodoCurso = null;
                     while (res.next()) {
@@ -289,14 +310,44 @@ private void arbolAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRS
                         if (nodoCurso == null || !curso.equals(ultimoCurso)) {
                             nodoCurso = new DefaultMutableTreeNode(curso);
                             nodoBase.add(nodoCurso);
+                            Par<String,Integer> cursoSin=getCurso(sinUnidad, curso);
+                            if (cursoSin!=null) {
+                                Unidad uSin = new Unidad();
+                                uSin.setId(-1);
+                                uSin.setIdCurso(cursoSin.getB());
+                                uSin.setDescripcion(curso);
+                                uSin.setCursoGrupo("Alumnos sin unidad");
+                                uSin.setCurso(curso);
+                                DefaultMutableTreeNode nodoSinUnidad = new DefaultMutableTreeNode(uSin);
+                                nodoCurso.add(nodoSinUnidad);
+                            }
                         }
                         ultimoCurso = curso;
                         DefaultMutableTreeNode nodoUnidad = new DefaultMutableTreeNode(u);
                         nodoCurso.add(nodoUnidad);
                     }
-                    Obj.cerrar(st, res);
+                    Par<String,Integer> cursoNulo=getCurso(sinUnidad, null);
+                    if (cursoNulo!=null) {
+                        Curso cSin = new Curso();
+                        cSin.setId(-1);
+                        cSin.setDescripcion("Alumnos sin curso asignado");
+                        DefaultMutableTreeNode nodoSinCursoUnidad = new DefaultMutableTreeNode(cSin);
+                        nodoBase.add(nodoSinCursoUnidad);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(PanelArbolUnidades.class.getName()).log(Level.SEVERE, "Error cargando unidades", ex);
+                } finally {
+                    Obj.cerrar(st, res);
+                }
+            }
+            return null;
+        }
+        
+        
+        private Par<String,Integer> getCurso(ArrayList<Par<String,Integer>> cursos,String nombre){
+            for(Par<String,Integer> p:cursos){
+                if((nombre==null && p.getA()==null) || (p.getA()!=null && p.getA().equals(nombre))){
+                    return p;
                 }
             }
             return null;

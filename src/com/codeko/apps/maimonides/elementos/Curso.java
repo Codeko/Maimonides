@@ -101,7 +101,9 @@ public class Curso extends ObjetoBDConCod {
         }
         return c;
     }
-
+    public Curso(){
+    
+    }
     public Curso(AnoEscolar ano, String nombreCurso) throws Exception {
         //TODO Implementar cache en este constructor
         PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT * FROM cursos WHERE ano=? AND descripcion=?");

@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.alumnos;
 
 import com.codeko.apps.maimonides.IPanel;
@@ -73,7 +71,8 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
 
     CodekoTableModel<Alumno> modelo = new CodekoTableModel<Alumno>(new Alumno());
     Object filtroAlumno = null;
-    PanelAlumnos auto=this;
+    PanelAlumnos auto = this;
+
     /** Creates new form PanelAlumnos */
     public PanelAlumnos() {
         initComponents();
@@ -157,9 +156,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("seleccionArbol".equals(evt.getPropertyName())) {
                     Object obj = evt.getNewValue();
-                    if (obj instanceof String) {
-                        setFiltroAlumno(obj);
-                    } else if (obj instanceof Unidad) {
+                    if (obj instanceof String || obj instanceof Unidad || obj instanceof Curso) {
                         setFiltroAlumno(obj);
                     } else {
                         setFiltroAlumno(null);
@@ -207,12 +204,12 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
         this.filtroAlumno = filtroAlumno;
         if (filtroAlumno instanceof Curso) {
             lInfo.setText(((Curso) filtroAlumno).toString());
-            tabla.getColumnExt("Unidad").setVisible(true);
+            tabla.getColumnExt("Unidad").setVisible(((Curso) filtroAlumno).getId()>0);
         } else if (filtroAlumno instanceof Unidad) {
             lInfo.setText(((Unidad) filtroAlumno).getDescripcion() + ": " + ((Unidad) filtroAlumno).getCursoGrupo());
             tabla.getColumnExt("Unidad").setVisible(false);
         } else {
-            lInfo.setText("");
+            lInfo.setText("" + filtroAlumno);
             tabla.getColumnExt("Unidad").setVisible(true);
         }
         MaimonidesUtil.ejecutarTask(this, "cargarAlumnos");
@@ -243,6 +240,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
         panelSeparador.setName("panelSeparador"); // NOI18N
         panelSeparador.setOneTouchExpandable(true);
 
+        panelArbolUnidades1.setMostrarAlumnosSinUnidad(true);
         panelArbolUnidades1.setName("panelArbolUnidades1"); // NOI18N
         panelSeparador.setLeftComponent(panelArbolUnidades1);
 
@@ -256,7 +254,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
         tabla.setHighlighters(HighlighterFactory.createAlternateStriping());
         scrollTabla.setViewportView(tabla);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelAlumnos.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelAlumnos.class);
         lInfo.setText(resourceMap.getString("lInfo.text")); // NOI18N
         lInfo.setName("lInfo"); // NOI18N
 
@@ -281,7 +279,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
                 .addContainerGap()
                 .addComponent(lInfo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addComponent(scrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lTotal)
                 .addContainerGap())
@@ -294,7 +292,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
         barraHerramientas.setRollover(true);
         barraHerramientas.setName("barraHerramientas"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelAlumnos.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelAlumnos.class, this);
         bBorrarAlumno.setAction(actionMap.get("borrarAlumnos")); // NOI18N
         bBorrarAlumno.setFocusable(false);
         bBorrarAlumno.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -348,25 +346,51 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
             try {
                 String where = "";
                 if (getFiltroAlumno() instanceof Unidad) {
-                    where = " AND a.unidad_id=? ";
+                    Unidad u = (Unidad) getFiltroAlumno();
+                    if (u.getId() > 0) {
+                        where = " AND a.unidad_id=? ";
+                    } else {
+                        where = " AND a.unidad_id IS NULL AND a.curso_id=? ";
+                    }
                 } else if (getFiltroAlumno() instanceof String) {
                     where = " AND u.curso=? ";
+                } else if (getFiltroAlumno() instanceof Curso) {
+                    Curso c = (Curso) getFiltroAlumno();
+                    if (c.getId() > 0) {
+                        where = " AND u.curso=? ";
+                    }else{
+                        where = " AND a.unidad_id IS NULL AND a.curso_id IS NULL ";
+                    }
                 }
                 Unidad filtro = Permisos.getFiltroUnidad();
                 if (filtro != null) {
                     where += " AND a.unidad_id=? ";
                 }
-                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT a.* FROM alumnos AS a JOIN unidades AS u ON a.unidad_id=u.id WHERE a.borrado=0 AND a.ano=? " + where + " ORDER BY u.posicion," + Alumno.getCampoOrdenNombre(""));
+                PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT a.* FROM alumnos AS a LEFT JOIN unidades AS u ON a.unidad_id=u.id WHERE a.borrado=0 AND a.ano=? " + where + " ORDER BY u.posicion," + Alumno.getCampoOrdenNombre(""));
                 int cont = 1;
                 st.setInt(cont, MaimonidesApp.getApplication().getAnoEscolar().getId());
                 cont++;
+                
                 if (getFiltroAlumno() instanceof Unidad) {
-                    st.setInt(cont, ((Unidad) getFiltroAlumno()).getId());
-                    cont++;
+                    Unidad u = (Unidad) getFiltroAlumno();
+                    if (u.getId() > 0) {
+                        st.setInt(cont, ((Unidad) getFiltroAlumno()).getId());
+                        cont++;
+                    } else {
+                        st.setInt(cont, ((Unidad)getFiltroAlumno()).getIdCurso());
+                        cont++;
+                    }
                 } else if (getFiltroAlumno() instanceof String) {
                     st.setString(cont, getFiltroAlumno().toString());
                     cont++;
+                } else if (getFiltroAlumno() instanceof Curso) {
+                    Curso c = (Curso) getFiltroAlumno();
+                    if (c.getId() > 0) {
+                        st.setString(cont, ((Curso)getFiltroAlumno()).getCurso());
+                        cont++;
+                    }
                 }
+                
                 if (filtro != null) {
                     st.setInt(cont, filtro.getId());
                     cont++;
@@ -555,37 +579,31 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
         } else {
             return null;
         }
-        Task<Boolean, Void> t= new ActualizarAlumnosExtendidoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class), fichero);
+        Task<Boolean, Void> t = new ActualizarAlumnosExtendidoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class), fichero);
         t.addTaskListener(new TaskListener<Boolean, Void>() {
 
             @Override
             public void doInBackground(TaskEvent<Void> event) {
-                
             }
 
             @Override
             public void process(TaskEvent<List<Void>> event) {
-                
             }
 
             @Override
             public void succeeded(TaskEvent<Boolean> event) {
-                
             }
 
             @Override
             public void failed(TaskEvent<Throwable> event) {
-                
             }
 
             @Override
             public void cancelled(TaskEvent<Void> event) {
-                
             }
 
             @Override
             public void interrupted(TaskEvent<InterruptedException> event) {
-                
             }
 
             @Override
@@ -593,7 +611,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
                 MaimonidesUtil.ejecutarTask(auto, "cargarAlumnos");
             }
         });
-        
+
         return t;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
