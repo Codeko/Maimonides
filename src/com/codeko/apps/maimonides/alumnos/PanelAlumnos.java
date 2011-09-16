@@ -51,6 +51,7 @@ import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -63,6 +64,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
+import org.jdesktop.application.TaskEvent;
+import org.jdesktop.application.TaskListener;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -70,7 +73,7 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
 
     CodekoTableModel<Alumno> modelo = new CodekoTableModel<Alumno>(new Alumno());
     Object filtroAlumno = null;
-
+    PanelAlumnos auto=this;
     /** Creates new form PanelAlumnos */
     public PanelAlumnos() {
         initComponents();
@@ -552,7 +555,46 @@ public class PanelAlumnos extends javax.swing.JPanel implements IPanel {
         } else {
             return null;
         }
-        return new ActualizarAlumnosExtendidoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class), fichero);
+        Task<Boolean, Void> t= new ActualizarAlumnosExtendidoTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class), fichero);
+        t.addTaskListener(new TaskListener<Boolean, Void>() {
+
+            @Override
+            public void doInBackground(TaskEvent<Void> event) {
+                
+            }
+
+            @Override
+            public void process(TaskEvent<List<Void>> event) {
+                
+            }
+
+            @Override
+            public void succeeded(TaskEvent<Boolean> event) {
+                
+            }
+
+            @Override
+            public void failed(TaskEvent<Throwable> event) {
+                
+            }
+
+            @Override
+            public void cancelled(TaskEvent<Void> event) {
+                
+            }
+
+            @Override
+            public void interrupted(TaskEvent<InterruptedException> event) {
+                
+            }
+
+            @Override
+            public void finished(TaskEvent<Void> event) {
+                MaimonidesUtil.ejecutarTask(auto, "cargarAlumnos");
+            }
+        });
+        
+        return t;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bActualizar;

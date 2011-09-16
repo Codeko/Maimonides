@@ -74,7 +74,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lInfo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="scrollTabla" pref="308" max="32767" attributes="0"/>
+                      <Component id="scrollTabla" pref="302" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lTotal" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
