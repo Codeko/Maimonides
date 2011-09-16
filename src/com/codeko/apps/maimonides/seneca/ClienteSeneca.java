@@ -312,9 +312,9 @@ public class ClienteSeneca extends MaimonidesBean {
         HttpResponse response = getCliente().execute(get);
         String texto = EntityUtils.toString(response.getEntity());
         Source source = new Source(texto);
-        Element el=source.getElementById("usuario");
-        if(el!=null){
-            String content=el.getContent().getTextExtractor().toString();
+        Element el = source.getElementById("usuario");
+        if (el != null) {
+            String content = el.getContent().getTextExtractor().toString();
             return content.substring(0, content.indexOf(")"));
         }
         return "";
@@ -325,7 +325,7 @@ public class ClienteSeneca extends MaimonidesBean {
         //Lo seleccionamos
         HttpPost post = new HttpPost(getUrlBase() + "PuestosOrigenPerfil.jsp?D_PERFIL=" + URLEncoder.encode(getPerfilActivo(), "UTF-8") + "&rndval=72277307");
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-        nameValuePairs.add(new BasicNameValuePair("CPERFILES", (getPerfilActivo().equals(PERFIL_DIRECCION)?COD_PERFIL_DIRECCION:COD_PERFIL_PROFESOR) + ""));
+        nameValuePairs.add(new BasicNameValuePair("CPERFILES", (getPerfilActivo().equals(PERFIL_DIRECCION) ? COD_PERFIL_DIRECCION : COD_PERFIL_PROFESOR) + ""));
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Seleccionando perfil {0}", getPerfilActivo());
         HttpResponse response = getCliente().execute(post);
@@ -365,15 +365,15 @@ public class ClienteSeneca extends MaimonidesBean {
         }
         if (isOk(response, texto, false)) {
             //tenemos que seleccionar el perfil activo si no existe
-            if(texto.indexOf(PERFIL_DIRECCION)!=-1){
+            if (texto.indexOf(PERFIL_DIRECCION) != -1) {
                 setPerfilActivo(PERFIL_DIRECCION);
-            }else if(texto.indexOf(PERFIL_PROFESOR)!=-1){
+            } else if (texto.indexOf(PERFIL_PROFESOR) != -1) {
                 setPerfilActivo(PERFIL_PROFESOR);
-            }else{
+            } else {
                 setPerfilActivo(null);
             }
-            
-            if (getPerfilActivo()!=null) {
+
+            if (getPerfilActivo() != null) {
                 cargarPerfil();
             } else {
                 setLoggeado(false);
@@ -1121,15 +1121,15 @@ public class ClienteSeneca extends MaimonidesBean {
             u.setNombre(getUsuario());
             u.setRoles(Rol.ROL_PROFESOR);
             try {
-                String datosUsuario=cargarDatosUsuarioActual();
-                if(!Str.noNulo(datosUsuario).trim().equals("")){
-                    if(datosUsuario.contains(PERFIL_DIRECCION)){
+                String datosUsuario = cargarDatosUsuarioActual();
+                if (!Str.noNulo(datosUsuario).trim().equals("")) {
+                    if (datosUsuario.contains(PERFIL_DIRECCION)) {
                         u.setRoles(Rol.ROL_PROFESOR | Rol.ROL_DIRECTIVO | Rol.ROL_JEFE_ESTUDIOS);
                     }
-                    datosUsuario=datosUsuario.replace(PERFIL_DIRECCION, "");
-                    datosUsuario=datosUsuario.replace(PERFIL_PROFESOR, "");
-                    datosUsuario=datosUsuario.replace("(", "");
-                    datosUsuario=datosUsuario.replace(")", "");
+                    datosUsuario = datosUsuario.replace(PERFIL_DIRECCION, "");
+                    datosUsuario = datosUsuario.replace(PERFIL_PROFESOR, "");
+                    datosUsuario = datosUsuario.replace("(", "");
+                    datosUsuario = datosUsuario.replace(")", "");
                     u.setNombre(datosUsuario.trim());
                     //Con el nombre asignado la ficha se encarga automáticamente de cargar el profesor asociado
                 }
@@ -1139,5 +1139,63 @@ public class ClienteSeneca extends MaimonidesBean {
         }
         hacerLogout();
         return u;
+    }
+
+    public HashMap<String, String> getDatosCentro() {
+        HashMap<String, String> datos = new HashMap<String, String>();
+        if (hacerLogin()) {
+            try {
+                HashMap<String, String> mapaTitulos = new HashMap<String, String>();
+                mapaTitulos.put("Código de centro:", "codigo_centro");
+                mapaTitulos.put("Denominación del centro:", "nombre_centro");
+                mapaTitulos.put("Domicilio:", "direccion_centro");
+                mapaTitulos.put("Localidad:", "poblacion_centro");
+                mapaTitulos.put("Cód. Postal:", "cp_centro");
+                mapaTitulos.put("Provincia:", "provincia_centro");
+                mapaTitulos.put("Tfno:", "telefono_centro");
+                mapaTitulos.put("Fax:", "fax_centro");
+                mapaTitulos.put("Correo electrónico:", "email_centro");
+                firePropertyChange("message", null, "Cargando datos del centro");
+                HttpGet get = new HttpGet(getUrlBase() + "Principal.jsp?rndval=607395803&COD_PAGINA=51&N_V_=" + getNombreVentana());
+                Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando datos del centro.");
+                HttpResponse response = getCliente().execute(get);
+                String texto = EntityUtils.toString(response.getEntity());
+                Source source = new Source(texto);
+                List<Element> celdas = source.getAllElementsByClass("celdaTablaFormFila");
+                String prefijoNombreCentro = "";
+                for (Element e : celdas) {
+                    List<Element> valores = e.getAllElementsByClass("columnaValor");
+                    
+                    String valor=null;
+                    if (!valores.isEmpty()) {
+                        Element elValor = valores.get(0);
+                        valor = elValor.getContent().getTextExtractor().toString();
+                    } else {
+                        valores = e.getAllElementsByClass("entrada");
+                        if (!valores.isEmpty()) {
+                            Element elValor = valores.get(0);
+                            valor=elValor.getAttributeValue("value");
+                        }
+                    }
+                    if (valor != null) {
+                        valor=valor.trim();
+                        String nombre = e.getContent().getTextExtractor().toString();
+                        nombre = nombre.replace(valor, "").trim();
+                        System.out.println(nombre + ":" + valor);
+                        if ("Denominación genérica:".equals(nombre)) {
+                            prefijoNombreCentro = valor;
+                        } else if (mapaTitulos.containsKey(nombre)) {
+                            datos.put(mapaTitulos.get(nombre), valor);
+                        }
+                    }
+                }
+                datos.put("nombre_centro", (prefijoNombreCentro + " " + datos.get("nombre_centro")).trim());
+            } catch (Exception ex) {
+                Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
+                datos = null;
+            }
+        }
+        hacerLogout();
+        return datos;
     }
 }

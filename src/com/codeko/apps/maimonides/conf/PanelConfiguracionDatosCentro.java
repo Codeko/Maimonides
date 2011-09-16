@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelConfiguracionDatosCentro.java
  *
@@ -32,9 +30,15 @@
 package com.codeko.apps.maimonides.conf;
 
 import com.codeko.apps.maimonides.*;
+import com.codeko.apps.maimonides.seneca.ClienteSeneca;
+import com.codeko.apps.maimonides.seneca.GestorUsuarioClaveSeneca;
+import com.codeko.util.Str;
 import java.beans.Beans;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 
@@ -88,16 +92,17 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
         tfUsuario = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         tfClave = new javax.swing.JPasswordField();
+        bRecuperarDesdeSeneca = new javax.swing.JButton();
 
         setName("Form"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelConfiguracionDatosCentro.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelConfiguracionDatosCentro.class, this);
         bGuardar.setAction(actionMap.get("guardarDatos")); // NOI18N
         bGuardar.setName("bGuardar"); // NOI18N
 
         panelDatosCentro.setName("panelDatosCentro"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelConfiguracionDatosCentro.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelConfiguracionDatosCentro.class);
         lNombre.setText(resourceMap.getString("lNombre.text")); // NOI18N
         lNombre.setName("lNombre"); // NOI18N
 
@@ -193,8 +198,8 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
                 .addGap(32, 32, 32)
                 .addGroup(panelDatosCentroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-                    .addComponent(tfDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                    .addComponent(tfNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                    .addComponent(tfDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
                     .addGroup(panelDatosCentroLayout.createSequentialGroup()
                         .addGroup(panelDatosCentroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelDatosCentroLayout.createSequentialGroup()
@@ -202,24 +207,24 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel10)
                                 .addGap(3, 3, 3)
-                                .addComponent(tfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                            .addComponent(tfWeb, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                            .addComponent(tfFax, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                            .addComponent(tfTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                            .addComponent(tfProvincia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                            .addComponent(tfPoblacion, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                            .addComponent(tfEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+                                .addComponent(tfUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
+                            .addComponent(tfWeb, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                            .addComponent(tfFax, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                            .addComponent(tfTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                            .addComponent(tfProvincia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                            .addComponent(tfPoblacion, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                            .addComponent(tfEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
                         .addGroup(panelDatosCentroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelDatosCentroLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfCP, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+                                .addComponent(tfCP, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
                             .addGroup(panelDatosCentroLayout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfClave, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)))))
+                                .addComponent(tfClave, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         panelDatosCentroLayout.setVerticalGroup(
@@ -272,29 +277,37 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
                     .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+        bRecuperarDesdeSeneca.setAction(actionMap.get("recuperarDesdeSeneca")); // NOI18N
+        bRecuperarDesdeSeneca.setName("bRecuperarDesdeSeneca"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelDatosCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(543, Short.MAX_VALUE)
-                .addComponent(bGuardar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelDatosCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(bRecuperarDesdeSeneca)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 324, Short.MAX_VALUE)
+                        .addComponent(bGuardar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelDatosCentro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(bGuardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bGuardar)
+                    .addComponent(bRecuperarDesdeSeneca))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bGuardar;
+    private javax.swing.JButton bRecuperarDesdeSeneca;
     private javax.swing.JCheckBox cbCompatible;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -329,7 +342,7 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
     }
 
     @Action(block = Task.BlockingScope.ACTION)
-    public Task guardarDatos() {
+    public Task<Object, Void> guardarDatos() {
         return new GuardarDatosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -357,7 +370,7 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
 
         @Override
         protected Object doInBackground() {
-            Iterator it = datos.keySet().iterator();
+            Iterator<String> it = datos.keySet().iterator();
             while (it.hasNext()) {
                 String nombre = it.next().toString();
                 String valor = datos.get(nombre);
@@ -373,7 +386,7 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public final Task cargarDatos() {
+    public final Task<HashMap<String, String>, Void> cargarDatos() {
         return new CargarDatosTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -406,19 +419,66 @@ public class PanelConfiguracionDatosCentro extends javax.swing.JPanel implements
 
         @Override
         protected void succeeded(HashMap<String, String> datos) {
-            tfCodigo.setText(datos.get("codigo_centro"));
-            tfNombre.setText(datos.get("nombre_centro"));
-            tfDireccion.setText(datos.get("direccion_centro"));
-            tfPoblacion.setText(datos.get("poblacion_centro"));
-            tfCP.setText(datos.get("cp_centro"));
-            tfProvincia.setText(datos.get("provincia_centro"));
-            tfTelefono.setText(datos.get("telefono_centro"));
-            tfFax.setText(datos.get("fax_centro"));
-            tfEmail.setText(datos.get("email_centro"));
-            tfWeb.setText(datos.get(Configuracion.CENTRO_WEB));
-            cbCompatible.setSelected(datos.get(Configuracion.CENTRO_WEB_COMPATIBLE).equals("1"));
-            tfUsuario.setText(datos.get(Configuracion.WEB_USUARIO));
-            tfClave.setText(datos.get(Configuracion.WEB_CLAVE));
+            cargarDatosCentro(datos);
+        }
+    }
+
+    private void cargarDatosCentro(HashMap<String, String> datos) {
+        if (datos != null) {
+            tfCodigo.setText(Str.noNulo(datos.get("codigo_centro")));
+            tfNombre.setText(Str.noNulo(datos.get("nombre_centro")));
+            tfDireccion.setText(Str.noNulo(datos.get("direccion_centro")));
+            tfPoblacion.setText(Str.noNulo(datos.get("poblacion_centro")));
+            tfCP.setText(Str.noNulo(datos.get("cp_centro")));
+            tfProvincia.setText(Str.noNulo(datos.get("provincia_centro")));
+            tfTelefono.setText(Str.noNulo(datos.get("telefono_centro")));
+            tfFax.setText(Str.noNulo(datos.get("fax_centro")));
+            tfEmail.setText(Str.noNulo(datos.get("email_centro")));
+            tfWeb.setText(Str.noNulo(datos.get(Configuracion.CENTRO_WEB)));
+            cbCompatible.setSelected(Str.noNulo(datos.get(Configuracion.CENTRO_WEB_COMPATIBLE)).equals("1"));
+            tfUsuario.setText(Str.noNulo(datos.get(Configuracion.WEB_USUARIO)));
+            tfClave.setText(Str.noNulo(datos.get(Configuracion.WEB_CLAVE)));
+        }
+    }
+
+    @Action(block = Task.BlockingScope.APPLICATION)
+    public Task<HashMap<String, String>, Void> recuperarDesdeSeneca() {
+        return new RecuperarDesdeSenecaTask(org.jdesktop.application.Application.getInstance());
+    }
+
+    private class RecuperarDesdeSenecaTask extends org.jdesktop.application.Task<HashMap<String, String>, Void> {
+
+        ClienteSeneca cli = null;
+
+        RecuperarDesdeSenecaTask(org.jdesktop.application.Application app) {
+            super(app);
+            if (!GestorUsuarioClaveSeneca.getGestor().pedirUsuarioClave()) {
+                cancel(false);
+            } else {
+                cli = new ClienteSeneca(GestorUsuarioClaveSeneca.getGestor().getUsuario(), GestorUsuarioClaveSeneca.getGestor().getClave());
+                cli.setDebugMode(MaimonidesApp.isDebug());
+            }
+        }
+
+        @Override
+        protected HashMap<String, String> doInBackground() {
+            cli.addPropertyChangeListener(new PropertyChangeListener() {
+
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                }
+            });
+            return cli.getDatosCentro();
+        }
+
+        @Override
+        protected void succeeded(HashMap<String, String> result) {
+            if (result != null) {
+                cargarDatosCentro(result);
+            } else {
+                JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "Ha habido algún error recuperando los datos del centro.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

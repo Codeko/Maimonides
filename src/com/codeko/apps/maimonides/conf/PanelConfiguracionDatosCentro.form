@@ -19,13 +19,16 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="panelDatosCentro" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="543" max="32767" attributes="0"/>
-              <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="panelDatosCentro" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="bRecuperarDesdeSeneca" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="324" max="32767" attributes="0"/>
+                      <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -34,8 +37,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelDatosCentro" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
-              <Component id="bGuardar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="bGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="bRecuperarDesdeSeneca" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -74,8 +80,8 @@
                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="tfCodigo" min="-2" pref="111" max="-2" attributes="0"/>
-                      <Component id="tfNombre" alignment="0" pref="506" max="32767" attributes="0"/>
-                      <Component id="tfDireccion" alignment="0" pref="506" max="32767" attributes="0"/>
+                      <Component id="tfNombre" alignment="0" pref="542" max="32767" attributes="0"/>
+                      <Component id="tfDireccion" alignment="0" pref="542" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
@@ -85,19 +91,19 @@
                                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                   <Component id="tfUsuario" pref="158" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="tfWeb" alignment="0" pref="342" max="32767" attributes="0"/>
-                              <Component id="tfFax" alignment="0" pref="342" max="32767" attributes="0"/>
-                              <Component id="tfTelefono" alignment="0" pref="342" max="32767" attributes="0"/>
-                              <Component id="tfProvincia" alignment="0" pref="342" max="32767" attributes="0"/>
-                              <Component id="tfPoblacion" alignment="1" pref="342" max="32767" attributes="0"/>
-                              <Component id="tfEmail" alignment="0" pref="342" max="32767" attributes="0"/>
+                              <Component id="tfWeb" alignment="0" pref="371" max="32767" attributes="0"/>
+                              <Component id="tfFax" alignment="0" pref="371" max="32767" attributes="0"/>
+                              <Component id="tfTelefono" alignment="0" pref="371" max="32767" attributes="0"/>
+                              <Component id="tfProvincia" alignment="0" pref="371" max="32767" attributes="0"/>
+                              <Component id="tfPoblacion" alignment="1" pref="371" max="32767" attributes="0"/>
+                              <Component id="tfEmail" alignment="0" pref="371" max="32767" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="tfCP" pref="112" max="32767" attributes="0"/>
+                                  <Component id="tfCP" pref="116" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
@@ -328,5 +334,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="bRecuperarDesdeSeneca">
+      <Properties>
+        <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+          <action class="com.codeko.apps.maimonides.conf.PanelConfiguracionDatosCentro" id="recuperarDesdeSeneca" methodName="recuperarDesdeSeneca"/>
+        </Property>
+        <Property name="name" type="java.lang.String" value="bRecuperarDesdeSeneca" noResource="true"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>
