@@ -25,12 +25,10 @@
 package com.codeko.apps.maimonides.seneca;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
-import com.codeko.apps.maimonides.MaimonidesInputBlocker;
 import com.codeko.apps.maimonides.MaimonidesUtil;
 import com.codeko.apps.maimonides.usr.Usuario;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.SwingUtilities;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 
