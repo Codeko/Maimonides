@@ -70,7 +70,7 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
     boolean aplicarFiltrosImpresion = false;
     private ArrayList<Integer> filtroIdProfs = new ArrayList<Integer>();
     private ArrayList<Integer> filtroIdUds = new ArrayList<Integer>();
-    private ArrayList<Integer> FiltroIdAulas = new ArrayList<Integer>();
+    private ArrayList<Integer> filtroIdAulas = new ArrayList<Integer>();
 
     public MaimonidesBean getBean() {
         if (bean == null) {
@@ -182,44 +182,12 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
     }
 
     private boolean cargarFiltrosImpresion() {
-        boolean finalAplicarFiltrosImpresion = false;
         if (isAplicarFiltrosImpresion()) {
-            String idsProfesores = MaimonidesApp.getApplication().getConfiguracion().get("filtro-imp-partes-prof-ano-" + getAnoEscolar().getId(), "");
-            if (!idsProfesores.equals("")) {
-                String[] ids = idsProfesores.split(",");
-                for (String id : ids) {
-                    int v = Num.getInt(id);
-                    if (v > 0) {
-                        filtroIdProfs.add(v);
-                        finalAplicarFiltrosImpresion = true;
-                    }
-                }
-            }
-            String idsUnidades = MaimonidesApp.getApplication().getConfiguracion().get("filtro-imp-partes-unidad-ano-" + getAnoEscolar().getId(), "");
-            if (!idsUnidades.equals("")) {
-                String[] ids = idsUnidades.split(",");
-                for (String id : ids) {
-                    int v = Num.getInt(id);
-                    if (v > 0) {
-                        filtroIdUds.add(v);
-                        finalAplicarFiltrosImpresion = true;
-                    }
-                }
-            }
-
-            String idsAulas = MaimonidesApp.getApplication().getConfiguracion().get("filtro-imp-partes-unidad-ano-" + getAnoEscolar().getId(), "");
-            if (!idsAulas.equals("")) {
-                String[] ids = idsAulas.split(",");
-                for (String id : ids) {
-                    int v = Num.getInt(id);
-                    if (v > 0) {
-                        FiltroIdAulas.add(v);
-                        finalAplicarFiltrosImpresion = true;
-                    }
-                }
-            }
+            filtroIdProfs=com.codeko.apps.maimonides.partes.config.Configuracion.getIdsProfesoresImpresionParteFiltrado(getAnoEscolar());
+            filtroIdUds=com.codeko.apps.maimonides.partes.config.Configuracion.getIdsGruposImpresionParteFiltrado(getAnoEscolar());
+            filtroIdAulas=com.codeko.apps.maimonides.partes.config.Configuracion.getIdsAulasImpresionParteFiltrado(getAnoEscolar());
         }
-        return finalAplicarFiltrosImpresion;
+        return !filtroIdProfs.isEmpty() || !filtroIdUds.isEmpty() || !filtroIdAulas.isEmpty() ;
     }
 
     private boolean checkFiltroEnParte(ParteFaltas parte) {
@@ -250,10 +218,10 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
         }
 
         if (add) {
-            if (!FiltroIdAulas.isEmpty()) {
+            if (!filtroIdAulas.isEmpty()) {
                 boolean todos = true;
                 for (Horario h : horarios) {
-                    if (!FiltroIdAulas.contains(h.getDependencia())) {
+                    if (!filtroIdAulas.contains(h.getDependencia())) {
                         todos = false;
                         break;
                     }

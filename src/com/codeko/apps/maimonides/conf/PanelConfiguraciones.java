@@ -32,6 +32,7 @@
 package com.codeko.apps.maimonides.conf;
 
 import com.codeko.apps.maimonides.IPanel;
+import com.codeko.apps.maimonides.partes.config.PanelConfiguracionExclusionImpresion;
 
 /**
  *
@@ -42,6 +43,9 @@ public class PanelConfiguraciones extends javax.swing.JPanel implements IPanel {
     /** Creates new form PanelConfiguraciones */
     public PanelConfiguraciones() {
         initComponents();
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelConfiguraciones.class);
+        jTabbedPane1.addTab("Exclusión de partes impresos", resourceMap.getIcon("panelConfiguracionImpresion1.TabConstraints.tabIcon"), new PanelConfiguracionExclusionImpresion()); // NOI18N
+
     }
 
     /** This method is called from within the constructor to
