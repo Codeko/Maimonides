@@ -111,7 +111,7 @@ public class PanelListaPartes extends javax.swing.JPanel implements IPanel {
         initComponents();
         nodoBase.setAllowsChildren(true);
         vaciarPartes(getFecha());
-        arbol.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        arbol.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         tfFecha.addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
@@ -133,8 +133,8 @@ public class PanelListaPartes extends javax.swing.JPanel implements IPanel {
         });
         MaimonidesUtil.setFormatosFecha(tfFecha, true);
         tfFecha.setDate(new Date());
-        bBorrar.setVisible(Permisos.borrado(this));
-        bCargarPartes.setVisible(Permisos.creacion(this));
+        bBorrar.setVisible(Permisos.borrado(getClass()));
+        bCargarPartes.setVisible(Permisos.creacion(getClass()));
     }
 
     private void verificarPartesFecha() {
@@ -142,7 +142,7 @@ public class PanelListaPartes extends javax.swing.JPanel implements IPanel {
     }
 
     @Action(block = Task.BlockingScope.APPLICATION)
-    public Task cargarListaPartes() {
+    public Task<ArrayList<ParteFaltas>, Void> cargarListaPartes() {
         return new CargarListaPartesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -165,7 +165,7 @@ public class PanelListaPartes extends javax.swing.JPanel implements IPanel {
                 }
             });
             pdsp.cargarPartes();
-            if (pdsp.getPartes().size() != 0) {
+            if (!pdsp.getPartes().isEmpty()) {
                 return pdsp.getPartes();
             }
             return null;
@@ -180,7 +180,7 @@ public class PanelListaPartes extends javax.swing.JPanel implements IPanel {
         }
     }
 
-    public GregorianCalendar getFecha() {
+    public final GregorianCalendar getFecha() {
         return Fechas.toGregorianCalendar(tfFecha.getDate());
     }
 
@@ -297,7 +297,7 @@ private void bCargarPartesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 }//GEN-LAST:event_bCargarPartesMouseClicked
 
-    public void vaciarPartes(GregorianCalendar fecha) {
+    public final void vaciarPartes(GregorianCalendar fecha) {
         setPartesCargados(false);
         nodoBase.removeAllChildren();
         nodoBase.setUserObject("No existen partes para " + Fechas.format(fecha) + ".");
@@ -384,7 +384,7 @@ private void bCargarPartesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 
     @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "partesNoCargados")
-    public Task cargarPartes() {
+    public Task<Object, Void> cargarPartes() {
         return new CargarPartesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
@@ -427,25 +427,26 @@ private void bCargarPartesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 
     @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "partesCargados")
-    public Task imprimirPartes() {
+    public Task<Object, Void> imprimirPartes() {
         return new ImprimirPartesTask(MaimonidesApp.getApplication());
     }
 
     private class ImprimirPartesTask extends org.jdesktop.application.Task<Object, Void> {
         //CreadorPartes creador=new CreadorPartes(MaimonidesApp.getApplication().getAnoEscolar());
-
+        TreePath[] selectedPaths=null;
         AnoEscolar anoEscolar = MaimonidesApp.getApplication().getAnoEscolar();
         GregorianCalendar fecha = null;
 
         ImprimirPartesTask(org.jdesktop.application.Application app) {
             super(app);
             fecha = Fechas.toGregorianCalendar(tfFecha.getDate());
+            selectedPaths=arbol.getSelectionPaths();
         }
 
         @Override
         protected Object doInBackground() {
             //Según la selección imprimirmos de una forma u otra
-            Object seleccionado = arbol.getSelectionPath().getLastPathComponent();
+            //Object seleccionado = arbol.getSelectionPath().getLastPathComponent();
             MaimonidesBean bean = new MaimonidesBean();
             bean.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -454,12 +455,15 @@ private void bCargarPartesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
                 }
             });
-            if (seleccionado == null || seleccionado.equals(nodoBase)) {
-                Impresion.getImpresion().imprimirPartes(bean, anoEscolar, fecha);
-            } else if (seleccionado instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) seleccionado).getUserObject() instanceof String) {
-                Impresion.getImpresion().imprimirPartes(bean, anoEscolar, fecha, ((DefaultMutableTreeNode) seleccionado).getUserObject().toString());
-            } else if (seleccionado instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) seleccionado).getUserObject() instanceof ParteFaltas) {
-                Impresion.getImpresion().imprimirPartes(bean, anoEscolar, fecha, (ParteFaltas) ((DefaultMutableTreeNode) seleccionado).getUserObject());
+            for(TreePath tp:selectedPaths){
+                Object seleccionado=tp.getLastPathComponent();
+                if (seleccionado == null || seleccionado.equals(nodoBase)) {
+                    Impresion.getImpresion().imprimirPartes(bean, anoEscolar, fecha);
+                } else if (seleccionado instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) seleccionado).getUserObject() instanceof String) {
+                    Impresion.getImpresion().imprimirPartes(bean, anoEscolar, fecha, ((DefaultMutableTreeNode) seleccionado).getUserObject().toString());
+                } else if (seleccionado instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) seleccionado).getUserObject() instanceof ParteFaltas) {
+                    Impresion.getImpresion().imprimirPartes(bean, anoEscolar, fecha, (ParteFaltas) ((DefaultMutableTreeNode) seleccionado).getUserObject());
+                }
             }
             return null;
         }
@@ -485,7 +489,7 @@ private void bCargarPartesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIR
     }
 
     @Action(block = Task.BlockingScope.APPLICATION, enabledProperty = "partesCargados")
-    public Task borrarPartes() {
+    public Task<Boolean, Void> borrarPartes() {
         return new BorrarPartesTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
     }
 
