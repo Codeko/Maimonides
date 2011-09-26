@@ -27,7 +27,6 @@ package com.codeko.apps.maimonides.impresion;
 import com.codeko.apps.maimonides.conf.Configuracion;
 import com.codeko.apps.maimonides.MaimonidesApp;
 import com.codeko.apps.maimonides.MaimonidesBean;
-import com.codeko.apps.maimonides.cartero.CarteroAlumno;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.elementos.ParteFaltas;
 import com.codeko.apps.maimonides.elementos.Unidad;
@@ -85,6 +84,7 @@ public class Impresion extends MaimonidesBean {
         });
         ParteDataSourceProvider pdsp = new ParteDataSourceProvider(anoEscolar, fecha, this);
         firePropertyChange("message", null, "Cargando datos de partes...");
+        pdsp.setAplicarFiltrosImpresion(true);
         pdsp.cargarPartes();
         imprimir(pdsp);
     }
@@ -99,6 +99,7 @@ public class Impresion extends MaimonidesBean {
         });
         ParteDataSourceProvider pdsp = new ParteDataSourceProvider(anoEscolar, fecha, this);
         firePropertyChange("message", null, "Cargando datos de partes...");
+        pdsp.setAplicarFiltrosImpresion(true);
         pdsp.cargarPartes(curso);
         imprimir(pdsp);
     }
@@ -141,7 +142,7 @@ public class Impresion extends MaimonidesBean {
             JasperReport jasperReport = Impresion.getReport("parte_generico.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), jrds);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<Object,Object>(), jrds);
             if (MaimonidesApp.getApplication().getConfiguracion().isImprimirEnPDF()) {
                 firePropertyChange("message", null, "Generando PDF...");
                 File salida = File.createTempFile("partes_", ".pdf");
@@ -164,7 +165,7 @@ public class Impresion extends MaimonidesBean {
             JasperReport jasperReport = Impresion.getReport("parte.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), jrds);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<Object,Object>(), jrds);
             if (MaimonidesApp.getApplication().getConfiguracion().isImprimirEnPDF()) {
                 firePropertyChange("message", null, "Generando PDF...");
                 File salida = File.createTempFile("partes_", ".pdf");

@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.partes;
 
 import com.codeko.apps.maimonides.conf.Configuracion;
@@ -32,6 +30,7 @@ import com.codeko.apps.maimonides.MaimonidesBean;
 import com.codeko.apps.maimonides.convivencia.Expulsion;
 import com.codeko.apps.maimonides.elementos.Alumno;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
+import com.codeko.apps.maimonides.elementos.Horario;
 import com.codeko.apps.maimonides.elementos.LineaParteAlumno;
 import com.codeko.apps.maimonides.elementos.Materia;
 import com.codeko.apps.maimonides.elementos.ParteFaltas;
@@ -68,6 +67,10 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
     ArrayList<AsistenciaAlumno> asistencia = new ArrayList<AsistenciaAlumno>();
     int posicion = 0;
     int posicionAlumno = -1;
+    boolean aplicarFiltrosImpresion = false;
+    private ArrayList<Integer> filtroIdProfs = new ArrayList<Integer>();
+    private ArrayList<Integer> filtroIdUds = new ArrayList<Integer>();
+    private ArrayList<Integer> FiltroIdAulas = new ArrayList<Integer>();
 
     public MaimonidesBean getBean() {
         if (bean == null) {
@@ -78,6 +81,14 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
 
     public final void setBean(MaimonidesBean bean) {
         this.bean = bean;
+    }
+
+    public boolean isAplicarFiltrosImpresion() {
+        return aplicarFiltrosImpresion;
+    }
+
+    public void setAplicarFiltrosImpresion(boolean aplicarFiltrosImpresion) {
+        this.aplicarFiltrosImpresion = aplicarFiltrosImpresion;
     }
 
     public ArrayList<AsistenciaAlumno> getAsistencia() {
@@ -143,11 +154,19 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
             st.setString(2, Fechas.getFechaFormatoBD(getFecha()));
             st.setString(3, curso);
             res = st.executeQuery();
+            boolean finalAplicarFiltrosImpresion=cargarFiltrosImpresion();
             while (res.next()) {
                 ParteFaltas parte = new ParteFaltas();
                 if (parte.cargarDesdeResultSet(res)) {
-                    getBean().firePropertyChange("message", null, "Cargando parte " + parte.getDescripcionObjeto() + "...");
-                    getPartes().add(parte);
+                    boolean add = true;
+                    if (finalAplicarFiltrosImpresion) {
+                        add = checkFiltroEnParte(parte);
+                    }
+                    if (add) {
+                        getPartes().add(parte);
+                    } else {
+                        getBean().firePropertyChange("message", null, "Parte " + parte.getDescripcionObjeto() + "marcado para no ser impreso.");
+                    }
                 }
             }
         } catch (SQLException ex) {
@@ -162,6 +181,89 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
         getPartes().add(parte);
     }
 
+    private boolean cargarFiltrosImpresion() {
+        boolean finalAplicarFiltrosImpresion = false;
+        if (isAplicarFiltrosImpresion()) {
+            String idsProfesores = MaimonidesApp.getApplication().getConfiguracion().get("filtro-imp-partes-prof-ano-" + getAnoEscolar().getId(), "");
+            if (!idsProfesores.equals("")) {
+                String[] ids = idsProfesores.split(",");
+                for (String id : ids) {
+                    int v = Num.getInt(id);
+                    if (v > 0) {
+                        filtroIdProfs.add(v);
+                        finalAplicarFiltrosImpresion = true;
+                    }
+                }
+            }
+            String idsUnidades = MaimonidesApp.getApplication().getConfiguracion().get("filtro-imp-partes-unidad-ano-" + getAnoEscolar().getId(), "");
+            if (!idsUnidades.equals("")) {
+                String[] ids = idsUnidades.split(",");
+                for (String id : ids) {
+                    int v = Num.getInt(id);
+                    if (v > 0) {
+                        filtroIdUds.add(v);
+                        finalAplicarFiltrosImpresion = true;
+                    }
+                }
+            }
+
+            String idsAulas = MaimonidesApp.getApplication().getConfiguracion().get("filtro-imp-partes-unidad-ano-" + getAnoEscolar().getId(), "");
+            if (!idsAulas.equals("")) {
+                String[] ids = idsAulas.split(",");
+                for (String id : ids) {
+                    int v = Num.getInt(id);
+                    if (v > 0) {
+                        FiltroIdAulas.add(v);
+                        finalAplicarFiltrosImpresion = true;
+                    }
+                }
+            }
+        }
+        return finalAplicarFiltrosImpresion;
+    }
+
+    private boolean checkFiltroEnParte(ParteFaltas parte) {
+        boolean add = true;
+        ArrayList<Horario> horarios = parte.getHorarios();
+        if (!filtroIdProfs.isEmpty()) {
+            boolean todos = true;
+            for (Horario h : horarios) {
+                if (!filtroIdProfs.contains(h.getProfesor())) {
+                    todos = false;
+                    break;
+                }
+            }
+            add = !todos;
+        }
+
+        if (add) {
+            if (!filtroIdUds.isEmpty()) {
+                boolean todos = true;
+                for (Horario h : horarios) {
+                    if (!filtroIdUds.contains(h.getUnidad())) {
+                        todos = false;
+                        break;
+                    }
+                }
+                add = !todos;
+            }
+        }
+
+        if (add) {
+            if (!FiltroIdAulas.isEmpty()) {
+                boolean todos = true;
+                for (Horario h : horarios) {
+                    if (!FiltroIdAulas.contains(h.getDependencia())) {
+                        todos = false;
+                        break;
+                    }
+                }
+                add = !todos;
+            }
+        }
+        return add;
+    }
+
     public void cargarPartes() {
         getPartes().clear();
         PreparedStatement st = null;
@@ -172,29 +274,40 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
             Unidad u = Permisos.getFiltroUnidad();
             String extra = "";
             String where = "";
+            boolean addJoinsHorarios = false;
+            boolean addJoinsUnidades = false;
             if (Permisos.isUsuarioSoloProfesor()) {
                 p = Permisos.getFiltroProfesor();
                 if (p != null) {
                     //Si hay filtro de profesor debemos mostrar solo los partes donde el
                     //profesor está
-                    extra += " JOIN partes_horarios AS ph ON ph.parte_id=p.id ";
-                    extra += " JOIN horarios_ AS h ON ph.horario_id=h.id ";
-                    extra += " JOIN unidades AS u2 ON h.unidad_id=u2.id ";
                     where = " h.profesor_id=? ";
+                    addJoinsHorarios = true;
                     //Si hay filtro de unidad se podrá también ver el parte de
                     //Esa unidad
                     if (u != null) {
+                        addJoinsUnidades = true;
                         where += " OR u2.id=? ";
                     }
                     where = " AND (" + where + ") ";
                 }
             }
-            st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT distinct p.* FROM partes AS p "
+
+            if (addJoinsHorarios) {
+                extra += " JOIN partes_horarios AS ph ON ph.parte_id=p.id ";
+                extra += " JOIN horarios_ AS h ON ph.horario_id=h.id ";
+            }
+
+            if (addJoinsUnidades) {
+                extra += " JOIN unidades AS u2 ON h.unidad_id=u2.id ";
+            }
+            String sql = "SELECT distinct p.* FROM partes AS p "
                     + " LEFT JOIN cursos AS c ON c.curso=p.curso "
                     + " LEFT JOIN unidades AS u ON u.id=p.unidad_id "
                     + extra
                     + " WHERE p.ano=? AND p.fecha=? " + where
-                    + " ORDER BY IFNULL(c.posicion,99999),IFNULL(u.posicion,99999),p.curso,p.primario DESC,p.descripcion,p.id");
+                    + " ORDER BY IFNULL(c.posicion,99999),IFNULL(u.posicion,99999),p.curso,p.primario DESC,p.descripcion,p.id";
+            st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement(sql);
             st.setInt(1, getAnoEscolar().getId());
             st.setString(2, Fechas.getFechaFormatoBD(getFecha()));
             if (p != null) {
@@ -204,11 +317,21 @@ public class ParteDataSourceProvider extends JRAbstractBeanDataSourceProvider im
                 }
             }
             res = st.executeQuery();
+
+            boolean finalAplicarFiltrosImpresion = cargarFiltrosImpresion();
             while (res.next()) {
                 ParteFaltas parte = new ParteFaltas();
                 if (parte.cargarDesdeResultSet(res)) {
                     getBean().firePropertyChange("message", null, "Cargando parte " + parte.getDescripcionObjeto() + "...");
-                    getPartes().add(parte);
+                    boolean add = true;
+                    if (finalAplicarFiltrosImpresion) {
+                        add = checkFiltroEnParte(parte);
+                    }
+                    if (add) {
+                        getPartes().add(parte);
+                    } else {
+                        getBean().firePropertyChange("message", null, "Parte " + parte.getDescripcionObjeto() + "marcado para no ser impreso.");
+                    }
                 }
             }
         } catch (SQLException ex) {
