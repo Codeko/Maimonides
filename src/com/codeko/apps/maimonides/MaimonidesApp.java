@@ -35,6 +35,7 @@ import com.codeko.apps.maimonides.mantenimiento.Mantenimiento;
 import com.codeko.apps.maimonides.elementos.AnoEscolar;
 import com.codeko.apps.maimonides.mantenimiento.PanelMensajesActualizacion;
 import com.codeko.apps.maimonides.usr.GestorUsuarioClave;
+import com.codeko.apps.maimonides.usr.LoginTask;
 import com.codeko.apps.maimonides.usr.Usuario;
 import com.codeko.swing.CdkControlProgresos;
 import com.codeko.util.CTiempo;
@@ -114,12 +115,8 @@ public class MaimonidesApp extends SingleFrameApplication {
         firePropertyChange("usuario", old, null);
         firePropertyChange("usuario", old, usuario);
         if (usuario == null && old != null) {
-            boolean ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();
-            if (!ret) {
-                quit(null);
-            }
+            GestorUsuarioClave.getGestor().pedirUsuarioClave();
         }
-
     }
 
     public boolean isLoggedIn() {
@@ -515,24 +512,6 @@ public class MaimonidesApp extends SingleFrameApplication {
         }
     }
 
-    private class LoginTask extends org.jdesktop.application.Task<Boolean, Void> {
-
-        LoginTask(org.jdesktop.application.Application app) {
-            super(app);
-        }
-
-        @Override
-        protected Boolean doInBackground() {
-            boolean ret = false;
-            ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();
-            return ret;
-        }
-
-        @Override
-        protected void succeeded(Boolean result) {
-        }
-    }
-
     private boolean operacionesPostConexion() {
         boolean ret = true;
         //Vemos si la versión del programa es la misma que la versión de la base de datos
@@ -543,59 +522,53 @@ public class MaimonidesApp extends SingleFrameApplication {
         DNIeLoginManager.init();
         //Ahora preguntamos el usuario y clave
         if (ret) {
-            //ret = GestorUsuarioClave.getGestor().pedirUsuarioClave();
-            MaimonidesUtil.ejecutarTask(this, "hacerLogin");
+            LoginTask t = LoginTask.doLogin();
+            t.addTaskListener(new TaskListener<Boolean, Void>() {
+
+                @Override
+                public void doInBackground(TaskEvent te) {
+                    //throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                @Override
+                public void process(TaskEvent te) {
+                    //throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                @Override
+                public void succeeded(TaskEvent te) {
+                    Boolean ret = (Boolean) te.getValue();
+                    if (ret) {
+                        MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "actualizarVersion");
+                    } else {
+                        quit(null);
+                    }
+                }
+
+                @Override
+                public void failed(TaskEvent te) {
+                    quit(null);
+                }
+
+                @Override
+                public void cancelled(TaskEvent te) {
+                    quit(null);
+                }
+
+                @Override
+                public void interrupted(TaskEvent te) {
+                    //throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                @Override
+                public void finished(TaskEvent te) {
+                    //throw new UnsupportedOperationException("Not supported yet.");
+                }
+            });
         }
         return ret;
     }
 
-    @Action(block = Task.BlockingScope.NONE)
-    public Task<Boolean, Void> hacerLogin() {
-        LoginTask t = new LoginTask(org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class));
-        t.addTaskListener(new TaskListener<Boolean, Void>() {
-
-            @Override
-            public void doInBackground(TaskEvent te) {
-                //throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void process(TaskEvent te) {
-                //throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void succeeded(TaskEvent te) {
-                Boolean ret = (Boolean) te.getValue();
-                if (ret) {
-                    MaimonidesUtil.ejecutarTask(MaimonidesApp.getApplication(), "actualizarVersion");
-                } else {
-                    quit(null);
-                }
-            }
-
-            @Override
-            public void failed(TaskEvent te) {
-                quit(null);
-            }
-
-            @Override
-            public void cancelled(TaskEvent te) {
-                quit(null);
-            }
-
-            @Override
-            public void interrupted(TaskEvent te) {
-                //throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void finished(TaskEvent te) {
-                //throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-        return t;
-    }
 
     public static MaimonidesView getMaimonidesView() {
         return (MaimonidesView) getApplication().getMainView();

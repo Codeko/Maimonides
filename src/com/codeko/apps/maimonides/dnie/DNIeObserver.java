@@ -82,32 +82,38 @@ public class DNIeObserver extends MaimonidesBean {
 
             @Override
             public void propertyChange(PropertyChangeEvent pce) {
-                DNIe dni = (DNIe) pce.getNewValue();
+                final DNIe dni = (DNIe) pce.getNewValue();
                 Logger.getLogger(DNIeObserverThread.class.getName()).log(Level.INFO, "Notificaci\u00f3n. {0}: {1}", new Object[]{pce.getPropertyName(), pce.getNewValue()});
                 if ("cardDisconnected".equals(pce.getPropertyName())) {
                     //TODO Verificar que ha estado conectado
                     firePropertyChange("dnieDisconnected", null, dni);
                 } else if ("cardConnected".equals(pce.getPropertyName())) {
-                    try {
-                        //Por alguna razon si no se hace una pausa no accede bien a la tarjeta
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    firePropertyChange("message", null, "Nueva tarjeta detectada...");
-                    boolean isDNIe = isDNIe(dni.getCardTerminal());
-                    firePropertyChange("message", null, "Verificando que sea DNIe...");
-                    if (isDNIe) {
-                        firePropertyChange("message", null, "Es DNIe. Leyendo datos de tarjeta...");
-                        if (dni.loadPublicData()) {
-                            firePropertyChange("message", null, "Nuevo DNIe detectado correctamente.");
-                            firePropertyChange("dnieConnected", null, dni);
-                        } else {
-                            firePropertyChange("message", null, "Ha habido algún error accediendo a los datos de la tarjeta.");
+                    Thread t = new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                //Por alguna razon si no se hace una pausa no accede bien a la tarjeta
+                                Thread.sleep(500);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(DNIeObserver.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            firePropertyChange("message", null, "Nueva tarjeta detectada...");
+                            boolean isDNIe = isDNIe(dni.getCardTerminal());
+                            firePropertyChange("message", null, "Verificando que sea DNIe...");
+                            if (isDNIe) {
+                                firePropertyChange("message", null, "Es DNIe. Leyendo datos de tarjeta...");
+                                if (dni.loadPublicData()) {
+                                    firePropertyChange("message", null, "Nuevo DNIe detectado correctamente.");
+                                    firePropertyChange("dnieConnected", null, dni);
+                                } else {
+                                    firePropertyChange("message", null, "Ha habido algún error accediendo a los datos de la tarjeta.");
+                                }
+                            } else {
+                                firePropertyChange("message", null, "No es DNIe. Ignorando.");
+                            }
                         }
-                    } else {
-                        firePropertyChange("message", null, "No es DNIe. Ignorando.");
-                    }
+                    };
+                    t.start();
                 } else {
                     firePropertyChange(pce.getPropertyName(), pce.getOldValue(), pce.getNewValue());
                 }

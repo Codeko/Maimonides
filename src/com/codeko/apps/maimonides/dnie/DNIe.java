@@ -99,7 +99,12 @@ public class DNIe extends MaimonidesBean {
             Provider p = new sun.security.pkcs11.SunPKCS11(new ByteArrayInputStream(DNIe.getConfig()));
             Security.addProvider(p);
             keyStore = KeyStore.getInstance("PKCS11", p);
-            keyStore.load(null, getPin().toCharArray());
+            try {
+                keyStore.load(null, getPin().toCharArray());
+            } catch (Exception e) {
+                keyStore = null;
+                throw e;
+            }
         }
         return keyStore;
     }
@@ -139,10 +144,10 @@ public class DNIe extends MaimonidesBean {
             ch = c.getBasicChannel();
             firePropertyChange("message", null, "Leyendo datos públicos de la tarjeta...");
 
-           
+
             int offset = 0;
-            byte[] command =null;
-            ResponseAPDU r=null;
+            byte[] command = null;
+            ResponseAPDU r = null;
 //            command = new byte[]{(byte) 0x00, (byte) 0xa4, (byte) 0x04, (byte) 0x00, (byte) 0x0b, (byte) 0x4D, (byte) 0x61, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x72, (byte) 0x2E, (byte) 0x46, (byte) 0x69, (byte) 0x6C, (byte) 0x65};
 //            r = ch.transmit(new CommandAPDU(command));
 //            System.out.println(r.getSW());
@@ -154,9 +159,9 @@ public class DNIe extends MaimonidesBean {
             //Seleccionamos el directorio PKCS#15 5015
             command = new byte[]{(byte) 0x00, (byte) 0xA4, (byte) 0x00, (byte) 0x00, (byte) 0x02, (byte) 0x50, (byte) 0x15};
             r = ch.transmit(new CommandAPDU(command));
-            
+
             if ((byte) r.getSW() != (byte) 0x9000) {
-                System.out.println("SW incorrecto P1: "+r.getSW());
+                System.out.println("SW incorrecto P1: " + r.getSW());
                 //return false;
             }
 
@@ -165,22 +170,22 @@ public class DNIe extends MaimonidesBean {
             r = ch.transmit(new CommandAPDU(command));
 
             if ((byte) r.getSW() != (byte) 0x9000) {
-                System.out.println("SW incorrecto p2: "+r.getSW());
+                System.out.println("SW incorrecto p2: " + r.getSW());
                 //return false;
             }
-            
+
 //            command = new byte[]{(byte) 0x00, (byte) 0xB0, (byte) 0x01, (byte) 0x00, (byte) 0xFF};
 //            r = ch.transmit(new CommandAPDU(command));
 //            System.out.append("Nombre: " + new String(r.getData()));
 //            
-            
+
 //            r = ch.transmit(new CommandAPDU(new BigInteger("00CA02C200", 16).toByteArray()));
 //            System.out.append("Nombre: " + new String(r.getData()));
 //            r = ch.transmit(new CommandAPDU(new BigInteger("00CA02D009", 16).toByteArray()));
 //            System.out.append("\r\nDNI: " + new String(r.getData()));
 //            r = ch.transmit(new CommandAPDU(new BigInteger("00CA02E109", 16).toByteArray()));
 //            System.out.append("\r\nIDESP: " + new String(r.getData()));
-            
+
             //Leemos FF bytes del archivo
             command = new byte[]{(byte) 0x00, (byte) 0xB0, (byte) 0x00, (byte) 0x00, (byte) 0xFF};
             r = ch.transmit(new CommandAPDU(command));
@@ -222,6 +227,7 @@ public class DNIe extends MaimonidesBean {
             }
         } catch (Exception e) {
             Logger.getLogger(DNIe.class.getName()).log(Level.SEVERE, null, e);
+            firePropertyChange("message", null, "Error leyendo datos de tarjeta. Pruebe a volver a conectarla.");
         } finally {
             if (c != null) {
                 try {
@@ -277,6 +283,7 @@ public class DNIe extends MaimonidesBean {
     public boolean autentificar() {
         boolean result = false;
         try {
+            firePropertyChange("message", null, "Verficando clave de DNIe");
             Certificate c = getCertificadoAutentificacion();
             if (c != null) {
                 if (!(c instanceof X509Certificate)) {
@@ -322,6 +329,7 @@ public class DNIe extends MaimonidesBean {
             }
         } catch (Exception e) {
             Logger.getLogger(DNIe.class.getName()).log(Level.SEVERE, null, e);
+            firePropertyChange("message", null, "Clave de DNIe no válida");
         }
         return result;
     }
@@ -354,6 +362,7 @@ public class DNIe extends MaimonidesBean {
     public boolean validar() {
         boolean ret = false;
         try {
+            firePropertyChange("message", null, "Verificando validez y caducidad del certificado.");
             X509Certificate c = getCertificadoAutentificacion();
             /* Carga del proveedor necesario para la petición OCSP  */
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());

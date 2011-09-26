@@ -58,7 +58,7 @@ public class Configuracion extends com.codeko.apps.maimonides.conf.Configuracion
     }
 
     public static int getDNIePassPolicy() {
-        return Num.getInt(MaimonidesApp.getApplication().getConfiguracion().get("dnie_pass_policy", "" + DNIE_PASS_POLICY_NO_PASS));
+        return Num.getInt(MaimonidesApp.getApplication().getConfiguracion().get("dnie_pass_policy", "" + DNIE_PASS_POLICY_PASS_FOR_ALL));
     }
 
     public static void setDNIePassPolicy(int policy) {

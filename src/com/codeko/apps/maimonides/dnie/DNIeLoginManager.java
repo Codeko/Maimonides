@@ -70,21 +70,25 @@ public class DNIeLoginManager extends MaimonidesBean {
                     } else if ("dnieConnected".equals(pce.getPropertyName())) {
                         if (!MaimonidesApp.getApplication().isLoggedIn()) {
                             //Buscamos a un usuario con el DNI inicado
-                            DNIe dni = (DNIe) pce.getNewValue();
+                            final DNIe dni = (DNIe) pce.getNewValue();
                             AnoEscolar ano = AnoEscolar.getAnoEscolar();
-                            Usuario u =null;
+                            Usuario u = null;
                             //TODO Hay que buscar tambien en los profesores y padres
                             Alumno a = Alumno.getAlumnoDesdeCampo("dni", dni.getNif(), ano);
                             if (a != null) {
-                                u= new Usuario();
+                                u = new Usuario();
                                 u.setAlumno(a);
                                 u.setRoles(Rol.ROL_ALUMNO);
                                 u.setDNIe(true);
                                 u.setUsuarioVirtual(true);
                                 u.setNombre(a.getNombreFormateado());
                             }
-                            if(u!=null){
-                                MaimonidesApp.getApplication().setUsuario(u);
+                            if (u != null) {
+                                getLoginManager().firePropertyChange("message",null,"DNIe asociado a "+u+".");
+                                DNIeLoginTask t=DNIeLoginTask.doLogin(u,dni);
+                                t.addPropertyChangeListener(this);
+                            }else{
+                                 getLoginManager().firePropertyChange("message",null,"No hay ningún usuario asociado al DNIe introducido.");
                             }
                         }
                     }
@@ -92,4 +96,6 @@ public class DNIeLoginManager extends MaimonidesBean {
             });
         }
     }
+
+    
 }
