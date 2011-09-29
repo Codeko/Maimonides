@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.seneca.operaciones.convivencia;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
@@ -39,6 +37,7 @@ import com.codeko.apps.maimonides.seneca.GestorUsuarioClaveSeneca;
 import com.codeko.util.Fechas;
 import com.codeko.util.Num;
 import com.codeko.util.Obj;
+import com.codeko.util.Str;
 import com.mysql.jdbc.PreparedStatement;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -51,9 +50,10 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -193,23 +193,16 @@ public class GestorConvivenciaSeneca extends MaimonidesBean {
             System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode());
         }
         if (response.getStatusLine().getStatusCode() == 200) {
-            Scanner sc = new Scanner(response.getEntity().getContent(), "latin1");
-            String pre = "top.inferior.principal.cuerpo.eval(\"optionsCombo_[optionsCombo_.length]= new Option(";
-            while (sc.hasNextLine()) {
-                String l = sc.nextLine().trim();
-                if (l.startsWith(pre)) {
-                    //'Perturbación del normal desarrollo de las actividades de clase (Contraria)','41|2');");
-                    l = l.replace(pre, "").replace(");", "").trim();
-                    String[] vs = l.split("','");
-
-                    String cod = vs[1].replace('\'', ' ').replace('"', ' ').trim();
-                    String valor = vs[0].substring(1);
-                    if (!valor.trim().equals("")) {
-                        valores.put(cod.trim(), valor.trim());
-                    }
+            String str = Str.leer(response.getEntity().getContent(), "latin1");
+            Pattern p = Pattern.compile("new Option\\('(.*)','([0-9]+\\|[0-9]+)'\\);", Pattern.MULTILINE);
+            Matcher m = p.matcher(str);
+            while (m.find()) {
+                String valor = m.group(1).trim();
+                String cod = m.group(2).trim();
+                if (!valor.equals("")) {
+                    valores.put(cod, valor);
                 }
             }
-
         }
         return valores;
     }
@@ -367,7 +360,7 @@ public class GestorConvivenciaSeneca extends MaimonidesBean {
         if ((desc.length() + ref.length()) > 80) {
             desc = desc.substring(0, Math.abs(80 - (desc.length() + ref.length())));
         }
-        desc = desc + ref;
+        desc += ref;
         return desc;
     }
 
@@ -391,7 +384,7 @@ public class GestorConvivenciaSeneca extends MaimonidesBean {
         PreparedStatement st = null;
         ResultSet res = null;
         try {
-            String sql="SELECT * FROM conv_partes WHERE ano=? AND estado IN (" + ParteConvivencia.ESTADO_SANCIONADO + (ignorados ? "," + ParteConvivencia.ESTADO_IGNORADO : "") + ") AND ((situacion &" + ParteConvivencia.SIT_ENVIADO_SENECA + ")!=" + ParteConvivencia.SIT_ENVIADO_SENECA + ")";
+            String sql = "SELECT * FROM conv_partes WHERE ano=? AND estado IN (" + ParteConvivencia.ESTADO_SANCIONADO + (ignorados ? "," + ParteConvivencia.ESTADO_IGNORADO : "") + ") AND ((situacion &" + ParteConvivencia.SIT_ENVIADO_SENECA + ")!=" + ParteConvivencia.SIT_ENVIADO_SENECA + ")";
             System.out.println(sql);
             st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement(sql);
             st.setInt(1, MaimonidesApp.getApplication().getAnoEscolar().getId());
