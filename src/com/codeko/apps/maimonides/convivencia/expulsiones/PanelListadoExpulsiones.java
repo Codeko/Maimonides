@@ -400,6 +400,7 @@ public class PanelListadoExpulsiones extends javax.swing.JPanel implements IPane
                 }
             });
             cartero.setCargarAsistenciaTotal(false);
+            setMessage("Enviando/Imprimiento cartas...");
             return cartero.enviar(datos);
         }
 

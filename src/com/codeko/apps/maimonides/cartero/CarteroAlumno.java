@@ -247,7 +247,7 @@ public class CarteroAlumno<T extends IAlumno> extends MaimonidesBean {
         } else {
             System.setProperty("office.home", fOOO);
         }
-
+        OfficeManager officeManager=null;
         try {
             DefaultOfficeManagerConfiguration OOConf = new DefaultOfficeManagerConfiguration();
             try {
@@ -263,8 +263,8 @@ public class CarteroAlumno<T extends IAlumno> extends MaimonidesBean {
             //OOConf.setConnectionProtocol(OfficeConnectionProtocol.PIPE);
             //OOConf.setPortNumber(8100);
             //ManagedProcessOfficeManagerConfiguration OOConf = new ManagedProcessOfficeManagerConfiguration(OfficeConnectionMode.socket(8100));
-            OOConf.setTaskExecutionTimeout(1000 * 60 * 10);
-            OfficeManager officeManager = OOConf.buildOfficeManager();//new ManagedProcessOfficeManager(OOConf);
+            OOConf.setTaskExecutionTimeout(1000 * 60 * 5);
+            officeManager = OOConf.buildOfficeManager();//new ManagedProcessOfficeManager(OOConf);
             officeManager.start();
             converter = new OfficeDocumentConverter(officeManager);
             getImpresionesPendientes().clear();
@@ -350,14 +350,24 @@ public class CarteroAlumno<T extends IAlumno> extends MaimonidesBean {
                 }
 
             }
+            
+        } catch (Exception e) {
+            //TODO La mayoría de estos errores es porque ya está iniciado OO.
+            //Ver forma de cerrarlo o conectarse a la instancia existente
+            firePropertyChange("error", null, "No se ha podido iniciar la comunicación con OpenOffice:\n" + e.getLocalizedMessage() + "\nRevise la configuración de impresión.");
+            Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, "No se ha podido iniciar la comunicación con OpenOffice", e);
+            ret = false;
+        }finally{
             try {
-                officeManager.stop();
+                //Si se da algún problema durante la generación del doc y no se finaliza el proceso
+                //luego no se puede volver a iniciar OpenOffice por lo que es muy importante garantizar
+                //que este se finalice
+                if(officeManager!=null){
+                    officeManager.stop();
+                }
             } catch (Exception ex) {
                 Logger.getLogger(CarteroAlumno.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception e) {
-            firePropertyChange("error", null, "No se ha podido iniciar la comunicación con OpenOffice:\n" + e.getLocalizedMessage() + "\nRevise la configuración de impresión.");
-            ret = false;
         }
         return ret;
     }
