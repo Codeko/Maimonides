@@ -142,7 +142,7 @@ public class Impresion extends MaimonidesBean {
             JasperReport jasperReport = Impresion.getReport("parte_generico.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<Object,Object>(), jrds);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrds);
             if (MaimonidesApp.getApplication().getConfiguracion().isImprimirEnPDF()) {
                 firePropertyChange("message", null, "Generando PDF...");
                 File salida = File.createTempFile("partes_", ".pdf");
@@ -165,7 +165,7 @@ public class Impresion extends MaimonidesBean {
             JasperReport jasperReport = Impresion.getReport("parte.jrxml");
             JRDataSource jrds = pdsp.create(jasperReport);
             firePropertyChange("message", null, "Rellenando datos...");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<Object,Object>(), jrds);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, jrds);
             if (MaimonidesApp.getApplication().getConfiguracion().isImprimirEnPDF()) {
                 firePropertyChange("message", null, "Generando PDF...");
                 File salida = File.createTempFile("partes_", ".pdf");

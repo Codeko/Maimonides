@@ -42,10 +42,15 @@
  */
 package com.codeko.apps.maimonides.impresion.informes;
 
+import java.net.URL;
+
 /**
  *
  * @author Codeko <codeko@codeko.com>
  */
 public class Informes {
+    public static URL getLogotipo(){
+        return Informes.class.getResource("juntadeandalucia.jpg");
+    }
     
 }
