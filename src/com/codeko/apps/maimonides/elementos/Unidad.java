@@ -505,7 +505,7 @@ public class Unidad extends ObjetoBDConCod implements Comparable<Unidad> {
             PreparedStatement st = null;
             ResultSet res = null;
             try {
-                st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("SELECT * FROM alumnos WHERE borrado=0 AND unidad_id=?");
+                st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("SELECT * FROM alumnos WHERE borrado=0 AND unidad_id=? ORDER BY "+Alumno.getCampoOrdenNombre()+" ASC");
                 st.setInt(1, getId());
                 res = st.executeQuery();
                 while (res.next()) {

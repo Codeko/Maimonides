@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.elementos;
 
 import com.codeko.apps.maimonides.*;
@@ -271,14 +269,14 @@ public class Alumno extends ObjetoBDConCod implements IObjetoTabla, IEmailable {
         }
         return a;
     }
-    
-    public static Alumno getAlumnoDesdeCampo(String campo,String valor,AnoEscolar ano) {
+
+    public static Alumno getAlumnoDesdeCampo(String campo, String valor, AnoEscolar ano) {
         Alumno a = null;
         PreparedStatement stSelect = null;
         ResultSet res = null;
         try {
-            stSelect = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT * FROM `alumnos` WHERE ano=? AND `"+campo+"`=?");
-            stSelect.setInt(1, ano!=null?ano.getId():MaimonidesApp.getApplication().getAnoEscolar().getId());
+            stSelect = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("SELECT * FROM `alumnos` WHERE ano=? AND `" + campo + "`=?");
+            stSelect.setInt(1, ano != null ? ano.getId() : MaimonidesApp.getApplication().getAnoEscolar().getId());
             stSelect.setString(2, valor);
             res = stSelect.executeQuery();
             if (res.next()) {
@@ -286,7 +284,7 @@ public class Alumno extends ObjetoBDConCod implements IObjetoTabla, IEmailable {
                 a.cargarDesdeResultSet(res);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, "Error buscando alumno por "+campo+": " + valor, ex);
+            Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, "Error buscando alumno por " + campo + ": " + valor, ex);
         } finally {
             Obj.cerrar(stSelect, res);
         }
@@ -724,16 +722,16 @@ public class Alumno extends ObjetoBDConCod implements IObjetoTabla, IEmailable {
             setApellido1(res.getString("apellido1"));
             setApellido2(res.getString("apellido2"));
             try {
-                int u=res.getInt("unidad_id");
-                if(u>0){
+                int u = res.getInt("unidad_id");
+                if (u > 0) {
                     setUnidad(u);
                 }
             } catch (Exception e) {
                 Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, "Error cargando unidad de alumno desde resultset", e);
             }
             try {
-                int c=res.getInt("curso_id");
-                if(c>0){
+                int c = res.getInt("curso_id");
+                if (c > 0) {
                     setIdCurso(c);
                 }
             } catch (Exception e) {
@@ -974,12 +972,16 @@ public class Alumno extends ObjetoBDConCod implements IObjetoTabla, IEmailable {
         return hash;
     }
 
+    public static String getCampoOrdenNombre() {
+        return getCampoOrdenNombre(null);
+    }
+
     public static String getCampoOrdenNombre(String prefijo) {
         if (prefijo == null || prefijo.trim().equals("")) {
             prefijo = "";
         } else {
             if (!prefijo.endsWith(".")) {
-                prefijo = prefijo + ".";
+                prefijo += ".";
             }
         }
         //SI Se cambia esto hay que cambiar el procedimiento almacenado tambien
