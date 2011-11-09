@@ -393,24 +393,31 @@ public class ClienteSeneca extends MaimonidesBean {
             if (getCliente() != null) {
                 try {
                     regenerarNombreVentana();
+                    HttpResponse response=null;
+                    String texto=null;
                     firePropertyChange("message", null, "Iniciando sesión en Séneca.");
-                    //Abrimos la web de login
-                    HttpGet get = new HttpGet(getUrlBase() + "IdenUsu.jsp?CON_PRUEBA=N&N_V_=" + getNombreVentana() + "&rndval=812273405&NAV_WEB_NOMBRE=Netscape&NAV_WEB_VERSION=5&RESOLUCION=800");
-                    Logger.getLogger(ClienteSeneca.class.getName()).info("Abriendo pantalla de login.");
-                    HttpResponse response = getCliente().execute(get);
-                    String texto = EntityUtils.toString(response.getEntity());
-                    if (isDebugMode()) {
-                        System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
-                    }
+                    //Abrimos la web de login-> 09/11/2011 nos lo podemos saltar ahora que se pasan estos datos mediante el form de login
+//                    HttpGet get = new HttpGet(getUrlBase() + "IdenUsuExt.jsp?CON_PRUEBA=N&N_V_=" + getNombreVentana() + "&rndval=812273405&NAV_WEB_NOMBRE=Netscape&NAV_WEB_VERSION=5&RESOLUCION=800");
+//                    Logger.getLogger(ClienteSeneca.class.getName()).info("Abriendo pantalla de login.");
+//                    response = getCliente().execute(get);
+//                    texto = EntityUtils.toString(response.getEntity());
+//                    if (isDebugMode()) {
+//                        System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+//                    }
                     //Simulamos el envío del formulario
-                    String urlLogin = getUrlBase() + "ComprobarUsuario.jsp?rndval=PMPMLCKVDRFFQWAELCAE";
+                    String urlLogin = getUrlBase() + "ComprobarUsuarioExt.jsp";
                     HttpPost post = new HttpPost(urlLogin);
                     List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+                    nameValuePairs.add(new BasicNameValuePair("CLAVECIFRADA", getClaveCodificada()));//TODO Esto tarda demasido
                     nameValuePairs.add(new BasicNameValuePair("CLAVE", getClave()));
-                    nameValuePairs.add(new BasicNameValuePair("CLAVECIFRADA", getClaveCodificada()));
                     nameValuePairs.add(new BasicNameValuePair("USUARIO", getUsuario()));
+                    nameValuePairs.add(new BasicNameValuePair("C_INTERFAZ", "SENECA"));
+                    nameValuePairs.add(new BasicNameValuePair("NAV_WEB_NOMBRE", "Netscape"));
+                    nameValuePairs.add(new BasicNameValuePair("NAV_WEB_VERSION", "5"));
+                    nameValuePairs.add(new BasicNameValuePair("RESOLUCION", "1024"));
+                    nameValuePairs.add(new BasicNameValuePair("rndval", "831815881"));
+                    nameValuePairs.add(new BasicNameValuePair("N_V_", getNombreVentana()));
                     post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
                     Logger.getLogger(ClienteSeneca.class.getName()).info("Haciendo login en Séneca.");
                     response = getCliente().execute(post);
                     texto = EntityUtils.toString(response.getEntity());

@@ -89,7 +89,6 @@ function mayorque(num1,num2){
  if (num1 > num2){ return 1;}
  if (num1 < num2){ return 2;}
  if (num1 == num2){ return 0;}
- return -1;
 }
 
 function desplazacoma(num,posi){
