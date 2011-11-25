@@ -44,6 +44,7 @@ import com.codeko.util.Num;
 import com.codeko.util.Obj;
 import com.codeko.util.Str;
 import com.codeko.util.estructuras.Par;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -65,6 +66,7 @@ import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -72,6 +74,9 @@ import javax.net.ssl.X509TrustManager;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import org.apache.http.HttpResponse;
@@ -333,27 +338,28 @@ public class ClienteSeneca extends MaimonidesBean {
         if (isDebugMode()) {
             System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
         }
-        if (isOk(response, texto, false)) {
-            //Hacemos esto porque se envía la fecha de toma de posesión y no la sabemos
-            String src = "document.location.replace('CargarPerfil.jsp?".toLowerCase();
-            int posIni = texto.toLowerCase().indexOf(src) + src.length();
-            int posFin = texto.indexOf("')", posIni);
-            String qs = texto.substring(posIni, posFin);
-            HttpGet get = new HttpGet(getUrlBase() + "CargarPerfil.jsp?" + qs);
-            Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando perfil de Séneca.");
-            response = getCliente().execute(get);
-            texto = EntityUtils.toString(response.getEntity());
-            if (isDebugMode()) {
-                System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
-            }
-            setLoggeado(isOk(response, texto, false));
-        }
+        setLoggeado(isOk(response, texto, false));
+//        if (isOk(response, texto, false)) {
+//            //Hacemos esto porque se envía la fecha de toma de posesión y no la sabemos
+//            String src = "document.location.replace('CargarPerfil.jsp?".toLowerCase();
+//            int posIni = texto.toLowerCase().indexOf(src) + src.length();
+//            int posFin = texto.indexOf("')", posIni);
+//            String qs = texto.substring(posIni, posFin);
+//            HttpGet get = new HttpGet(getUrlBase() + "CargarPerfil.jsp?" + qs);
+//            Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando perfil de Séneca.");
+//            response = getCliente().execute(get);
+//            texto = EntityUtils.toString(response.getEntity());
+//            if (isDebugMode()) {
+//                System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+//            }
+//            setLoggeado(isOk(response, texto, false));
+//        }
     }
 
     private void seleccionarPerfil() throws UnsupportedEncodingException, IOException {
         firePropertyChange("message", null, "Cargando lista de perfiles");
         //Ahora tenemos que elegir el perfil
-        HttpPost post = new HttpPost(getUrlBase() + "Perfiles.jsp?rndval=72277307");
+        HttpPost post = new HttpPost(getUrlBase() + "Acceso.jsp?rndval=72277307");
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("USUARIO", getUsuario()));
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -393,8 +399,8 @@ public class ClienteSeneca extends MaimonidesBean {
             if (getCliente() != null) {
                 try {
                     regenerarNombreVentana();
-                    HttpResponse response=null;
-                    String texto=null;
+                    HttpResponse response = null;
+                    String texto = null;
                     firePropertyChange("message", null, "Iniciando sesión en Séneca.");
                     //Abrimos la web de login-> 09/11/2011 nos lo podemos saltar ahora que se pasan estos datos mediante el form de login
 //                    HttpGet get = new HttpGet(getUrlBase() + "IdenUsuExt.jsp?CON_PRUEBA=N&N_V_=" + getNombreVentana() + "&rndval=812273405&NAV_WEB_NOMBRE=Netscape&NAV_WEB_VERSION=5&RESOLUCION=800");
@@ -1120,6 +1126,27 @@ public class ClienteSeneca extends MaimonidesBean {
         return isOk(response, texto);
     }
 
+    public String getURL(String url) throws IOException {
+        HttpGet get = new HttpGet(getUrlBase() + url);
+        HttpResponse response = getCliente().execute(get);
+        String texto = EntityUtils.toString(response.getEntity());
+        if (isDebugMode()) {
+            System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+        }
+        return texto;
+    }
+
+    public String getCaptcha() throws IOException {
+        //Tenemos que recuperar el captcha
+        String urlCapcha = ClienteSeneca.getUrlBase() + "../kaptcha?ALEATORIO="+Math.floor(Math.random()*1000);
+        HttpGet get = new HttpGet(urlCapcha);
+        HttpResponse response = this.getCliente().execute(get);
+        BufferedImage img=ImageIO.read(response.getEntity().getContent());
+        JLabel lImg=new JLabel(new ImageIcon(img));
+        String captcha= JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), lImg, "Introduzca el código", JOptionPane.QUESTION_MESSAGE);
+        return captcha;
+    }
+
     public Usuario senecaUserLogin() {
         Usuario u = null;
         if (hacerLogin()) {
@@ -1172,8 +1199,8 @@ public class ClienteSeneca extends MaimonidesBean {
                 String prefijoNombreCentro = "";
                 for (Element e : celdas) {
                     List<Element> valores = e.getAllElementsByClass("columnaValor");
-                    
-                    String valor=null;
+
+                    String valor = null;
                     if (!valores.isEmpty()) {
                         Element elValor = valores.get(0);
                         valor = elValor.getContent().getTextExtractor().toString();
@@ -1181,11 +1208,11 @@ public class ClienteSeneca extends MaimonidesBean {
                         valores = e.getAllElementsByClass("entrada");
                         if (!valores.isEmpty()) {
                             Element elValor = valores.get(0);
-                            valor=elValor.getAttributeValue("value");
+                            valor = elValor.getAttributeValue("value");
                         }
                     }
                     if (valor != null) {
-                        valor=valor.trim();
+                        valor = valor.trim();
                         String nombre = e.getContent().getTextExtractor().toString();
                         nombre = nombre.replace(valor, "").trim();
                         if ("Denominación genérica:".equals(nombre)) {

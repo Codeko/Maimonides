@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 package com.codeko.apps.maimonides.seneca.operaciones.envioFicherosFaltas;
 
 import com.codeko.apps.maimonides.MaimonidesApp;
@@ -40,6 +38,7 @@ import java.util.GregorianCalendar;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -65,7 +64,7 @@ public class GestorEnvioFaltas extends MaimonidesBean {
     public static int RET_ERROR_ENVIANDO = -1;
     public static int RET_ERROR_PROCESANDO = 0;
     public static int RET_OK = 1;
-    boolean cancelado=false;
+    boolean cancelado = false;
 
     public boolean isCancelado() {
         return cancelado;
@@ -150,7 +149,6 @@ public class GestorEnvioFaltas extends MaimonidesBean {
         return lineas;
     }
 
-
     public int limpiarTodosLosResultadosEnvioDeFicheros() {
         int total = 0;
         int count = 0;
@@ -217,7 +215,7 @@ public class GestorEnvioFaltas extends MaimonidesBean {
                 //Buscamos el resultado que nos piden
                 ResultadoEnvioFicheroFaltas r = null;
                 for (ResultadoEnvioFicheroFaltas res : lineas) {
-                    if (res.getNombre().trim().equals(("Maimonides:" + nombre).toLowerCase())) {
+                    if (res.getNombre().trim().equals(("MM:" + nombre).toLowerCase())) {
                         r = res;
                         break;
                     }
@@ -247,13 +245,13 @@ public class GestorEnvioFaltas extends MaimonidesBean {
                         continuar = false;
                     }
                 }
-                if ((MAX_INTENTOS_VERIFICAR_ESTADO!=0 && intentos > MAX_INTENTOS_VERIFICAR_ESTADO) && continuar) {
+                if ((MAX_INTENTOS_VERIFICAR_ESTADO != 0 && intentos > MAX_INTENTOS_VERIFICAR_ESTADO) && continuar) {
                     firePropertyChange("message", nombre, "Se ha superado el tiempo de espera para verificar si el fichero está enviado. Revise la web para verificarlo.");
                     firePropertyChange("error", nombre, "Se ha superado el tiempo de espera para verificar si el fichero está enviado.\nRevise la web para verificarlo.\nEl código de envío es: " + r.getNombre() + "");
                     continuar = false;
                 }
             }
-            if(isCancelado()){
+            if (isCancelado()) {
                 firePropertyChange("message", nombre, "Se ha cancelado manualmente la operación.");
             }
         } catch (Exception e) {
@@ -267,29 +265,51 @@ public class GestorEnvioFaltas extends MaimonidesBean {
         try {
             //Ahora enviamos el fichero
             getCli().visitarURL("Principal.jsp?rndval=470649490&COD_PAGINA=5005684&MODO=NUEVO&X_TIPINTINF=6&N_V_=" + getCli().getNombreVentana());
-            //Y enviamos el fichero
-            String url = ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=77730635&COD_PAGINA=5005364&TIPO_PARAMETROS_PETICION=MULTIPART_FORMDATA&TAM_MAXIMO_FICHERO_UPLOAD=5M&N_V_=" + getCli().getNombreVentana() + "&PAG_NO_VISIBLE_=S";//"&COD_PAGINA_ANTERIOR=5005684&TIEMPO_PAGINA_ANTERIOR=1092&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=1347";
-            HttpPost post = new HttpPost(url);
-            //post.addRequestHeader("Referer", r5);
-            String ano = MaimonidesApp.getApplication().getAnoEscolar().getAno() + "";
-            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-            reqEntity.addPart("C_ANNO", (ContentBody) new StringBody(ano + ""));
-            reqEntity.addPart("T_OBSERV", (ContentBody) new StringBody("Maimonides:" + URLEncoder.encode(descripcion, "latin1")));
-            reqEntity.addPart("X_TIPINTINF", (ContentBody) new StringBody("6"));
-            reqEntity.addPart("F_INTINF", (ContentBody) new StringBody(Fechas.format(new GregorianCalendar(), "dd/MM/yyyy hh:mm")));
-            reqEntity.addPart("C_SENINT", (ContentBody) new StringBody(""));
-            reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(ano + "|"));
-            FileBody bin = new FileBody(fichero);
-            reqEntity.addPart("RUTA_FICHERO", (ContentBody) bin);
-            post.setEntity(reqEntity);
-            HttpResponse response = getCli().getCliente().execute(post);
-            String texto = EntityUtils.toString(response.getEntity());
-            if (getCli().isDebugMode()) {
-                System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
-            }
-            if (getCli().isOk(response,texto)) {
-                //Tenemos que ver que la operación se haya realizado correctamente
-                ok = isEnvioRealizadoConExito(descripcion) ? RET_OK : RET_ERROR_PROCESANDO;
+            String captcha = getCli().getCaptcha();
+            if (captcha == null) {
+                ok = RET_ERROR_ENVIANDO;
+            } else {
+                //Y enviamos el fichero
+                String url = ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=77730635&COD_PAGINA=5005364&TIPO_PARAMETROS_PETICION=MULTIPART_FORMDATA&TAM_MAXIMO_FICHERO_UPLOAD=5M&N_V_=" + getCli().getNombreVentana() + "&PAG_NO_VISIBLE_=S";//"&COD_PAGINA_ANTERIOR=5005684&TIEMPO_PAGINA_ANTERIOR=1092&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=1347";
+                HttpPost post = new HttpPost(url);
+                //post.addRequestHeader("Referer", r5);
+                String ano = MaimonidesApp.getApplication().getAnoEscolar().getAno() + "";
+                MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                FileBody bin = new FileBody(fichero);
+                reqEntity.addPart("RUTA_FICHERO", (ContentBody) bin);
+                reqEntity.addPart("KAPTCHA", (ContentBody) new StringBody(captcha));
+                reqEntity.addPart("X_TIPINTINF", (ContentBody) new StringBody("6"));
+                reqEntity.addPart("F_INTINF", (ContentBody) new StringBody(Fechas.format(new GregorianCalendar(), "dd/MM/yyyy hh:mm")));
+                reqEntity.addPart("C_SENINT", (ContentBody) new StringBody(""));
+                //reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(ano + "|"));
+                reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(""));
+                reqEntity.addPart("C_ANNO", (ContentBody) new StringBody(ano + ""));
+                reqEntity.addPart("T_OBSERV", (ContentBody) new StringBody("MM:" + URLEncoder.encode(descripcion, "latin1")));
+                
+                post.setEntity(reqEntity);
+                HttpResponse response = getCli().getCliente().execute(post);
+                String texto = EntityUtils.toString(response.getEntity());
+                if (getCli().isDebugMode()) {
+                    System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+                }
+                if (getCli().isOk(response, texto)) {
+                    //Vemos si ha habido error
+                    if (texto.toLowerCase().contains("PAG_SALTO=PaginaError.jsp".toLowerCase())) {
+                        String error = getCli().getURL("PaginaError.jsp?ALEATORIO=" + Math.floor(Math.random() * 1000));
+                        if (error.toLowerCase().contains("El texto de la imagen introducido es".toLowerCase())) {
+                            JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "El captcha introducido no es correcto. Inténtelo de nuevo.", "Error en captcha", JOptionPane.ERROR_MESSAGE);
+                            //Si hay fallo del captcha volvemos a intentarlo
+                            ok=enviarFicheroSeneca(fichero, descripcion);
+                        } else {
+                            ok=RET_ERROR_PROCESANDO;
+                        }
+                    } else {
+                        //texto=getCli().getURL("PaginaVuelta.jsp?ALEATORIO="+ Math.floor(Math.random() * 1000));
+                        //texto=getCli().getURL("Principal.jsp?EN_RECARGA_=S&COD_PAGINA=5005684&ALEATORIO="+ Math.floor(Math.random() * 1000)+"&N_V_=IGNORAR_NOMBRE");
+                        //Tenemos que ver que la operación se haya realizado correctamente
+                        ok = isEnvioRealizadoConExito(descripcion) ? RET_OK : RET_ERROR_PROCESANDO;
+                    }
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
