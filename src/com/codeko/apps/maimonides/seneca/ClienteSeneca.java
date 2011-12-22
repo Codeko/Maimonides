@@ -476,7 +476,8 @@ public class ClienteSeneca extends MaimonidesBean {
             try {
                 //La web del listado
                 firePropertyChange("message", null, "Descargando fichero Séneca de datos extendidos de alumnado.");
-                HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=180820631&COD_PAGINA=1182&&N_V_=" + getNombreVentana());
+                HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=180820631&COD_PAGINA=1182&N_V_=" + getNombreVentana());
+                
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
                 nameValuePairs.add(new BasicNameValuePair("C_ANNO", "" + MaimonidesApp.getApplication().getAnoEscolar().getAno()));
@@ -489,6 +490,7 @@ public class ClienteSeneca extends MaimonidesBean {
                 nameValuePairs.add(new BasicNameValuePair("T_APELLIDO2", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("T_NOMBRE", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", "-1"));
+                
                 p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = getCliente().execute(p1);
                 String texto = EntityUtils.toString(response.getEntity());
@@ -497,10 +499,15 @@ public class ClienteSeneca extends MaimonidesBean {
                 }
                 //La de las consultas de exportación
                 visitarURL("PaginaExportacionDatos.jsp?rndval=566364053&N_V_=" + getNombreVentana() + "&COD_PAGINA_ANTERIOR=1182");
+                String captcha = getCaptcha();
+                if(captcha==null){
+                    return null;
+                }
                 //Luego pedimos los datos
                 HttpPost post = new HttpPost(getUrlBase() + "ExportarDatos.jsp");
                 //Pasando los siguientes parametros
                 nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("KAPTCHA", captcha));
                 nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "NOMBRE"));
                 nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "ESTADO_MATRICULA"));
                 nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "C_NUMESCOLAR"));
