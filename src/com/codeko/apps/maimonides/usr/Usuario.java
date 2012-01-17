@@ -190,9 +190,9 @@ public class Usuario extends ObjetoBD {
     public void setProfesor(Profesor profesor) {
         Profesor old = this.profesor;
         this.profesor = profesor;
-        if(profesor!=null){
-            this.setNombre(profesor.getDescripcionObjeto());
-        }
+//        if(profesor!=null){
+//            this.setNombre(profesor.getDescripcionObjeto());
+//        }
         firePropertyChange("profesor", old, profesor);
         //setRolesEfectivos(null);
     }
