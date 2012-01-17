@@ -189,7 +189,7 @@ public class ClienteSeneca extends MaimonidesBean {
         nombreVentana = "IGNORAR_NOMBRE";//"NV_" + generator.nextInt(10) + "" + generator.nextInt(10) + "" + generator.nextInt(10) + "" + generator.nextInt(10);
     }
 
-    private void setLoggeado(boolean loggeado) {
+    private boolean setLoggeado(boolean loggeado) {
         boolean old = this.loggeado;
         this.loggeado = loggeado;
         if (loggeado) {
@@ -199,6 +199,7 @@ public class ClienteSeneca extends MaimonidesBean {
         } else {
             firePropertyChange("message", null, "No se ha podido acceder a Séneca.");
         }
+        return loggeado;
     }
 
     private String getClave() {
@@ -325,12 +326,12 @@ public class ClienteSeneca extends MaimonidesBean {
         return "";
     }
 
-    private void cargarPerfil() throws UnsupportedEncodingException, IOException {
+    private boolean cargarPerfil(String codPerfil) throws UnsupportedEncodingException, IOException {
         firePropertyChange("message", null, "Cargando perfil " + getPerfilActivo());
         //Lo seleccionamos
         HttpPost post = new HttpPost(getUrlBase() + "PuestosOrigenPerfil.jsp?D_PERFIL=" + URLEncoder.encode(getPerfilActivo(), "UTF-8") + "&rndval=72277307");
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-        nameValuePairs.add(new BasicNameValuePair("CPERFILES", (getPerfilActivo().equals(PERFIL_DIRECCION) ? COD_PERFIL_DIRECCION : COD_PERFIL_PROFESOR) + ""));
+        nameValuePairs.add(new BasicNameValuePair("CPERFILES",codPerfil));// (getPerfilActivo().equals(PERFIL_DIRECCION) ? COD_PERFIL_DIRECCION : COD_PERFIL_PROFESOR) + ""));
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Seleccionando perfil {0}", getPerfilActivo());
         HttpResponse response = getCliente().execute(post);
@@ -338,7 +339,7 @@ public class ClienteSeneca extends MaimonidesBean {
         if (isDebugMode()) {
             System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
         }
-        setLoggeado(isOk(response, texto, false));
+        return setLoggeado(isOk(response, texto, false));
 //        if (isOk(response, texto, false)) {
 //            //Hacemos esto porque se envía la fecha de toma de posesión y no la sabemos
 //            String src = "document.location.replace('CargarPerfil.jsp?".toLowerCase();
@@ -378,10 +379,21 @@ public class ClienteSeneca extends MaimonidesBean {
             } else {
                 setPerfilActivo(null);
             }
-
+            boolean perfilSeleccionado=false;
             if (getPerfilActivo() != null) {
-                cargarPerfil();
-            } else {
+                //Tenemos que cargar el código de perfil
+                String regExp = "<option value=\"([^\"]+)\">"+getPerfilActivo()+"</option>";
+                Pattern p = Pattern.compile(regExp, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(texto);
+                String codPerfil="";
+                if(m.find()){
+                    codPerfil=m.group(1);
+                }
+                if(!Str.noNulo(codPerfil).trim().equals("")){
+                    perfilSeleccionado=cargarPerfil(codPerfil);
+                }
+            } 
+            if(!perfilSeleccionado) {
                 setLoggeado(false);
                 setUltimoError("No se ha podido seleccionar el perfil '" + getPerfilActivo() + "'.");
                 setUltimaExcepcion(null);
@@ -417,7 +429,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     nameValuePairs.add(new BasicNameValuePair("CLAVECIFRADA", getClaveCodificada()));//TODO Esto tarda demasido
                     nameValuePairs.add(new BasicNameValuePair("CLAVE", getClave()));
                     nameValuePairs.add(new BasicNameValuePair("USUARIO", getUsuario()));
-                    nameValuePairs.add(new BasicNameValuePair("C_INTERFAZ", "SENECA"));
+                    nameValuePairs.add(new BasicNameValuePair("C_INTERFAZ", "PASEN_TUT"));
                     nameValuePairs.add(new BasicNameValuePair("NAV_WEB_NOMBRE", "Netscape"));
                     nameValuePairs.add(new BasicNameValuePair("NAV_WEB_VERSION", "5"));
                     nameValuePairs.add(new BasicNameValuePair("RESOLUCION", "1024"));
