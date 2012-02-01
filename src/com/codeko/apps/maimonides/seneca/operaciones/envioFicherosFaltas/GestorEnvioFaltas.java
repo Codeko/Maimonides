@@ -261,6 +261,7 @@ public class GestorEnvioFaltas extends MaimonidesBean {
     }
 
     public int enviarFicheroSeneca(File fichero, String descripcion) {
+        //fichero=new File("prueba.xml");
         int ok = RET_ERROR_ENVIANDO;
         try {
             //Ahora enviamos el fichero
@@ -277,12 +278,12 @@ public class GestorEnvioFaltas extends MaimonidesBean {
                 MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
                 FileBody bin = new FileBody(fichero);
                 reqEntity.addPart("RUTA_FICHERO", (ContentBody) bin);
-                reqEntity.addPart("KAPTCHA", (ContentBody) new StringBody(captcha));
-                reqEntity.addPart("X_TIPINTINF", (ContentBody) new StringBody("6"));
+                reqEntity.addPart("KAPTCHA", (ContentBody) new StringBody(captcha+"asd"));
+                //reqEntity.addPart("X_TIPINTINF", (ContentBody) new StringBody("6"));
                 reqEntity.addPart("F_INTINF", (ContentBody) new StringBody(Fechas.format(new GregorianCalendar(), "dd/MM/yyyy hh:mm")));
                 reqEntity.addPart("C_SENINT", (ContentBody) new StringBody(""));
-                //reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(ano + "|"));
-                reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(""));
+                reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(ano + "|"));
+                //reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(""));
                 reqEntity.addPart("C_ANNO", (ContentBody) new StringBody(ano + ""));
                 reqEntity.addPart("T_OBSERV", (ContentBody) new StringBody("MM:" + URLEncoder.encode(descripcion, "latin1")));
                 

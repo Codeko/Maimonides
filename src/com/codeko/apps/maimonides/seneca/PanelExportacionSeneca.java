@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelExportacionSeneca.java
  *
@@ -71,6 +69,7 @@ public class PanelExportacionSeneca extends javax.swing.JPanel implements IPanel
         initComponents();
         pInfo.add(new PanelInfoSeneca(), BorderLayout.CENTER);
         setHayEnviosWeb(EnviosWeb.hayEnviosWeb());
+        jPanel1.setVisible(false);
     }
 
     /** This method is called from within the constructor to
@@ -94,7 +93,7 @@ public class PanelExportacionSeneca extends javax.swing.JPanel implements IPanel
 
         setName("maimonides.paneles.faltas.exportar_faltas"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelExportacionSeneca.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelExportacionSeneca.class, this);
         bExportaSeneca.setAction(actionMap.get("exportarFaltasSeneca")); // NOI18N
         bExportaSeneca.setName("bExportaSeneca"); // NOI18N
         bExportaSeneca.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -103,7 +102,7 @@ public class PanelExportacionSeneca extends javax.swing.JPanel implements IPanel
             }
         });
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelExportacionSeneca.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelExportacionSeneca.class);
         jXHeader1.setDescription(resourceMap.getString("jXHeader1.description")); // NOI18N
         jXHeader1.setTitle(resourceMap.getString("jXHeader1.title")); // NOI18N
         jXHeader1.setName("jXHeader1"); // NOI18N
@@ -140,9 +139,9 @@ public class PanelExportacionSeneca extends javax.swing.JPanel implements IPanel
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
-                    .addComponent(bManual, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
-                    .addComponent(bEnviarWeb, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+                    .addComponent(bManual, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+                    .addComponent(bEnviarWeb, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -164,13 +163,13 @@ public class PanelExportacionSeneca extends javax.swing.JPanel implements IPanel
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(bExportaSeneca, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jXHeader1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jXHeader1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lIcoSeneca, javax.swing.GroupLayout.PREFERRED_SIZE, 298, Short.MAX_VALUE)))
+                        .addComponent(lIcoSeneca, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -202,40 +201,54 @@ public class PanelExportacionSeneca extends javax.swing.JPanel implements IPanel
     @SuppressWarnings("unchecked")
     @Action(block = Task.BlockingScope.WINDOW)
     public Task exportarFaltasSeneca() {
-        Task t = new ExportarFaltasSenecaTask(MaimonidesApp.getApplication(), false);
-        t.addTaskListener(new TaskListener() {
-
-            @Override
-            public void doInBackground(TaskEvent event) {
+        Object[] options = {"Exportar a Séneca", "Exportar a ficheros XML"};
+        String op = (String) JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), "¿Como desea realizar el envío de faltas?", "Exportar faltas de asistencia", JOptionPane.QUESTION_MESSAGE, null, options, "Exportar a Séneca");
+        boolean ficheros = true;
+        if (op != null) {
+            if (op.equals(options[0])) {//Seneca
+                ficheros = false;
+            } else if (op.equals(options[1])) {//Ficheros
+                ficheros = true;
+            } else {
+                return null;
             }
+            Task t = new ExportarFaltasSenecaTask(MaimonidesApp.getApplication(), ficheros);
+            t.addTaskListener(new TaskListener() {
 
-            @Override
-            public void process(TaskEvent event) {
-            }
+                @Override
+                public void doInBackground(TaskEvent event) {
+                }
 
-            @Override
-            public void succeeded(TaskEvent event) {
-            }
+                @Override
+                public void process(TaskEvent event) {
+                }
 
-            @Override
-            public void failed(TaskEvent event) {
-            }
+                @Override
+                public void succeeded(TaskEvent event) {
+                }
 
-            @Override
-            public void cancelled(TaskEvent event) {
-            }
+                @Override
+                public void failed(TaskEvent event) {
+                }
 
-            @Override
-            public void interrupted(TaskEvent event) {
-            }
+                @Override
+                public void cancelled(TaskEvent event) {
+                }
 
-            @Override
-            public void finished(TaskEvent event) {
-                pInfo.removeAll();
-                pInfo.add(new PanelInfoSeneca(), BorderLayout.CENTER);
-            }
-        });
-        return t;
+                @Override
+                public void interrupted(TaskEvent event) {
+                }
+
+                @Override
+                public void finished(TaskEvent event) {
+                    pInfo.removeAll();
+                    pInfo.add(new PanelInfoSeneca(), BorderLayout.CENTER);
+                }
+            });
+            return t;
+        }
+
+        return null;
     }
 
     @Override

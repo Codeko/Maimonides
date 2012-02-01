@@ -92,6 +92,17 @@ public class GeneradorFicherosSeneca extends MaimonidesBean {
     ClienteSeneca clienteSeneca = null;
     ArrayList<String> errores = new ArrayList<String>();
     boolean debug = false;
+    boolean soloMarcarComoEnviados=false;
+
+    public boolean isSoloMarcarComoEnviados() {
+        return soloMarcarComoEnviados;
+    }
+
+    public void setSoloMarcarComoEnviados(boolean soloMarcarComoEnviados) {
+        this.soloMarcarComoEnviados = soloMarcarComoEnviados;
+    }
+    
+    
 
     public boolean isDebug() {
         return debug;
@@ -130,7 +141,7 @@ public class GeneradorFicherosSeneca extends MaimonidesBean {
         return ret;
     }
 
-    private void setEnviarASeneca(boolean enviarASeneca) {
+    public void setEnviarASeneca(boolean enviarASeneca) {
         this.enviarASeneca = enviarASeneca;
     }
 
@@ -381,8 +392,9 @@ public class GeneradorFicherosSeneca extends MaimonidesBean {
                     + //Sólo hay que recuperar las que sean de actividad doncencia de alumnos con código de faltas y que no están borrados, y que no son festivos
                     " WHERE ce.id IS NULL AND (ap.id IS NULL || ap.excluir=0 ) AND h.actividad_id=" + Actividad.getIdActividadDocencia(MaimonidesApp.getApplication().getAnoEscolar()) + " AND a.borrado=0 AND a.codFaltas!='' AND p.fecha BETWEEN ? AND ? AND p.curso IN (" + sbCursos.toString() + ") AND pa.asistencia > " + ParteFaltas.FALTA_ASISTENCIA
                     + " AND p.ano=? ORDER BY a.curso_id,a.unidad_id,idAlumno,p.fecha,asistencia,t.hora";
-            System.out.println(sql);
-            PreparedStatement actuParte = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("UPDATE partes SET enviado=1, justificado=1 WHERE fecha BETWEEN ? AND ? AND curso IN (" + sbCursos.toString() + ") AND ano=?  ");
+            //System.out.println(sql);
+            String sqlUpdate="UPDATE partes SET enviado=1, justificado=1 WHERE fecha BETWEEN ? AND ? AND curso IN (" + sbCursos.toString() + ") AND ano=?  ";
+            PreparedStatement actuParte = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement(sqlUpdate);
             st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement(sql);
             st.setDate(1, new java.sql.Date(fechaDesde.getTime().getTime()));
             st.setDate(2, new java.sql.Date(fechaHasta.getTime().getTime()));
@@ -390,6 +402,17 @@ public class GeneradorFicherosSeneca extends MaimonidesBean {
             actuParte.setDate(1, new java.sql.Date(fechaDesde.getTime().getTime()));
             actuParte.setDate(2, new java.sql.Date(fechaHasta.getTime().getTime()));
             actuParte.setInt(3, MaimonidesApp.getApplication().getAnoEscolar().getId());
+            //Si sólo tenemos que marcar las faltas lo hacemos y volvemos
+            if(isSoloMarcarComoEnviados()){
+                firePropertyChange("message", null, "Marcando faltas como enviadas...");
+                actuParte.executeUpdate();
+                File fFake = generarFicheroFaltas(fechaDesde, fechaHasta, cursos);
+                if(fFake.exists()){
+                    fFake.delete();
+                }
+                return err;
+            }
+            
             ResultSet res = st.executeQuery();
             Curso ultimoCurso = null;
             Unidad ultimaUnidad = null;
@@ -500,8 +523,8 @@ public class GeneradorFicherosSeneca extends MaimonidesBean {
                         }
                     }
                 } else {
-                    firePropertyChange("message", null, "Marcando faltas como enviadas...");
-                    actuParte.executeUpdate();
+                    //firePropertyChange("message", null, "Marcando faltas como enviadas...");
+                    //actuParte.executeUpdate();
                 }
             }
             Obj.cerrar(actuParte, st, res);

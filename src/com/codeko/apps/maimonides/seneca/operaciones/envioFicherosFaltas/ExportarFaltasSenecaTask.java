@@ -64,6 +64,7 @@ public class ExportarFaltasSenecaTask extends org.jdesktop.application.Task<Arra
         this.soloFicheros = soloFicheros;
         this.fechaDesde = fechaDesde;
         this.fechaHasta = fechaHasta;
+        gen.setEnviarASeneca(!soloFicheros);    
         if (!soloFicheros) {
             pedirUsuarioClave();
         }
@@ -74,6 +75,14 @@ public class ExportarFaltasSenecaTask extends org.jdesktop.application.Task<Arra
                 firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
             }
         });
+    }
+    
+    public boolean isSoloMarcarComoEnviados() {
+        return gen.isSoloMarcarComoEnviados();
+    }
+
+    public void setSoloMarcarComoEnviados(boolean soloMarcarComoEnviados) {
+        gen.setSoloMarcarComoEnviados(soloMarcarComoEnviados);
     }
 
     protected final void pedirUsuarioClave() {
@@ -126,11 +135,15 @@ public class ExportarFaltasSenecaTask extends org.jdesktop.application.Task<Arra
                 JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "No hay faltas que exportar", "Exportación de faltas", JOptionPane.WARNING_MESSAGE);
             } else {
                 if (this.soloFicheros) {
-                    JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "Ficheros de faltas generados correctamente.\nProceda a realizar el envío manual.", "Exportación de faltas", JOptionPane.INFORMATION_MESSAGE);
-                    try {
-                        Desktop.getDesktop().open(gen.getCarpetaSalida());
-                    } catch (IOException ex) {
-                        Logger.getLogger(PanelExportacionSeneca.class.getName()).log(Level.SEVERE, null, ex);
+                    if(this.isSoloMarcarComoEnviados()){
+                        JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "Tanda de faltas marcada como enviada correctamente.", "Marcar faltas como enviadas", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "Ficheros de faltas generados correctamente.\nProceda a realizar el envío manual.", "Exportación de faltas", JOptionPane.INFORMATION_MESSAGE);
+                        try {
+                            Desktop.getDesktop().open(gen.getCarpetaSalida());
+                        } catch (IOException ex) {
+                            Logger.getLogger(PanelExportacionSeneca.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(), "Ficheros de faltas exportados a Séneca correctamente", "Exportación de faltas", JOptionPane.INFORMATION_MESSAGE);

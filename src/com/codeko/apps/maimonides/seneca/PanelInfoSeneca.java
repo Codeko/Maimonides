@@ -52,6 +52,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Task;
 import org.jdesktop.application.TaskEvent;
@@ -225,16 +226,34 @@ private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST
                     }
                     texto += c;
                 }
-                JXHyperlink l = new JXHyperlink();
+                final JXHyperlink l = new JXHyperlink();
                 l.setText(texto);
                 AbstractAction a = new AbstractAction() {
 
                     @Override
                     public void actionPerformed(ActionEvent ae) {
-                        ExportarFaltasSenecaTask t = new ExportarFaltasSenecaTask(MaimonidesApp.getApplication(), false, fechaDesde, fechaHasta);
-                        t.setInputBlocker(new MaimonidesInputBlocker(t, Task.BlockingScope.APPLICATION, MaimonidesApp.getApplication().getMainFrame(), null));
-                        t.addTaskListener(tl);
-                        MaimonidesApp.getApplication().getContext().getTaskService().execute(t);
+                        Object[] options = {"Exportar a Séneca","Exportar a ficheros XML","Marcar como enviado"};
+                        String op=(String)JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), "Seleccione la operación a realizar:", "Exportar faltas de asistencia", JOptionPane.QUESTION_MESSAGE, null, options, "Exportar a Séneca");
+                        boolean ficheros=true;
+                        boolean marcarComoEnviado=false;
+                        if(op!=null){
+                            if(op.equals(options[0])){//Seneca
+                                ficheros=false;
+                            }else if(op.equals(options[1])){//Ficheros
+                                ficheros=true;
+                            }else if(op.equals(options[2])){//Marcar como enviado
+                                marcarComoEnviado=true;
+                                ficheros=true;
+                            }else{
+                                return;
+                            }
+                            ExportarFaltasSenecaTask t = new ExportarFaltasSenecaTask(MaimonidesApp.getApplication(), ficheros, fechaDesde, fechaHasta);
+                            t.setSoloMarcarComoEnviados(marcarComoEnviado);
+                            t.setInputBlocker(new MaimonidesInputBlocker(t, Task.BlockingScope.APPLICATION, MaimonidesApp.getApplication().getMainFrame(), null));
+                            t.addTaskListener(tl);
+                            MaimonidesApp.getApplication().getContext().getTaskService().execute(t);
+                            
+                        }
                     }
                 };
                 a.putValue(AbstractAction.SHORT_DESCRIPTION, l.getText());
