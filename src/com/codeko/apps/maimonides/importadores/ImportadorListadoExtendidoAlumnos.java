@@ -230,13 +230,16 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
                             case 10://Telefono de urgencias
                                 a.setTelefonoUrgencia(c);
                                 break;
-                            case 11://Curso. No nos vale porque está escrito como les da la gana
+                            case 11://Email
+                                a.setEmail(c);
+                                break;
+                            case 12://Curso. No nos vale porque está escrito como les da la gana
                                 sCurso = c;//Pero quizás lo necesitemos tras asignar la unidad
                                 break;
-                            case 12://Expendiente
+                            case 13://Expendiente
                                 a.setExpediente(c);
                                 break;
-                            case 13://Unidad
+                            case 14://Unidad
                                 try {
                                     Unidad u = Unidad.getUnidadPorNombreOriginal(getAno(), c);
                                     if (crearCursosUnidades && u == null) {
@@ -293,53 +296,53 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
                                     Logger.getLogger(ImportadorListadoExtendidoAlumnos.class.getName()).log(Level.SEVERE, "No existe la unidad '" + c + "'", ex);
                                 }
                                 break;
-                            case 14://Primer apellido
+                            case 15://Primer apellido
                                 a.setApellido1(c);
                                 break;
-                            case 15://Segundo apellido
+                            case 16://Segundo apellido
                                 a.setApellido2(c);
                                 break;
-                            case 16://Nombre
+                            case 17://Nombre
                                 a.setNombre(c);
                                 break;
-                            case 17://Dni tutor 1
+                            case 18://Dni tutor 1
                                 getTutor(a, 1).setDni(c);
                                 break;
-                            case 18://Primer apellido tutor 1
+                            case 19://Primer apellido tutor 1
                                 getTutor(a, 1).setApellido1(c);
                                 break;
-                            case 19://Segundo apellido tutor 1
+                            case 20://Segundo apellido tutor 1
                                 getTutor(a, 1).setApellido2(c);
                                 break;
-                            case 20://Nombre tutor 1
+                            case 21://Nombre tutor 1
                                 getTutor(a, 1).setNombre(c);
                                 break;
-                            case 21://Sexo tutor 1
+                            case 22://Sexo tutor 1
                                 getTutor(a, 1).setSexo(c);
                                 break;
-                            case 22://Dni tutor 2
+                            case 23://Dni tutor 2
                                 getTutor(a, 2).setDni(c);
                                 break;
-                            case 23://Primer apellido tutor 2
+                            case 24://Primer apellido tutor 2
                                 getTutor(a, 2).setApellido1(c);
                                 break;
-                            case 24://Segundo apellido tutor 2
+                            case 25://Segundo apellido tutor 2
                                 getTutor(a, 2).setApellido2(c);
                                 break;
-                            case 25://Nombre tutor 2
+                            case 26://Nombre tutor 2
                                 getTutor(a, 2).setNombre(c);
                                 break;
-                            case 26://Sexo tutor 2
+                            case 27://Sexo tutor 2
                                 getTutor(a, 2).setSexo(c);
                                 break;
-                            case 27://Localidad nacimiento
+                            case 28://Localidad nacimiento
                                 a.setLocalidadNacimiento(c);
                                 break;
-                            case 28://Año matricual
+                            case 29://Año matricual
                                 break;
-                            case 29://Numero de mtraiculas en este curso
+                            case 30://Numero de mtraiculas en este curso
                                 break;
-                            case 30://Observaciones matricula
+                            case 31://Observaciones matricula
                                 if (!a.getObservaciones().toLowerCase().contains(c.toLowerCase())) {
                                     if (!a.getObservaciones().trim().equals("")) {
                                         a.setObservaciones(a.getObservaciones() + "\n");
@@ -347,18 +350,18 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
                                     a.setObservaciones(a.getObservaciones() + "Observaciones matrícula:\n" + c);
                                 }
                                 break;
-                            case 31://provincia nacimiento
+                            case 32://provincia nacimiento
                                 a.setProvinciaNacimiento(c);
                                 break;
-                            case 32://Pais nacimeinto
+                            case 33://Pais nacimeinto
                                 a.setPaisNacimiento(c);
                                 break;
-                            case 33://Edad a fecha.... bla bla
+                            case 34://Edad a fecha.... bla bla
                                 break;
-                            case 34://Nacionalidad
+                            case 35://Nacionalidad
                                 a.setNacionalidad(c);
                                 break;
-                            case 35://Sexo
+                            case 36://Sexo
                                 a.setSexo(c);
                                 break;
                         }
