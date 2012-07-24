@@ -388,7 +388,9 @@ public class PanelFichaAlumno extends javax.swing.JPanel implements IPanel {
         tfNumEscolar.setText(alumno.getNumeroEscolar());
         tfNumSeneca.setText(Str.noNulo(alumno.getCodigo()));
         tfCodFaltas.setText(Str.noNulo(alumno.getCodFaltas()));
-        lCurso.setText(alumno.getObjetoCurso().toString());
+        if(alumno.getObjetoCurso()!=null){
+            lCurso.setText(alumno.getObjetoCurso().toString());
+        }
         cbBilingue.setSelected(alumno.isBilingue());
         cbRepetidor.setSelected(alumno.isRepetidor());
         cbDicu.setSelected(alumno.isDicu());

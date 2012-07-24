@@ -122,7 +122,9 @@ public class PanelBusquedaAlumnos extends javax.swing.JPanel implements IPanel {
                             Alumno a = (Alumno) evt.getNewValue();
                             rba.setId(a.getId());
                             rba.setNombre(a.getNombreFormateado());
-                            rba.setUnidad(a.getUnidad().getCursoGrupo());
+                            if(a.getUnidad()!=null){
+                                rba.setUnidad(a.getUnidad().getCursoGrupo());
+                            }
                             setAlumno(rba);
                         }
                     }
