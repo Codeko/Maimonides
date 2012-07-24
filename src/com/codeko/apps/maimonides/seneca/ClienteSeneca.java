@@ -415,7 +415,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     String texto = null;
                     firePropertyChange("message", null, "Iniciando sesión en Séneca.");
                     //Abrimos la web de login-> 09/11/2011 nos lo podemos saltar ahora que se pasan estos datos mediante el form de login
-//                    HttpGet get = new HttpGet(getUrlBase() + "IdenUsuExt.jsp?CON_PRUEBA=N&N_V_=" + getNombreVentana() + "&rndval=812273405&NAV_WEB_NOMBRE=Netscape&NAV_WEB_VERSION=5&RESOLUCION=800");
+//                    HttpGet get = new HttpGet(getUrlBase() + "IdenUsuExt.jsp?");//CON_PRUEBA=N&N_V_=" + getNombreVentana() + "&rndval=812273405&NAV_WEB_NOMBRE=Netscape&NAV_WEB_VERSION=5&RESOLUCION=800");
 //                    Logger.getLogger(ClienteSeneca.class.getName()).info("Abriendo pantalla de login.");
 //                    response = getCliente().execute(get);
 //                    texto = EntityUtils.toString(response.getEntity());
@@ -427,9 +427,9 @@ public class ClienteSeneca extends MaimonidesBean {
                     HttpPost post = new HttpPost(urlLogin);
                     List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
                     nameValuePairs.add(new BasicNameValuePair("CLAVECIFRADA", getClaveCodificada()));//TODO Esto tarda demasido
-                    nameValuePairs.add(new BasicNameValuePair("CLAVE", getClave()));
+                    //nameValuePairs.add(new BasicNameValuePair("CLAVE", getClave()));
                     nameValuePairs.add(new BasicNameValuePair("USUARIO", getUsuario()));
-                    nameValuePairs.add(new BasicNameValuePair("C_INTERFAZ", "PASEN_TUT"));
+                    nameValuePairs.add(new BasicNameValuePair("C_INTERFAZ", "SENECA"));
                     nameValuePairs.add(new BasicNameValuePair("NAV_WEB_NOMBRE", "Netscape"));
                     nameValuePairs.add(new BasicNameValuePair("NAV_WEB_VERSION", "5"));
                     nameValuePairs.add(new BasicNameValuePair("RESOLUCION", "1024"));
@@ -864,6 +864,7 @@ public class ClienteSeneca extends MaimonidesBean {
                 if (tmp.length() > 0) {
                     f = tmp;
                     firePropertyChange("message", null, "Fichero descargado con éxito.");
+                    //TODO Revisar que no sea una página de error
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
