@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -20,7 +20,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="490" max="32767" attributes="0"/>
+              <EmptySpace pref="506" max="32767" attributes="0"/>
               <Component id="bAceptar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="bCancelar" min="-2" max="-2" attributes="0"/>
@@ -29,7 +29,7 @@
           <Component id="panelAsignacionesMateria" alignment="1" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelUnidades" pref="656" max="32767" attributes="0"/>
+              <Component id="panelUnidades" pref="682" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
@@ -60,9 +60,9 @@
                       <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                       <Component id="cbActividad" pref="256" max="32767" attributes="2"/>
                   </Group>
-                  <Component id="cbAulas" alignment="0" pref="553" max="32767" attributes="0"/>
-                  <Component id="cbDicu" alignment="0" pref="553" max="32767" attributes="0"/>
-                  <Component id="cbProfesores" alignment="0" pref="553" max="32767" attributes="0"/>
+                  <Component id="cbAulas" alignment="0" pref="570" max="32767" attributes="0"/>
+                  <Component id="cbDicu" alignment="0" pref="570" max="32767" attributes="0"/>
+                  <Component id="cbProfesores" alignment="0" pref="570" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -142,7 +142,7 @@
               <Component id="panelMonoMateria" alignment="1" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                  <Component id="panelMaterias" pref="660" max="32767" attributes="0"/>
+                  <Component id="panelMaterias" pref="686" max="32767" attributes="0"/>
                   <EmptySpace min="10" pref="10" max="10" attributes="0"/>
               </Group>
           </Group>
@@ -171,7 +171,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lMateria" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cbMaterias" pref="596" max="32767" attributes="0"/>
+                      <Component id="cbMaterias" pref="617" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

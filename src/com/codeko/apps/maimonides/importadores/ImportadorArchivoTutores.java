@@ -80,7 +80,7 @@ public class ImportadorArchivoTutores extends MaimonidesBean {
         firePropertyChange("archivoTutores", this.archivoTutores, archivoTutores);
         this.archivoTutores = archivoTutores;
     }
-
+    
     public boolean importarTutores() {
         boolean ret = false;
         getErrores().clear();
@@ -93,24 +93,25 @@ public class ImportadorArchivoTutores extends MaimonidesBean {
             Scanner sc = new Scanner(getArchivoTutores(), "latin1");
             //La primera linea la ignoramos
             if (sc.hasNextLine()) {
-                sc.nextLine();
+                String cabecera=sc.nextLine();
+                //Tenemos que mapear la cabecera a los campos
+                ArrayList<String> cabeceras=new ArrayList<String>();
+                Matcher m = p.matcher(cabecera);
+                while(m.find()){
+                    cabeceras.add(m.group(1).toLowerCase());
+                }
                 PreparedStatement st = (PreparedStatement) MaimonidesApp.getApplication().getConector().getConexion().prepareStatement("UPDATE unidades SET capacidad=?, tutor_id=? WHERE id=? ");
                 while (sc.hasNextLine()) {
                     String linea = sc.nextLine();
-                    Matcher m = p.matcher(linea);
-                    m.find();
-                    String sUnidad = m.group(1);
-                    //Ignoramos la columna de tipo
-                    m.find();
-                    //CAPACIDAD
-                    m.find();
-                    int capacidad = Num.getInt(m.group(1));
-                    //Ignoramos la capacidad actual
-                    //m.find(); Esta columna hScanner line delimitera desaparecido en 2009
-                    //Profesor
-                    m.find();
-                    String sProfesor = m.group(1);
-                    //El resto no nos interesa
+                    ArrayList<String> datosLinea=new ArrayList<String>();
+                    m = p.matcher(linea);
+                    while(m.find()){
+                        datosLinea.add(m.group(1));
+                    }
+                    //Ahora vamos añadiendo los datos necesarios
+                    String sUnidad = datosLinea.get(cabeceras.indexOf("Unidad".toLowerCase()));
+                    int capacidad = Num.getInt(datosLinea.get(cabeceras.indexOf("Capacidad prevista".toLowerCase())));
+                    String sProfesor = datosLinea.get(cabeceras.indexOf("Tutor/a".toLowerCase()));
                     //Ahora hay que buscar la unidad
                     Unidad u = Unidad.getUnidadPorNombreOriginal(getAnoEscolar(), sUnidad);
                     if (u == null) {

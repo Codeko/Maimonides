@@ -71,6 +71,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
@@ -118,13 +120,49 @@ public class ClienteSeneca extends MaimonidesBean {
     String clave = null;// "gr7693gr";
     String claveCodificada = null;
     HttpClient cliente = null;
-    private String nombreVentana = "NV_4737";
+    private String nombreVentana = "IGNORAR_NOMBRE7";
     private static final String URL_BASE = "https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/";//"https://seneca.ced.junta-andalucia.es/seneca/jsp/";
     private static String urlBase = null;//"https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/";
     boolean debugMode = false;
     String ultimoError = "";
     Exception ultimaExcepcion = null;
     String perfilActivo = null;
+    HashMap<String, String> codigosPaginas = null;
+
+    public HashMap<String, String> getCodigosPaginas() {
+        if (codigosPaginas == null) {
+            try {
+                codigosPaginas = new HashMap<String, String>();
+                HttpGet get = new HttpGet(getUrlBase() + "PaginaCodigos.jsp?ALEATORIO=KVPMLCKVAEQWHKLCYXGS");
+                Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando códigos de páginas.");
+                HttpResponse response = getCliente().execute(get);
+                String texto = EntityUtils.toString(response.getEntity());
+                if (isDebugMode()) {
+                    System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + texto);
+                }
+                ScriptEngineManager manager = new ScriptEngineManager();
+                ScriptEngine enginex = manager.getEngineByName("js");
+                enginex.eval(texto);
+                Bindings bindings = enginex.getBindings(ScriptContext.ENGINE_SCOPE);
+                Iterator<String> vars = bindings.keySet().iterator();
+                while (vars.hasNext()) {
+                    String k = vars.next();
+                    String val = Str.noNulo(bindings.get(k));
+                    codigosPaginas.put(k, val);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return codigosPaginas;
+    }
+
+    public String getCodigoPagina(String nombre) {
+        if (getCodigosPaginas().containsKey("c_" + nombre)) {
+            return getCodigosPaginas().get("c_" + nombre).toString();
+        }
+        return null;
+    }
 
     public ClienteSeneca(String usuario, String clave) {
         setUsuario(usuario);
@@ -292,6 +330,7 @@ public class ClienteSeneca extends MaimonidesBean {
     }
 
     public void hacerLogout() {
+        //TODO Sería mejor no cerrar la sesión en ciertos casos
         try {
             HttpGet get = new HttpGet(getUrlBase() + "Logout.jsp");
             HttpResponse response = getCliente().execute(get);
@@ -301,6 +340,8 @@ public class ClienteSeneca extends MaimonidesBean {
             setLoggeado(false);
             get.abort();
             cerrarCliente();
+            //Al hacer logout tenemos que resetear los códigos de las páginas
+            codigosPaginas = null;
         } catch (Exception ex) {
             Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -331,7 +372,7 @@ public class ClienteSeneca extends MaimonidesBean {
         //Lo seleccionamos
         HttpPost post = new HttpPost(getUrlBase() + "PuestosOrigenPerfil.jsp?D_PERFIL=" + URLEncoder.encode(getPerfilActivo(), "UTF-8") + "&rndval=72277307");
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-        nameValuePairs.add(new BasicNameValuePair("CPERFILES",codPerfil));// (getPerfilActivo().equals(PERFIL_DIRECCION) ? COD_PERFIL_DIRECCION : COD_PERFIL_PROFESOR) + ""));
+        nameValuePairs.add(new BasicNameValuePair("CPERFILES", codPerfil));// (getPerfilActivo().equals(PERFIL_DIRECCION) ? COD_PERFIL_DIRECCION : COD_PERFIL_PROFESOR) + ""));
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Seleccionando perfil {0}", getPerfilActivo());
         HttpResponse response = getCliente().execute(post);
@@ -379,21 +420,21 @@ public class ClienteSeneca extends MaimonidesBean {
             } else {
                 setPerfilActivo(null);
             }
-            boolean perfilSeleccionado=false;
+            boolean perfilSeleccionado = false;
             if (getPerfilActivo() != null) {
                 //Tenemos que cargar el código de perfil
-                String regExp = "<option value=\"([^\"]+)\">"+getPerfilActivo()+"</option>";
+                String regExp = "<option value=\"([^\"]+)\">" + getPerfilActivo() + "</option>";
                 Pattern p = Pattern.compile(regExp, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
                 Matcher m = p.matcher(texto);
-                String codPerfil="";
-                if(m.find()){
-                    codPerfil=m.group(1);
+                String codPerfil = "";
+                if (m.find()) {
+                    codPerfil = m.group(1);
                 }
-                if(!Str.noNulo(codPerfil).trim().equals("")){
-                    perfilSeleccionado=cargarPerfil(codPerfil);
+                if (!Str.noNulo(codPerfil).trim().equals("")) {
+                    perfilSeleccionado = cargarPerfil(codPerfil);
                 }
-            } 
-            if(!perfilSeleccionado) {
+            }
+            if (!perfilSeleccionado) {
                 setLoggeado(false);
                 setUltimoError("No se ha podido seleccionar el perfil '" + getPerfilActivo() + "'.");
                 setUltimaExcepcion(null);
@@ -407,9 +448,14 @@ public class ClienteSeneca extends MaimonidesBean {
     }
 
     public boolean hacerLogin(int intento) {
+        if (isLoggeado()) {
+            //TODO Verificamos que realmente se esté loggeado
+        }
         if (!isLoggeado()) {
             if (getCliente() != null) {
                 try {
+                    //Al hacer un nuevo logging tenemos que resetear los códigos de las páginas
+                    codigosPaginas = null;
                     regenerarNombreVentana();
                     HttpResponse response = null;
                     String texto = null;
@@ -439,6 +485,11 @@ public class ClienteSeneca extends MaimonidesBean {
                     Logger.getLogger(ClienteSeneca.class.getName()).info("Haciendo login en Séneca.");
                     response = getCliente().execute(post);
                     texto = EntityUtils.toString(response.getEntity());
+                    /**
+                     * Ahora devuelve XML:
+                     * <respuesta><correcto>SI</correcto><mensaje>Conectado a las 19:43</mensaje></respuesta>
+                     * 
+                     */
                     setLoggeado((response.getStatusLine().getStatusCode() == 200 && texto.indexOf("IdenUsu.jsp?INCORRECTO") == -1));
                     if (isLoggeado()) {
                         //TODO Por alguna razon esto falla siempre la primera vez y funciona la segunda
@@ -487,9 +538,11 @@ public class ClienteSeneca extends MaimonidesBean {
         if (hacerLogin()) {
             try {
                 //La web del listado
+                //SelecAlum
+                //https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/Principal.jsp?rndval=470418069&COD_PAGINA=6mboLCnijIj5D5_rXKlB2g&DESDE_MENU_=S&PRIMERA_VISITA_=S&N_V_=NV_2726&COD_PAGINA_ANTERIOR=nbDzaJD-cHBc228oPJw5Xg&TIEMPO_PAGINA_ANTERIOR=6880&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=-1
                 firePropertyChange("message", null, "Descargando fichero Séneca de datos extendidos de alumnado.");
                 HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=180820631&COD_PAGINA=1182&N_V_=" + getNombreVentana());
-                
+                //https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/Principal.jsp?rndval=429150267&COD_PAGINA=BQPsf9gnYQxoq46rIBYPig&&N_V_=NV_2726&COD_PAGINA_ANTERIOR=6mboLCnijIj5D5_rXKlB2g&TIEMPO_PAGINA_ANTERIOR=2752&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=4414
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
                 nameValuePairs.add(new BasicNameValuePair("C_ANNO", "" + MaimonidesApp.getApplication().getAnoEscolar().getAno()));
@@ -502,7 +555,7 @@ public class ClienteSeneca extends MaimonidesBean {
                 nameValuePairs.add(new BasicNameValuePair("T_APELLIDO2", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("T_NOMBRE", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", "-1"));
-                
+
                 p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = getCliente().execute(p1);
                 String texto = EntityUtils.toString(response.getEntity());
@@ -512,7 +565,7 @@ public class ClienteSeneca extends MaimonidesBean {
                 //La de las consultas de exportación
                 visitarURL("PaginaExportacionDatos.jsp?rndval=566364053&N_V_=" + getNombreVentana() + "&COD_PAGINA_ANTERIOR=1182");
                 String captcha = getCaptcha();
-                if(captcha==null){
+                if (captcha == null) {
                     return null;
                 }
                 //Luego pedimos los datos
@@ -842,30 +895,91 @@ public class ClienteSeneca extends MaimonidesBean {
         return archivos;
     }
 
+    private String searchRegexp(String texto, String regexp) {
+        return searchRegexp(texto, regexp, 1);
+    }
+
+    private String searchRegexp(String texto, String regexp, int group) {
+        String ret = null;
+        Pattern p = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(texto);
+        if (m.find()) {
+            ret = m.group(group);
+        }
+        return ret;
+    }
+
     public File getArchivoGeneradoresDeHorarios() {
         File f = null;
         if (hacerLogin()) {
             try {
                 firePropertyChange("message", null, "Solicitando fichero Séneca para generadores de horarios.");
-                visitarURL("Principal.jsp?rndval=344005786&COD_PAGINA=5004883&MODO=NUEVO&X_TIPINTINF=1&N_V_=" + getNombreVentana());
-                String fint = URLEncoder.encode(Fechas.format(new GregorianCalendar(), "dd/MM/yyyy hh:mm"), "latin1");
-                visitarURL("Principal.jsp?rndval=456528181&COD_PAGINA=5004903&X_TIPINTINF=1&F_INTINF=" + fint + "&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&T_OBSERV=&N_V_=" + getNombreVentana());
-                HttpGet get = new HttpGet(getUrlBase() + "EnviarFichero.jsp");
-                //TODO Habría que comprobar el cod de retorno
-                HttpResponse response = getCliente().execute(get);
-                if (isDebugMode()) {
-                    System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n");
-                }
-                firePropertyChange("message", null, "Descargando fichero Séneca para generadores de horarios...");
-                File tmp = File.createTempFile("maimonides_", ".xml");
-                FileOutputStream fos = new FileOutputStream(tmp);
-                Archivo.copiarArchivo(response.getEntity().getContent(), fos);
-                Obj.cerrar(fos);
-                if (tmp.length() > 0) {
-                    f = tmp;
-                    firePropertyChange("message", null, "Fichero descargado con éxito.");
-                    //TODO Revisar que no sea una página de error
-                }
+                //Primero accedemos a la página de exportacion importacion
+                String codPaginaExportacion = getCodigoPagina("RegIntInf");
+                String principalIE = getURL("Principal.jsp?rndval=862885095&COD_PAGINA=" + codPaginaExportacion + "&DESDE_MENU_=S&N_V_=" + getNombreVentana());
+                //Ahora tenemos que buscar el código para la importacion y exportacion
+                String codExportacion = searchRegexp(principalIE, "<option \\s*value=\"([^\"]+)\"\\s*>Exportar datos desde Séneca</option>");
+                if (!Str.noNulo(codExportacion).equals("")) {
+                    String valoresIE = getURL("PaginaActualizacion.jsp?rndval=971636491&CAMPO=X_TIPINTINF&INF_ACT_1=INF_SENTENCIA_ACTUALIZACION_1&C_SENINT=" + codExportacion + "&N_V_=" + getNombreVentana());
+                    valoresIE = valoresIE.replaceAll("\r", "");
+                    valoresIE = valoresIE.replaceAll("\n", "");
+                    String codExportacionHorarios = searchRegexp(valoresIE, "'Exportación hacia generadores de horarios','([^']+)'");
+                    if (!Str.noNulo(codExportacionHorarios).equals("")) {
+                        visitarURL("Principal.jsp?rndval=722439096&COD_PAGINA=" + codPaginaExportacion + "&C_SENINT=" + codExportacion + "&X_TIPINTINF=" + codExportacionHorarios + "&N_V_=" + getNombreVentana());
+                        //          Principal.jsp?rndval=722439096&COD_PAGINA=8aFZYkCTpbze7-2jZK4N-Q&C_SENINT=mQCErYl18VDSfHqNZK-sCw&X_TIPINTINF=bhjlJeReIjsU8B88i1G0hA&X_CENTRO=&N_V_=NV_2726&COD_PAGINA_ANTERIOR=8aFZYkCTpbze7-2jZK4N-Q&TIEMPO_PAGINA_ANTERIOR=1859&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=3062
+                        String codPost=getCodigoPagina("DetIntInf");
+                        visitarURL("Principal.jsp?rndval=452409014&COD_PAGINA=" +codPost+ "&MODO=NUEVO&X_TIPINTINF=" + codExportacionHorarios + "&N_V_=" + getNombreVentana());
+                        //https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/Principal.jsp?rndval=452409014&COD_PAGINA=CQr7E-ARsct3BNNcU64_jw&MODO=NUEVO&X_TIPINTINF=bhjlJeReIjsU8B88i1G0hA&N_V_=NV_2726&COD_PAGINA_ANTERIOR=8aFZYkCTpbze7-2jZK4N-Q&TIEMPO_PAGINA_ANTERIOR=3966&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=5261
+                        String captcha = getCaptcha();
+                        if (captcha != null) {
+                            boolean ok=false;
+                            int max=3;
+                            while(!ok && max>0){
+                                //Ahora enviamos el POST con los datos
+                                HttpPost post = new HttpPost(getUrlBase() + "Principal.jsp?rndval=452409014&COD_PAGINA="+getCodigoPagina("NVExpXMLHorarios")+"&PAG_NO_VISIBLE_=S&N_V_=" + getNombreVentana());
+                                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                                nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
+                                nameValuePairs.add(new BasicNameValuePair("C_ANNO", MaimonidesApp.getApplication().getAnoEscolar().getAno() + ""));
+                                nameValuePairs.add(new BasicNameValuePair("C_SENINT", "E"));
+                                nameValuePairs.add(new BasicNameValuePair("T_OBSERV", ""));
+                                nameValuePairs.add(new BasicNameValuePair("KAPTCHA", captcha));
+                                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                                HttpResponse response = getCliente().execute(post);
+                                String txt = EntityUtils.toString(response.getEntity());
+                                if (isDebugMode()) {
+                                    System.out.println(post.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n"+txt);
+                                }
+                                if(txt.contains("EnviarFichero.jsp")){
+                                    ok=true;
+                                }
+                                max--;
+                            }
+                            HttpGet get = new HttpGet(getUrlBase() + "EnviarFichero.jsp");
+                            //TODO Habría que comprobar el cod de retorno
+                            HttpResponse response = getCliente().execute(get);
+                            if (isDebugMode()) {
+                                System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n");
+                            }
+                            firePropertyChange("message", null, "Descargando fichero Séneca para generadores de horarios...");
+                            File tmp = File.createTempFile("maimonides_", ".xml");
+                            FileOutputStream fos = new FileOutputStream(tmp);
+                            Archivo.copiarArchivo(response.getEntity().getContent(), fos);
+                            Obj.cerrar(fos);
+                            if (tmp.length() > 0) {
+                                f = tmp;
+                                //TODO Revisar que no sea una página de error
+                                if(Archivo.getContenido(f).contains("<html>")){
+                                    firePropertyChange("message", null, "Error descargando fichero.");
+                                    f=null;
+                                }else{
+                                    firePropertyChange("message", null, "Fichero descargado con éxito.");
+                                }
+                            }else{
+                                firePropertyChange("message", null, "Error descargando fichero.");
+                            }
+                        }
+                    }
+                }                
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1061,28 +1175,59 @@ public class ClienteSeneca extends MaimonidesBean {
         if (hacerLogin()) {
             try {
                 firePropertyChange("message", null, "Solicitando fichero Séneca con los tutores de cada unidad.");
-                visitarURL("Principal.jsp?rndval=264283526&COD_PAGINA=11553&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&X_OFERTAMATRIC=-3&N_V_=" + getNombreVentana());
-                visitarURL("PaginaExportacionDatos.jsp?rndval=300453568&N_V_=" + getNombreVentana() + "&COD_PAGINA_ANTERIOR=11553");
-                HttpPost post = new HttpPost(getUrlBase() + "ExportarDatos.jsp");
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "T_NOMBRE"));
-                nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "TIPO"));
-                nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "N_CAPACIDAD"));
-                nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "TUTOR"));
-                nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", "D_OFERTAMATRIG"));
-                nameValuePairs.add(new BasicNameValuePair("FORMATO_EXPORTACION", "CSV"));
-                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = getCliente().execute(post);
-                //TODO Habría que comprobar el cod de retorno
-                firePropertyChange("message", null, "Descargando fichero Séneca para generadores de horarios...");
-                File tmp = File.createTempFile("maimonides_", ".csv");
-                FileOutputStream fos = new FileOutputStream(tmp);
-                Archivo.copiarArchivo(response.getEntity().getContent(), fos);
-                Obj.cerrar(fos);
-                if (tmp.length() > 0) {
-                    f = tmp;
-                    firePropertyChange("message", null, "Fichero descargado con éxito.");
+                //
+                //https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/Principal.jsp?rndval=526775403&COD_PAGINA=nbDzaJD-cHBc228oPJw5Xg&DESDE_MENU_=S&PRIMERA_VISITA_=S&N_V_=NV_2726&COD_PAGINA_ANTERIOR=-1&TIEMPO_PAGINA_ANTERIOR=-1&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=-1
+                visitarURL("Principal.jsp?rndval=264283526&COD_PAGINA="+getCodigoPagina("RegUnidades") +"&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&X_OFERTAMATRIC=-3&N_V_=" + getNombreVentana());
+                //https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/Principal.jsp?rndval=402643250&COD_PAGINA=nbDzaJD-cHBc228oPJw5Xg&C_ANNO=2011&X_OFERTAMATRIC=-3&N_V_=NV_2726
+                String formEnvio=getURL("PaginaExportacionDatos.jsp?rndval=300453568&N_V_=" + getNombreVentana() + "&COD_PAGINA_ANTERIOR="+getCodigoPagina("RegUnidades") +"");
+                formEnvio=formEnvio.replaceAll("\n", "");
+                formEnvio=formEnvio.replaceAll("\r", "");
+                //PaginaExportacionDatos.jsp?rndval=524781609&N_V_=NV_2726&COD_PAGINA_ANTERIOR=nbDzaJD-cHBc228oPJw5Xg&TIEMPO_PAGINA_ANTERIOR=6880&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=9194
+                String captcha = getCaptcha();
+                if (captcha != null) {
+                    boolean ok = false;
+                    int max = 3;
+                    while (!ok && max > 0) {
+                        HttpPost post = new HttpPost(getUrlBase() + "ExportarDatos.jsp");
+                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Unidad</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Tipo</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Capacidad prevista</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Nº de alumnos/as asignados/as</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Tutor/a</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Curso</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("FORMATO_EXPORTACION", searchRegexp(formEnvio, "<option \\s*value=\"([^\"]+)\"\\s*>Fichero CSV</option>")));
+                        nameValuePairs.add(new BasicNameValuePair("TITULO", "RELACIÓN DE UNIDADES"));
+                        nameValuePairs.add(new BasicNameValuePair("KAPTCHA", captcha));
+                        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                        HttpResponse response = getCliente().execute(post);
+                        //TODO Habría que comprobar el cod de retorno
+                        firePropertyChange("message", null, "Descargando fichero Séneca para generadores de horarios...");
+                        File tmp = File.createTempFile("maimonides_", ".csv");
+                        FileOutputStream fos = new FileOutputStream(tmp);
+                        Archivo.copiarArchivo(response.getEntity().getContent(), fos);
+                        Obj.cerrar(fos);
+                        if (tmp.length() > 0) {
+                            f = tmp;
+                            String fContent=Archivo.getContenido(f);
+                            if(fContent.contains("ExportarDatos.jsp")){
+                                f=null;
+                            }else if(fContent.contains("<html>")){
+                                firePropertyChange("message", null, "Error descargando fichero.");
+                                ok=true;
+                            }else{
+                                firePropertyChange("message", null, "Fichero descargado con éxito.");
+                                ok=true;
+                            }
+                            
+                        }else{
+                            firePropertyChange("message", null, "Error descargando fichero.");
+                        }
+                        max--;
+                    }
                 }
+                
+                
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1158,12 +1303,12 @@ public class ClienteSeneca extends MaimonidesBean {
 
     public String getCaptcha() throws IOException {
         //Tenemos que recuperar el captcha
-        String urlCapcha = ClienteSeneca.getUrlBase() + "../kaptcha?ALEATORIO="+Math.floor(Math.random()*1000);
+        String urlCapcha = ClienteSeneca.getUrlBase() + "../kaptcha?ALEATORIO=" + Math.floor(Math.random() * 1000);
         HttpGet get = new HttpGet(urlCapcha);
         HttpResponse response = this.getCliente().execute(get);
-        BufferedImage img=ImageIO.read(response.getEntity().getContent());
-        JLabel lImg=new JLabel(new ImageIcon(img));
-        String captcha= JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), lImg, "Introduzca el código", JOptionPane.QUESTION_MESSAGE);
+        BufferedImage img = ImageIO.read(response.getEntity().getContent());
+        JLabel lImg = new JLabel(new ImageIcon(img));
+        String captcha = JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), lImg, "Introduzca el código", JOptionPane.QUESTION_MESSAGE);
         return captcha;
     }
 
@@ -1210,7 +1355,8 @@ public class ClienteSeneca extends MaimonidesBean {
                 mapaTitulos.put("Fax:", "fax_centro");
                 mapaTitulos.put("Correo electrónico:", "email_centro");
                 firePropertyChange("message", null, "Cargando datos del centro");
-                HttpGet get = new HttpGet(getUrlBase() + "Principal.jsp?rndval=607395803&COD_PAGINA=51&N_V_=" + getNombreVentana());
+                String url = getUrlBase() + "Principal.jsp?rndval=607395803&COD_PAGINA=" + getCodigoPagina("DatCent") + "&N_V_=" + getNombreVentana();
+                HttpGet get = new HttpGet(url);
                 Logger.getLogger(ClienteSeneca.class.getName()).info("Cargando datos del centro.");
                 HttpResponse response = getCliente().execute(get);
                 String texto = EntityUtils.toString(response.getEntity());
