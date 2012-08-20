@@ -120,6 +120,7 @@ public class ImportadorListadoExtendidoAlumnos extends MaimonidesBean {
         boolean ret = false;
         boolean crearCursosUnidades = true;
         try {
+            //TODO Realizar importacion en base a cabeceras no a posición en la hoja
             FileInputStream fis = new FileInputStream(getArchivoAlumnosSeneca());
             POIFSFileSystem fs = new POIFSFileSystem(fis);
             HSSFWorkbook wb = new HSSFWorkbook(fs);
