@@ -39,7 +39,6 @@ import com.codeko.apps.maimonides.seneca.operaciones.envioFicherosFaltas.GestorE
 import com.codeko.apps.maimonides.usr.Rol;
 import com.codeko.apps.maimonides.usr.Usuario;
 import com.codeko.util.Archivo;
-import com.codeko.util.Fechas;
 import com.codeko.util.Num;
 import com.codeko.util.Obj;
 import com.codeko.util.Str;
@@ -56,7 +55,6 @@ import java.net.URLEncoder;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -101,6 +99,45 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 import org.jdesktop.application.Task;
+
+/**
+ Recuperacion de nombre de codigo
+ Acceder a https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/PagMenu.jsp
+ 
+ * Usar la funcion 
+ function getCodByValue(value,prefix) {
+  prefix=prefix|"c_";
+  var keyValues = [], global = window; // window for browser environments
+  for (var prop in global) {
+    if (prop.indexOf(prefix) == 0) // check the prefix
+      keyValues.push(prop + "=" + global[prop]);
+      if(global[prop]==value){
+        alert(prop); 
+      }
+  }
+}
+  
+  
+ Esta es la funcion origianl para sacar todas las variables
+ function getGlobalProperties(prefix) {
+  var keyValues = [], global = window; // window for browser environments
+  for (var prop in global) {
+    if (prop.indexOf(prefix) == 0) // check the prefix
+      keyValues.push(prop + "=" + global[prop]);
+      if(global[prop]=="e30IyCRUlSJ7L7eJhqHfjg"){
+        alert(prop); 
+      }
+  }
+  return keyValues.join('&'); // build the string
+}
+var test = getGlobalProperties('c_');
+alert(test);
+ 
+  
+  
+ 
+ */
+
 
 /**
  * Copyright Codeko Informática 2008
@@ -214,7 +251,7 @@ public class ClienteSeneca extends MaimonidesBean {
     }
 
     public boolean isDebugMode() {
-        return true;//debugMode;
+        return debugMode;
     }
 
     public void setDebugMode(boolean debugMode) {
@@ -635,9 +672,11 @@ public class ClienteSeneca extends MaimonidesBean {
 
     public int actualizarCodigoFaltasSenecaAlumnos(HashMap<String, String> alumnos, Task tarea) {
         int ret = 0;
+      
         if (hacerLogin()) {
             Logger.getLogger(ClienteSeneca.class.getName()).info("Actualizar código faltas: Login OK.");
             try {
+                //Pagina Alumnado->Alumnado->Alumnado del centro->Relación del alumno con el centro (en menu emergente de opcion)
                 String regExp = "<INPUT TYPE=\"HIDDEN\" NAME=OpEmergente([0-9]+) VALUE=\"C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&X_CENTRO=([0-9]+)&C_PAGINA=DetMatrAlumCent&X_IDENTIFICADOR=([0-9]+)&HEREDAR_ACC=SI&NUM_FILA=([0-9]+)\">";
                 Pattern p = Pattern.compile(regExp, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
                 Iterator<String> it = alumnos.keySet().iterator();
@@ -654,8 +693,8 @@ public class ClienteSeneca extends MaimonidesBean {
                     count++;
                     String codSeneca = it.next();
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo faltas: Procesando alumno con c\u00f3digo s\u00e9neca {0}.", codSeneca);
-                    firePropertyChange("message", null, "Buscando código de faltas de Séneca para Código:" + codSeneca + "...");
-                    String url = getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA=15453&X_ALUMNO=" + codSeneca + "&N_V_=" + getNombreVentana();
+                    firePropertyChange("message", null, "Buscando código de faltas de Séneca para Código:" + codSeneca + " ("+(count)+"/"+alumnos.size()+")...");
+                    String url = getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA="+getCodigoPagina("RegCenAlu") +"&X_ALUMNO=" + codSeneca + "&N_V_=" + getNombreVentana();
                     HttpGet p1 = new HttpGet(url);
                     HttpResponse response = getCliente().execute(p1);
                     String txt = EntityUtils.toString(response.getEntity());
@@ -680,6 +719,7 @@ public class ClienteSeneca extends MaimonidesBean {
                         Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo faltas: No se ha encontrado codigo en:\n{0}", txt);
                     }
                 }
+                this.firePropertyChange("alumnoProcesado", alumnos.size(), count);
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -692,9 +732,12 @@ public class ClienteSeneca extends MaimonidesBean {
 
     public int actualizarCodigoSenecaAlumnos(HashMap<String, Integer> alumnos, Task tarea) {
         int ret = 0;
+        int count=0;
         if (hacerLogin()) {
             Logger.getLogger(ClienteSeneca.class.getName()).info("Actualizar código séneca. Login OK");
             try {
+                //Pagina Alumnado->Alumnado->Alumnado del centro
+                //se filtra por el número de matricula y se recoge el codigo seneca del listado
                 Pattern p = Pattern.compile("<INPUT TYPE=\"HIDDEN\" NAME=OpEmergente1 VALUE=\"X_ALUMNO=([0-9]+)&HEREDAR_ACC=SI&NUM_FILA=0\">", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
                 Iterator<String> it = alumnos.keySet().iterator();
                 while (it.hasNext()) {
@@ -703,12 +746,12 @@ public class ClienteSeneca extends MaimonidesBean {
                     }
                     String numEscolar = it.next();
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo s\u00e9neca: Buscando c\u00f3digo S\u00e9neca para N\u00ba Escolar:{0}...", numEscolar);
-                    firePropertyChange("message", null, "Buscando código Séneca para Nº Escolar:" + numEscolar + "...");
-                    HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA=1182&&N_V_=" + getNombreVentana());
+                    firePropertyChange("message", null, "Buscando código Séneca para Nº Escolar:" + numEscolar + " ("+(count+1)+"/"+alumnos.size()+")...");
+                    HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA="+getCodigoPagina("RegAlum")+"&N_V_=" + getNombreVentana());
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                     nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
                     nameValuePairs.add(new BasicNameValuePair("C_ANNO", "" + MaimonidesApp.getApplication().getAnoEscolar().getAno()));
-                    nameValuePairs.add(new BasicNameValuePair("C_NUMESCOLAR", "11"));
+                    nameValuePairs.add(new BasicNameValuePair("C_NUMESCOLAR", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("C_NUMIDE", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("DESHABILITAR_C_ANNO", "N"));
                     nameValuePairs.add(new BasicNameValuePair("F_NACIMIENTO", "-1"));
@@ -716,19 +759,8 @@ public class ClienteSeneca extends MaimonidesBean {
                     nameValuePairs.add(new BasicNameValuePair("T_APELLIDO1", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("T_APELLIDO2", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("T_NOMBRE", "-1"));
-                    nameValuePairs.add(new BasicNameValuePair("V1_C_NUMESCOLAR", numEscolar));
-                    nameValuePairs.add(new BasicNameValuePair("V1_C_NUMIDE", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V1_F_NACIMIENTO", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V1_T_APELLIDO1", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V1_T_APELLIDO2", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V1_T_NOMBRE", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V2_C_NUMESCOLAR", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V2_C_NUMIDE", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V2_F_NACIMIENTO", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V2_T_APELLIDO1", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V2_T_APELLIDO2", ""));
-                    nameValuePairs.add(new BasicNameValuePair("V2_T_NOMBRE", ""));
                     nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", "-1"));
+                    nameValuePairs.add(new BasicNameValuePair("V1_C_NUMESCOLAR", numEscolar));
                     p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = getCliente().execute(p1);
                     String txt = EntityUtils.toString(response.getEntity());
@@ -748,6 +780,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     } else {
                         Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo s\u00e9neca: No se ha encontrado c\u00f3digo en la respuesta:\n{0}", response);
                     }
+                    this.firePropertyChange("alumnoProcesado", alumnos.size(), count++);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);

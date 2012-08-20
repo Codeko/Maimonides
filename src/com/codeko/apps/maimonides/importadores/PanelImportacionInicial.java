@@ -133,7 +133,6 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
         bImportarTutores = new org.jdesktop.swingx.JXHyperlink();
         bImportarDatosAlumnos = new org.jdesktop.swingx.JXHyperlink();
         bDatosBaseAlumnos = new org.jdesktop.swingx.JXHyperlink();
-        bImportarEmailsProfesoresOtrosAnos1 = new org.jdesktop.swingx.JXHyperlink();
         jXHyperlink1 = new org.jdesktop.swingx.JXHyperlink();
         jXHyperlink2 = new org.jdesktop.swingx.JXHyperlink();
         bImportarHorarios = new org.jdesktop.swingx.JXHyperlink();
@@ -142,11 +141,11 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
 
         setName("maimonides.paneles.herramientas.importacion_inicial_datos"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getActionMap(PanelImportacionInicial.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(PanelImportacionInicial.class, this);
         bImportarDatosBaseSeneca.setAction(actionMap.get("importarDatosBaseSeneca")); // NOI18N
         bImportarDatosBaseSeneca.setName("bImportarDatosBaseSeneca"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.codeko.apps.maimonides.MaimonidesApp.class).getContext().getResourceMap(PanelImportacionInicial.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(PanelImportacionInicial.class);
         bImportarEmailsProfesoresOtrosAnos.setText(resourceMap.getString("bImportarEmailsProfesoresOtrosAnos.text")); // NOI18N
         bImportarEmailsProfesoresOtrosAnos.setToolTipText(resourceMap.getString("bImportarEmailsProfesoresOtrosAnos.toolTipText")); // NOI18N
         bImportarEmailsProfesoresOtrosAnos.setEnabled(false);
@@ -160,11 +159,6 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
 
         bDatosBaseAlumnos.setAction(actionMap.get("importarDatosBaseAlumnado")); // NOI18N
         bDatosBaseAlumnos.setName("bDatosBaseAlumnos"); // NOI18N
-
-        bImportarEmailsProfesoresOtrosAnos1.setText(resourceMap.getString("bImportarEmailsProfesoresOtrosAnos1.text")); // NOI18N
-        bImportarEmailsProfesoresOtrosAnos1.setToolTipText(resourceMap.getString("bImportarEmailsProfesoresOtrosAnos1.toolTipText")); // NOI18N
-        bImportarEmailsProfesoresOtrosAnos1.setEnabled(false);
-        bImportarEmailsProfesoresOtrosAnos1.setName("bImportarEmailsProfesoresOtrosAnos1"); // NOI18N
 
         jXHyperlink1.setAction(actionMap.get("importarMatriculaciones")); // NOI18N
         jXHyperlink1.setText(resourceMap.getString("jXHyperlink1.text")); // NOI18N
@@ -189,16 +183,15 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bImportarDatosBaseSeneca, javax.swing.GroupLayout.PREFERRED_SIZE, 487, Short.MAX_VALUE)
+                    .addComponent(bImportarDatosBaseSeneca, javax.swing.GroupLayout.PREFERRED_SIZE, 531, Short.MAX_VALUE)
                     .addComponent(bImportarEmailsProfesoresOtrosAnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bImportarEmailsProfesoresOtrosAnos1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bImportarTutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bImportarDatosAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bDatosBaseAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lInfoCodigosPendientes, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE))
+                    .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jXHyperlink2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bImportarHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bImportarCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -220,8 +213,6 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                     .addComponent(bDatosBaseAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lInfoCodigosPendientes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bImportarEmailsProfesoresOtrosAnos1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXHyperlink1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jXHyperlink2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +220,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                 .addComponent(bImportarHorarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bImportarCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -538,11 +529,16 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
                         firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+                        if("alumnoProcesado".equals(evt.getPropertyName())){
+                            setProgress(Num.getInt(evt.getNewValue()), 0, Num.getInt(evt.getOldValue()));
+                        }
                     }
                 });
                 ret = true;
                 ret = actualizarCodigoSeneca();
-                ret = actualizarCodigoFaltas() && ret;
+                if(!isCancelled()){
+                    ret = actualizarCodigoFaltas() && ret;
+                }
             } else if (fichero.exists()) {
                 ArrayList<File> archivos = new ArrayList<File>();
                 File tmpDir = new File(System.getProperty("java.io.tmpdir"), "faltas");
@@ -579,6 +575,8 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                 Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
             Obj.cerrar(stSel, res);
+            this.setMessage("Recuperándo códigos Séneca");
+            this.setProgress(0, 0, alumnos.size());
             ret = cli.actualizarCodigoSenecaAlumnos(alumnos, this) == alumnos.size();
             Iterator<String> it = alumnos.keySet().iterator();
             try {
@@ -621,6 +619,8 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                 Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
             Obj.cerrar(stSel, res);
+            this.setMessage("Recuperándo códigos de faltas de Séneca");
+            this.setProgress(0, 0, alumnos.size());
             ret = cli.actualizarCodigoFaltasSenecaAlumnos(alumnos, this) == alumnos.size();
             Iterator<String> it = alumnos.keySet().iterator();
             try {
@@ -842,7 +842,6 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
     private org.jdesktop.swingx.JXHyperlink bImportarDatosAlumnos;
     private org.jdesktop.swingx.JXHyperlink bImportarDatosBaseSeneca;
     private org.jdesktop.swingx.JXHyperlink bImportarEmailsProfesoresOtrosAnos;
-    private org.jdesktop.swingx.JXHyperlink bImportarEmailsProfesoresOtrosAnos1;
     private org.jdesktop.swingx.JXHyperlink bImportarHorarios;
     private org.jdesktop.swingx.JXHyperlink bImportarTutores;
     private org.jdesktop.swingx.JXHyperlink jXHyperlink1;

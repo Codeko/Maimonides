@@ -24,15 +24,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="bImportarDatosBaseSeneca" pref="531" max="32767" attributes="0"/>
                   <Component id="bImportarEmailsProfesoresOtrosAnos" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="bImportarEmailsProfesoresOtrosAnos1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="bImportarTutores" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jXHyperlink1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="bImportarDatosAlumnos" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="bDatosBaseAlumnos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lInfoCodigosPendientes" pref="234" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="jXHyperlink1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jXHyperlink2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="bImportarHorarios" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="bImportarCalendario" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -58,8 +57,6 @@
                   <Component id="lInfoCodigosPendientes" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="bImportarEmailsProfesoresOtrosAnos1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
               <Component id="jXHyperlink1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jXHyperlink2" min="-2" max="-2" attributes="0"/>
@@ -67,7 +64,7 @@
               <Component id="bImportarHorarios" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="bImportarCalendario" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="120" max="32767" attributes="0"/>
+              <EmptySpace pref="144" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -111,14 +108,6 @@
           <action class="com.codeko.apps.maimonides.importadores.PanelImportacionInicial" id="importarDatosBaseAlumnado" methodName="importarDatosBaseAlumnado"/>
         </Property>
         <Property name="name" type="java.lang.String" value="bDatosBaseAlumnos" noResource="true"/>
-      </Properties>
-    </Component>
-    <Component class="org.jdesktop.swingx.JXHyperlink" name="bImportarEmailsProfesoresOtrosAnos1">
-      <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="bImportarEmailsProfesoresOtrosAnos1.text"/>
-        <Property name="toolTipText" type="java.lang.String" resourceKey="bImportarEmailsProfesoresOtrosAnos1.toolTipText"/>
-        <Property name="enabled" type="boolean" value="false"/>
-        <Property name="name" type="java.lang.String" value="bImportarEmailsProfesoresOtrosAnos1" noResource="true"/>
       </Properties>
     </Component>
     <Component class="org.jdesktop.swingx.JXHyperlink" name="jXHyperlink1">
