@@ -39,6 +39,7 @@ import com.codeko.apps.maimonides.seneca.operaciones.envioFicherosFaltas.GestorE
 import com.codeko.apps.maimonides.usr.Rol;
 import com.codeko.apps.maimonides.usr.Usuario;
 import com.codeko.util.Archivo;
+import com.codeko.util.Fechas;
 import com.codeko.util.Num;
 import com.codeko.util.Obj;
 import com.codeko.util.Str;
@@ -55,6 +56,7 @@ import java.net.URLEncoder;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -693,7 +695,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     count++;
                     String codSeneca = it.next();
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo faltas: Procesando alumno con c\u00f3digo s\u00e9neca {0}.", codSeneca);
-                    firePropertyChange("message", null, "Buscando código de faltas de Séneca para Código:" + codSeneca + " ("+(count)+"/"+alumnos.size()+")...");
+                    firePropertyChange("message", null, "Procesando código:" + codSeneca + " ("+(count)+"/"+alumnos.size()+")...");
                     String url = getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA="+getCodigoPagina("RegCenAlu") +"&X_ALUMNO=" + codSeneca + "&N_V_=" + getNombreVentana();
                     HttpGet p1 = new HttpGet(url);
                     HttpResponse response = getCliente().execute(p1);
@@ -718,8 +720,9 @@ public class ClienteSeneca extends MaimonidesBean {
                     } else {
                         Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo faltas: No se ha encontrado codigo en:\n{0}", txt);
                     }
+                    this.firePropertyChange("alumnoProcesado", alumnos.size(), count);
                 }
-                this.firePropertyChange("alumnoProcesado", alumnos.size(), count);
+                
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -746,12 +749,12 @@ public class ClienteSeneca extends MaimonidesBean {
                     }
                     String numEscolar = it.next();
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo s\u00e9neca: Buscando c\u00f3digo S\u00e9neca para N\u00ba Escolar:{0}...", numEscolar);
-                    firePropertyChange("message", null, "Buscando código Séneca para Nº Escolar:" + numEscolar + " ("+(count+1)+"/"+alumnos.size()+")...");
+                    firePropertyChange("message", null, "Procesando Nº Escolar:" + numEscolar + " ("+(count+1)+"/"+alumnos.size()+")...");
                     HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA="+getCodigoPagina("RegAlum")+"&N_V_=" + getNombreVentana());
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                     nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
                     nameValuePairs.add(new BasicNameValuePair("C_ANNO", "" + MaimonidesApp.getApplication().getAnoEscolar().getAno()));
-                    nameValuePairs.add(new BasicNameValuePair("C_NUMESCOLAR", "-1"));
+                    nameValuePairs.add(new BasicNameValuePair("C_NUMESCOLAR", "11"));
                     nameValuePairs.add(new BasicNameValuePair("C_NUMIDE", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("DESHABILITAR_C_ANNO", "N"));
                     nameValuePairs.add(new BasicNameValuePair("F_NACIMIENTO", "-1"));
@@ -761,6 +764,20 @@ public class ClienteSeneca extends MaimonidesBean {
                     nameValuePairs.add(new BasicNameValuePair("T_NOMBRE", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("V1_C_NUMESCOLAR", numEscolar));
+                    
+                    
+                    nameValuePairs.add(new BasicNameValuePair("V1_C_NUMIDE", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V1_F_NACIMIENTO", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V1_T_APELLIDO1", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V1_T_APELLIDO2", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V1_T_NOMBRE", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V2_C_NUMESCOLAR", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V2_C_NUMIDE", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V2_F_NACIMIENTO", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V2_T_APELLIDO1", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V2_T_APELLIDO2", ""));
+                    nameValuePairs.add(new BasicNameValuePair("V2_T_NOMBR", ""));
+                    
                     p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = getCliente().execute(p1);
                     String txt = EntityUtils.toString(response.getEntity());

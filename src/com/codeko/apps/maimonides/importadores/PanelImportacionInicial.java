@@ -21,9 +21,7 @@
  *  For more information:
  *  maimonides@codeko.com
  *  http://codeko.com/maimonides
-**/
-
-
+ **/
 /*
  * PanelImportacionInicial.java
  *
@@ -529,14 +527,14 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
                         firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-                        if("alumnoProcesado".equals(evt.getPropertyName())){
+                        if ("alumnoProcesado".equals(evt.getPropertyName())) {
                             setProgress(Num.getInt(evt.getNewValue()), 0, Num.getInt(evt.getOldValue()));
                         }
                     }
                 });
                 ret = true;
                 ret = actualizarCodigoSeneca();
-                if(!isCancelled()){
+                if (!isCancelled()) {
                     ret = actualizarCodigoFaltas() && ret;
                 }
             } else if (fichero.exists()) {
@@ -575,29 +573,33 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                 Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
             Obj.cerrar(stSel, res);
-            this.setMessage("Recuperándo códigos Séneca");
-            this.setProgress(0, 0, alumnos.size());
-            ret = cli.actualizarCodigoSenecaAlumnos(alumnos, this) == alumnos.size();
-            Iterator<String> it = alumnos.keySet().iterator();
-            try {
-                st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("UPDATE alumnos SET cod=? WHERE ano=? AND borrado=0 AND numescolar=?");
-                st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
-                while (it.hasNext()) {
-                    String numEscolar = it.next();
-                    Integer cod = alumnos.get(numEscolar);
-                    if (Num.getInt(cod) > 0) {
-                        st.setInt(1, cod);
-                        st.setString(3, numEscolar);
-                        st.addBatch();
-                        cont++;
+            if (alumnos.size() > 0) {
+                this.setMessage("Recuperándo códigos Séneca");
+                this.setProgress(0, 0, alumnos.size());
+                ret = cli.actualizarCodigoSenecaAlumnos(alumnos, this) == alumnos.size();
+                Iterator<String> it = alumnos.keySet().iterator();
+                try {
+                    st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("UPDATE alumnos SET cod=? WHERE ano=? AND borrado=0 AND numescolar=?");
+                    st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
+                    while (it.hasNext()) {
+                        String numEscolar = it.next();
+                        Integer cod = alumnos.get(numEscolar);
+                        if (Num.getInt(cod) > 0) {
+                            st.setInt(1, cod);
+                            st.setString(3, numEscolar);
+                            st.addBatch();
+                            cont++;
+                        }
                     }
+                    st.executeBatch();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                st.executeBatch();
-            } catch (SQLException ex) {
-                Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
+                Obj.cerrar(st);
+                setMessage("Se ha actualizado el código séneca de " + cont + " alumnos.");
+            } else {
+                ret = true;
             }
-            Obj.cerrar(st);
-            setMessage("Se ha actualizado el código séneca de " + cont + " alumnos.");
             return ret;
         }
 
@@ -619,29 +621,33 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
                 Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
             Obj.cerrar(stSel, res);
-            this.setMessage("Recuperándo códigos de faltas de Séneca");
-            this.setProgress(0, 0, alumnos.size());
-            ret = cli.actualizarCodigoFaltasSenecaAlumnos(alumnos, this) == alumnos.size();
-            Iterator<String> it = alumnos.keySet().iterator();
-            try {
-                st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("UPDATE alumnos SET codFaltas=? WHERE ano=? AND cod=?");
-                st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
-                while (it.hasNext()) {
-                    String cod = it.next();
-                    String codFaltas = alumnos.get(cod);
-                    if (!Str.noNulo(codFaltas).equals("")) {
-                        st.setString(1, codFaltas);
-                        st.setString(3, cod);
-                        st.addBatch();
-                        cont++;
+            if (alumnos.size() > 0) {
+                this.setMessage("Recuperándo códigos de faltas de Séneca");
+                this.setProgress(0, 0, alumnos.size());
+                ret = cli.actualizarCodigoFaltasSenecaAlumnos(alumnos, this) == alumnos.size();
+                Iterator<String> it = alumnos.keySet().iterator();
+                try {
+                    st = (PreparedStatement) MaimonidesApp.getConexion().prepareStatement("UPDATE alumnos SET codFaltas=? WHERE ano=? AND cod=?");
+                    st.setInt(2, MaimonidesApp.getApplication().getAnoEscolar().getId());
+                    while (it.hasNext()) {
+                        String cod = it.next();
+                        String codFaltas = alumnos.get(cod);
+                        if (!Str.noNulo(codFaltas).equals("")) {
+                            st.setString(1, codFaltas);
+                            st.setString(3, cod);
+                            st.addBatch();
+                            cont++;
+                        }
                     }
+                    st.executeBatch();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                st.executeBatch();
-            } catch (SQLException ex) {
-                Logger.getLogger(PanelImportacionInicial.class.getName()).log(Level.SEVERE, null, ex);
+                Obj.cerrar(st);
+                setMessage("Se ha actualizado el código de faltas de séneca de " + cont + " alumnos.");
+            } else {
+                ret = true;
             }
-            Obj.cerrar(st);
-            setMessage("Se ha actualizado el código de faltas de séneca de " + cont + " alumnos.");
             return ret;
         }
 
@@ -740,6 +746,7 @@ public class PanelImportacionInicial extends javax.swing.JPanel implements IPane
             }
             if (importador != null) {
                 importador.addPropertyChangeListener(new PropertyChangeListener() {
+
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
                         firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
