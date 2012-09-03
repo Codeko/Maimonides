@@ -652,7 +652,7 @@ public class ClienteSeneca extends MaimonidesBean {
     private void ping() {
         try {
             String[] webs = {
-                "Principal.jsp?COD_PAGINA=7&N_V_=IGNORAR_NOMBRE&ALEATORIO=PMPMQWFFLCHKDRFFFFYX", //                "CEC.jsp?ALEATORIO=AEYXYXQWAEYXHKKVPM",
+                "Principal.jsp?COD_PAGINA="+getCodigoPagina("Inicio") +"&N_V_=IGNORAR_NOMBRE&ALEATORIO=PMPMQWFFLCHKDRFFFFYX", //                "CEC.jsp?ALEATORIO=AEYXYXQWAEYXHKKVPM",
             //                "inferior.jsp?ALEATORIO=FFHKAEAEFFFFAEPMPM",
             //                "PagMenu.jsp?ALEATORIO=FFAEYXQWPMKVGSLCDR",
             //                "PrincipalMulti.jsp?ALEATORIO=YXQWYXGSDRAEKVGS",

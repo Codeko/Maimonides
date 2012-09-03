@@ -51,7 +51,10 @@ import java.util.regex.Pattern;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -191,9 +194,13 @@ public class GestorCalendarioSeneca extends MaimonidesBean {
                                 }
                             }
                             //Ahora cambiamos la url de la petición
-                            url = "Principal.jsp?rndval=265924307&EN_RECARGA_=S&COD_PAGINA=10006&ALEATORIO=PMFFPMAEDRAEDRKVLCFF&N_V_=" + getCliente().getNombreVentana();
+                            url = "Principal.jsp?rndval=265924307&EN_RECARGA_=S&COD_PAGINA="+getCliente().getCodigoPagina("200CalEscCent")+"&ALEATORIO=PMFFPMAEDRAEDRKVLCFF&N_V_=" + getCliente().getNombreVentana();
                             //Y llamamos al paginar para ir a la siguiente página
-                            getCliente().visitarURL("Paginar.jsp?MODO=PAGINAR&IR_A=" + (pagina + 1) + "&PAGINA=" + pagina + "&");
+                            HttpPost post = new HttpPost( ClienteSeneca.getUrlBase() + "Paginar.jsp?MODO=PAGINAR&IR_A=" + (pagina + 1) + "&PAGINA=" + pagina + "&");
+                            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                            nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
+                            nameValuePairs.add(new BasicNameValuePair("C_ANNO", "" + MaimonidesApp.getApplication().getAnoEscolar().getAno()));
+                            response = getCliente().getCliente().execute(post);
                             pagina++;
                         } else {
                             continuar = false;
