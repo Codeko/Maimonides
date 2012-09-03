@@ -103,44 +103,42 @@ import org.apache.http.util.EntityUtils;
 import org.jdesktop.application.Task;
 
 /**
- Recuperacion de nombre de codigo
- Acceder a https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/PagMenu.jsp
- 
+Recuperacion de nombre de codigo
+Acceder a https://www.juntadeandalucia.es/educacion/seneca/seneca/jsp/PagMenu.jsp
+
  * Usar la funcion 
- function getCodByValue(value,prefix) {
-  prefix=prefix|"c_";
-  var keyValues = [], global = window; // window for browser environments
-  for (var prop in global) {
-    if (prop.indexOf(prefix) == 0) // check the prefix
-      keyValues.push(prop + "=" + global[prop]);
-      if(global[prop]==value){
-        alert(prop); 
-      }
-  }
+function getCodByValue(value,prefix) {
+    prefix=prefix|"c_";
+    var keyValues = [], global = window; // window for browser environments
+    for (var prop in global) {
+        if (prop.indexOf(prefix) == 0) // check the prefix
+        keyValues.push(prop + "=" + global[prop]);
+        if(global[prop]==value){
+            alert(prop); 
+        }
+    }
 }
-  
-  
- Esta es la funcion origianl para sacar todas las variables
- function getGlobalProperties(prefix) {
-  var keyValues = [], global = window; // window for browser environments
-  for (var prop in global) {
-    if (prop.indexOf(prefix) == 0) // check the prefix
-      keyValues.push(prop + "=" + global[prop]);
-      if(global[prop]=="e30IyCRUlSJ7L7eJhqHfjg"){
-        alert(prop); 
-      }
-  }
-  return keyValues.join('&'); // build the string
+
+
+Esta es la funcion origianl para sacar todas las variables
+function getGlobalProperties(prefix) {
+var keyValues = [], global = window; // window for browser environments
+for (var prop in global) {
+if (prop.indexOf(prefix) == 0) // check the prefix
+keyValues.push(prop + "=" + global[prop]);
+if(global[prop]=="e30IyCRUlSJ7L7eJhqHfjg"){
+alert(prop); 
+}
+}
+return keyValues.join('&'); // build the string
 }
 var test = getGlobalProperties('c_');
 alert(test);
- 
-  
-  
- 
+
+
+
+
  */
-
-
 /**
  * Copyright Codeko Informática 2008
  * www.codeko.com
@@ -356,7 +354,7 @@ public class ClienteSeneca extends MaimonidesBean {
         ThreadSafeClientConnManager man = (ThreadSafeClientConnManager) cliente.getConnectionManager();
         man.closeExpiredConnections();
         man.closeIdleConnections(10, TimeUnit.SECONDS);
-        Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Hay {0} conexiones abiertas.", man.getConnectionsInPool());
+        Logger.getLogger(ClienteSeneca.class.getName()).log(Level.FINER, "Hay {0} conexiones abiertas.", man.getConnectionsInPool());
         return cliente;
     }
 
@@ -605,7 +603,7 @@ public class ClienteSeneca extends MaimonidesBean {
                 }
                 //La de las consultas de exportación
                 String paginaExport = getURL("PaginaExportacionDatos.jsp?rndval=566364053&N_V_=" + getNombreVentana() + "&COD_PAGINA_ANTERIOR=" + codPaginaForm);
-                
+
                 String captcha = getCaptcha();
                 boolean ok = false;
                 int max = 3;
@@ -674,7 +672,7 @@ public class ClienteSeneca extends MaimonidesBean {
 
     public int actualizarCodigoFaltasSenecaAlumnos(HashMap<String, String> alumnos, Task tarea) {
         int ret = 0;
-      
+
         if (hacerLogin()) {
             Logger.getLogger(ClienteSeneca.class.getName()).info("Actualizar código faltas: Login OK.");
             try {
@@ -695,8 +693,8 @@ public class ClienteSeneca extends MaimonidesBean {
                     count++;
                     String codSeneca = it.next();
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo faltas: Procesando alumno con c\u00f3digo s\u00e9neca {0}.", codSeneca);
-                    firePropertyChange("message", null, "Procesando código:" + codSeneca + " ("+(count)+"/"+alumnos.size()+")...");
-                    String url = getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA="+getCodigoPagina("RegCenAlu") +"&X_ALUMNO=" + codSeneca + "&N_V_=" + getNombreVentana();
+                    firePropertyChange("message", null, "Procesando código:" + codSeneca + " (" + (count) + "/" + alumnos.size() + ")...");
+                    String url = getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA=" + getCodigoPagina("RegCenAlu") + "&X_ALUMNO=" + codSeneca + "&N_V_=" + getNombreVentana();
                     HttpGet p1 = new HttpGet(url);
                     HttpResponse response = getCliente().execute(p1);
                     String txt = EntityUtils.toString(response.getEntity());
@@ -722,7 +720,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     }
                     this.firePropertyChange("alumnoProcesado", alumnos.size(), count);
                 }
-                
+
             } catch (Exception ex) {
                 Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -735,7 +733,7 @@ public class ClienteSeneca extends MaimonidesBean {
 
     public int actualizarCodigoSenecaAlumnos(HashMap<String, Integer> alumnos, Task tarea) {
         int ret = 0;
-        int count=0;
+        int count = 0;
         if (hacerLogin()) {
             Logger.getLogger(ClienteSeneca.class.getName()).info("Actualizar código séneca. Login OK");
             try {
@@ -749,8 +747,8 @@ public class ClienteSeneca extends MaimonidesBean {
                     }
                     String numEscolar = it.next();
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.INFO, "Actualizar c\u00f3digo s\u00e9neca: Buscando c\u00f3digo S\u00e9neca para N\u00ba Escolar:{0}...", numEscolar);
-                    firePropertyChange("message", null, "Procesando Nº Escolar:" + numEscolar + " ("+(count+1)+"/"+alumnos.size()+")...");
-                    HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA="+getCodigoPagina("RegAlum")+"&N_V_=" + getNombreVentana());
+                    firePropertyChange("message", null, "Procesando Nº Escolar:" + numEscolar + " (" + (count + 1) + "/" + alumnos.size() + ")...");
+                    HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=308522874&COD_PAGINA=" + getCodigoPagina("RegAlum") + "&N_V_=" + getNombreVentana());
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                     nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", MaimonidesApp.getApplication().getAnoEscolar().getAno() + "|"));
                     nameValuePairs.add(new BasicNameValuePair("C_ANNO", "" + MaimonidesApp.getApplication().getAnoEscolar().getAno()));
@@ -764,8 +762,8 @@ public class ClienteSeneca extends MaimonidesBean {
                     nameValuePairs.add(new BasicNameValuePair("T_NOMBRE", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", "-1"));
                     nameValuePairs.add(new BasicNameValuePair("V1_C_NUMESCOLAR", numEscolar));
-                    
-                    
+
+
                     nameValuePairs.add(new BasicNameValuePair("V1_C_NUMIDE", ""));
                     nameValuePairs.add(new BasicNameValuePair("V1_F_NACIMIENTO", ""));
                     nameValuePairs.add(new BasicNameValuePair("V1_T_APELLIDO1", ""));
@@ -777,7 +775,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     nameValuePairs.add(new BasicNameValuePair("V2_T_APELLIDO1", ""));
                     nameValuePairs.add(new BasicNameValuePair("V2_T_APELLIDO2", ""));
                     nameValuePairs.add(new BasicNameValuePair("V2_T_NOMBR", ""));
-                    
+
                     p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = getCliente().execute(p1);
                     String txt = EntityUtils.toString(response.getEntity());
@@ -809,16 +807,10 @@ public class ClienteSeneca extends MaimonidesBean {
         return ret;
     }
 
-    private ArrayList<String> getCodigosCurso() {
-        ArrayList<String> codigos = new ArrayList<String>();
+    private ArrayList<Par<String,String>> getCodigosCurso() {
+        ArrayList<Par<String,String>> codigos = new ArrayList<Par<String,String>>();
         try {
-            String url = "Principal.jsp?rndval=447615097&COD_PAGINA=2240&N_V_=" + getNombreVentana();
-            HttpGet get = new HttpGet(getUrlBase() + url);
-            HttpResponse response = getCliente().execute(get);
-            String txt = EntityUtils.toString(response.getEntity());
-            if (isDebugMode()) {
-                System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + txt);
-            }
+            String txt = getURL("Principal.jsp?rndval=447615097&COD_PAGINA="+getCodigoPagina("RegUnidades") +"&N_V_=" + getNombreVentana());
             //Ahora tenemos que procesar este código para sacar las opciones
             Source source = new Source(txt);
             List<Element> lTmp = source.getAllElements("select");
@@ -831,7 +823,8 @@ public class ClienteSeneca extends MaimonidesBean {
                         Element option = elX.next();
                         int val = Num.getInt(option.getAttributeValue("value"));
                         if (val > 0) {
-                            codigos.add(val + "");
+                            Par<String,String> par=new Par<String,String>(option.getContent().toString(),val + "");
+                            codigos.add(par);
                         }
                     }
                     break;
@@ -848,40 +841,46 @@ public class ClienteSeneca extends MaimonidesBean {
 
         ArrayList<File> archivos = new ArrayList<File>();
         if (hacerLogin()) {
+            //Avisamos de que se van a pedir muchos captchas
+            JOptionPane.showMessageDialog(MaimonidesApp.getApplication().getMainFrame(),"A continuación se van a descargar los archivos de matriculación\ndesde Séneca. Para cada archivo se solicitará un código visual\npor lo que se van a solicitar tantos códigos como cursos tenga el centro.","Solicitud de códigos" , JOptionPane.WARNING_MESSAGE);
+            //Pagina Alumnado->Matriculacion->Relación de Matrículas
             //Tenemos que recuperar los códigos de curso
             firePropertyChange("message", null, "Recuperando códigos Séneca para los cursos.");
-            for (String codigoCurso : getCodigosCurso()) {
+            for (Par<String,String> parCodigoCurso : getCodigosCurso()) {
                 try {
+                    String codigoCurso=parCodigoCurso.getB();
                     //La web del listado
-                    firePropertyChange("message", null, "Descargando fichero Séneca de matriculas de alumnado para el curso: " + codigoCurso + ".");
+                    firePropertyChange("message", null, "Descargando fichero Séneca de matriculas de alumnado para el curso: " + parCodigoCurso.getA() + ".");
                     //Nos falta sacar el valor de OFERTAG 299991
                     String ofertag = codigoCurso;
                     String ano = MaimonidesApp.getApplication().getAnoEscolar().getAno() + "";
-                    HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=912428392&COD_PAGINA=11429&OFERTAG=" + ofertag + "&CANNO=" + ano + "&PERIODO=1&N_V_=" + getNombreVentana());
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", ano + "|" + ofertag + "|1|"));
-                    nameValuePairs.add(new BasicNameValuePair("CURSO_ACTUAL", ano));
-                    nameValuePairs.add(new BasicNameValuePair("C_ANNO", ano));
-                    nameValuePairs.add(new BasicNameValuePair("HETAPA", ""));
-                    nameValuePairs.add(new BasicNameValuePair("PERIODO", "1"));
-                    nameValuePairs.add(new BasicNameValuePair("HVIGENTE", "S"));
-                    nameValuePairs.add(new BasicNameValuePair("HOMC", ofertag));
-                    nameValuePairs.add(new BasicNameValuePair("OFERTAMAT", ofertag));
-                    nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", ofertag));
-                    p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = getCliente().execute(p1);
-                    String txt = EntityUtils.toString(response.getEntity());
-                    if (isDebugMode()) {
-                        System.out.println(p1.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + txt);
-                    }
+                    String codPagForm = getCodigoPagina("RelaMatr");
+                    String prePagina = getURL("Principal.jsp?rndval=912428392&COD_PAGINA=" + codPagForm + "&X_OFERTA=" + ofertag + "&X_OFERTAMATRIC=" + ofertag + "&C_ANNO=" + ano + "&N_PERIODO=1&N_V_=" + getNombreVentana());
+//                    HttpPost p1 = new HttpPost(getUrlBase() + "Principal.jsp?rndval=912428392&COD_PAGINA="+getCodigoPagina("RelaMatr") +"&X_OFERTA=" + ofertag + "&X_OFERTAMATRIC="+ofertag+"&C_ANNO=" + ano + "&N_PERIODO=1&N_V_=" + getNombreVentana());
+//                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+//                    nameValuePairs.add(new BasicNameValuePair("CHECKSUM_", ano + "|" + ofertag + "|1|"));
+//                    nameValuePairs.add(new BasicNameValuePair("CURSO_ACTUAL", ano));
+//                    nameValuePairs.add(new BasicNameValuePair("C_ANNO", ano));
+//                    nameValuePairs.add(new BasicNameValuePair("HETAPA", ""));
+//                    nameValuePairs.add(new BasicNameValuePair("PERIODO", "1"));
+//                    nameValuePairs.add(new BasicNameValuePair("HVIGENTE", "S"));
+//                    nameValuePairs.add(new BasicNameValuePair("HOMC", ofertag));
+//                    nameValuePairs.add(new BasicNameValuePair("OFERTAMAT", ofertag));
+//                    nameValuePairs.add(new BasicNameValuePair("X_OFERTAMATRIC", ofertag));
+//                    p1.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//                    HttpResponse response = getCliente().execute(p1);
+//                    String txt = EntityUtils.toString(response.getEntity());
+//                    if (isDebugMode()) {
+//                        System.out.println(p1.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + txt);
+//                    }
                     //La de las consultas de exportación
                     //visitarURL("PaginaExportacionDatos.jsp?rndval=566364053&N_V_=" + getNombreVentana());
-                    HttpGet get = new HttpGet(getUrlBase() + "PaginaExportacionDatos.jsp?rndval=566364053&N_V_=" + getNombreVentana());
-                    response = getCliente().execute(get);
-                    txt = EntityUtils.toString(response.getEntity());
-                    if (isDebugMode()) {
-                        System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + txt);
-                    }
+//                    HttpGet get = new HttpGet(getUrlBase() + "PaginaExportacionDatos.jsp?rndval=566364053&COD_PAGINA_ANTERIOR="+codPagForm+"&N_V_=" + getNombreVentana());
+//                    HttpResponse response = getCliente().execute(get);
+                    String txt = getURL("PaginaExportacionDatos.jsp?rndval=566364053&COD_PAGINA_ANTERIOR=" + codPagForm + "&N_V_=" + getNombreVentana());
+//                    if (isDebugMode()) {
+//                        System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + txt);
+//                    }
                     //Ahora tenemos que procesar este código para sacar las opciones
                     Source source = new Source(txt);
                     ArrayList<String> columnas = new ArrayList<String>();
@@ -901,23 +900,42 @@ public class ClienteSeneca extends MaimonidesBean {
                             break;
                         }
                     }
-                    //Luego pedimos los datos
-                    HttpPost post = new HttpPost(getUrlBase() + "ExportarDatos.jsp");
-                    nameValuePairs = new ArrayList<NameValuePair>();
-                    //Añadimos las columnas que hemos recuperado
-                    for (String m : columnas) {
-                        nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", m));
+
+                    String captcha = getCaptcha("Código para "+parCodigoCurso.getA());
+                    boolean ok = false;
+                    int max = 3;
+                    while (captcha != null && !ok && max > 0) {
+                        //Luego pedimos los datos
+                        HttpPost post = new HttpPost(getUrlBase() + "ExportarDatos.jsp");
+                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                        nameValuePairs.add(new BasicNameValuePair("KAPTCHA", captcha));
+                        //Añadimos las columnas que hemos recuperado
+                        for (String m : columnas) {
+                            nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", m));
+                        }
+                        nameValuePairs.add(new BasicNameValuePair("FORMATO_EXPORTACION", getOptionVal(txt, "Hoja Microsoft Excel")));
+                        nameValuePairs.add(new BasicNameValuePair("TITULO", "RELACIÓN DE MATRÍCULAS"));
+                        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                        HttpResponse response = getCliente().execute(post);
+                        File f = File.createTempFile("mm_", ".xls");
+                        FileOutputStream fos = new FileOutputStream(f);
+                        InputStream is = response.getEntity().getContent();
+                        Archivo.copiarArchivo(is, fos);
+                        Obj.cerrar(fos, is);
+                        String fContent = Archivo.getContenido(f);
+                        if (fContent.contains("ExportarDatos.jsp")) {
+                            f = null;
+                            captcha = getCaptcha();
+                        } else if (fContent.contains("<html>")) {
+                            firePropertyChange("message", null, "Error descargando fichero.");
+                            ok = true;
+                        } else {
+                            firePropertyChange("message", null, "Fichero descargado con éxito.");
+                            ok = true;
+                            archivos.add(f);
+                        }
+                        max--;
                     }
-                    nameValuePairs.add(new BasicNameValuePair("FORMATO_EXPORTACION", "EXCEL"));
-                    nameValuePairs.add(new BasicNameValuePair("TITULO", "MATERIAS DE LAS QUE SE HA MATRICULADO CADA ALUMNO"));
-                    post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    response = getCliente().execute(post);
-                    File f = File.createTempFile("mm_", ".xls");
-                    FileOutputStream fos = new FileOutputStream(f);
-                    InputStream is = response.getEntity().getContent();
-                    Archivo.copiarArchivo(is, fos);
-                    Obj.cerrar(fos, is);
-                    archivos.add(f);
                 } catch (Exception ex) {
                     Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1036,9 +1054,9 @@ public class ClienteSeneca extends MaimonidesBean {
         //TODO Mover todo a la clase encargada de esta importación
         if (hacerLogin()) {
             try {
-                //ArrayList<Profesor> profesores = Profesor.getProfesores();
-                ArrayList<Profesor> profesores = new ArrayList<Profesor>();
-                profesores.add(Profesor.getProfesor(530));
+                ArrayList<Profesor> profesores = Profesor.getProfesores();
+                //ArrayList<Profesor> profesores = new ArrayList<Profesor>();
+                //profesores.add(Profesor.getProfesor(530));
                 //TODO Hay que verificar que en los formularios esté en el año actual
                 //Tenemos que sacar los horarios de cada profesor
                 for (Profesor p : profesores) {
@@ -1046,17 +1064,14 @@ public class ClienteSeneca extends MaimonidesBean {
                         continue;
                     }
                     ArrayList<Horario> horarios = new ArrayList<Horario>();
-                    firePropertyChange("message", null, "Procesando horarios de " + p.getNombreObjeto() + "...");
+                    firePropertyChange("message", null, "Procesando horarios de " + p.getDescripcionObjeto() + "...");
                     String tomaPos = String.format("%1$td/%1$tm/%1$tY", p.getFechaTomaPosesion());
                     tomaPos = URLEncoder.encode(tomaPos, "utf-8");
                     //Personal -> Personal del centro -> Desplegable en un profesor -> Horario regural
-                    String url = "Principal.jsp?rndval=457445156&COD_PAGINA=11613&X_EMPLEADO=" + p.getCodigo() + "&F_TOMAPOS=" + tomaPos + "&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&N_V_=" + getNombreVentana();
-                    HttpGet get = new HttpGet(getUrlBase() + url);
-                    HttpResponse response = getCliente().execute(get);
-                    String txt = EntityUtils.toString(response.getEntity());
-                    if (isDebugMode()) {
-                        System.out.println(get.getURI() + ":" + response.getStatusLine().getStatusCode() + "\n" + txt);
-                    }
+                    String url = "Principal.jsp?rndval=457445156&COD_PAGINA="+getCodigoPagina("HoraRegular2") +"&X_EMPLEADO=" + p.getCodigo() + "&F_TOMAPOS=" + tomaPos + "&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&MODO=EDITAR&&N_V_=" + getNombreVentana();
+                   
+                    String txt =getURL(url);
+                    
                     Source source = new Source(txt);
                     //Procesamos los combos select para localizar el plan de horarios y otros datos
                     List<Element> lTmp = source.getAllElements("select");
@@ -1087,20 +1102,16 @@ public class ClienteSeneca extends MaimonidesBean {
                             //Donde:         COD_HORARIO|DIA SEMANA|TRAMO HORARIO|F.INI|F.FIN|495|555|495|555
                             int cod = Num.getInt(data[0]);
                             int dia = Num.getInt(data[1]);
-                            firePropertyChange("message", null, "Procesando horarios de " + p.getNombreObjeto() + " " + MaimonidesUtil.getNombreDiaSemana(dia, true) + "...");
+                            firePropertyChange("message", null, "Procesando horarios de " + p.getDescripcionObjeto() + ": " + MaimonidesUtil.getNombreDiaSemana(dia, true) + "...");
                             String codTramoHorario = data[2].trim();
                             String sFIni = data[3];
                             String sFFin = data[4];
                             String codDependencia = null;
                             //El resto de datos son la hora de inicio y final o algo así
                             //Ahora vamos a la ficha del horario en la interfaz en el la tabla de horarios clic -> Detalles
-                            String urlHor = "Principal.jsp?rndval=593021341&COD_PAGINA=11733&MODO=EDITAR&X_HORARIORE=" + cod + "&X_PLAJORESCCEN=" + idPlanHorarios + "&N_V_=" + getNombreVentana();
-                            HttpGet getHor = new HttpGet(getUrlBase() + urlHor);
-                            HttpResponse responseHor = getCliente().execute(getHor);
-                            String txtHor = EntityUtils.toString(responseHor.getEntity());
-                            if (isDebugMode()) {
-                                System.out.println(getHor.getURI() + ":" + responseHor.getStatusLine().getStatusCode() + "\n" + txtHor);
-                            }
+                            String urlHor = "Principal.jsp?rndval=593021341&COD_PAGINA="+getCodigoPagina("DocenDirec") +"&MODO=EDITAR&X_HORARIORE=" + cod + "&X_PLAJORESCCEN=" + idPlanHorarios + "&N_V_=" + getNombreVentana();
+                            String txtHor =getURL(urlHor);
+                            
                             ArrayList<String> sCursoData = new ArrayList<String>();
                             Source sourceHor = new Source(txtHor);
                             List<Element> lSel = sourceHor.getAllElements("select");
@@ -1174,7 +1185,11 @@ public class ClienteSeneca extends MaimonidesBean {
                                     if (codMateria > 0) {//Si hay materia la actividad es docencia
                                         h.setActividad(Actividad.getIdActividadDocencia(ano));
                                         Materia m = Materia.getMateria(ano, codMateria);
-                                        h.setMateria(m.getId());
+                                        if(m!=null){
+                                            h.setMateria(m.getId());
+                                        }else{
+                                            Logger.getLogger(ClienteSeneca.class.getName()).log(Level.SEVERE, "No se ha podido recuperar la materia con código: "+codMateria);
+                                        }
                                     } else {
                                         if (actividad != null) {
                                             h.setActividad(actividad.getId());
@@ -1234,7 +1249,7 @@ public class ClienteSeneca extends MaimonidesBean {
                     for (String campo : campos) {
                         nameValuePairs.add(new BasicNameValuePair("COLUMNAS_VISIBLES", getOptionVal(formEnvio, campo)));
                     }
-                    nameValuePairs.add(new BasicNameValuePair("FORMATO_EXPORTACION", getOptionVal(formEnvio,  "Fichero CSV")));
+                    nameValuePairs.add(new BasicNameValuePair("FORMATO_EXPORTACION", getOptionVal(formEnvio, "Fichero CSV")));
                     nameValuePairs.add(new BasicNameValuePair("TITULO", "RELACIÓN DE UNIDADES"));
                     nameValuePairs.add(new BasicNameValuePair("KAPTCHA", captcha));
                     post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -1336,15 +1351,17 @@ public class ClienteSeneca extends MaimonidesBean {
         }
         return texto;
     }
-
     public String getCaptcha() throws IOException {
+        return getCaptcha("Introduzca el código");
+    }
+    public String getCaptcha(String titulo) throws IOException {
         //Tenemos que recuperar el captcha
         String urlCapcha = ClienteSeneca.getUrlBase() + "../kaptcha?ALEATORIO=" + Math.floor(Math.random() * 1000);
         HttpGet get = new HttpGet(urlCapcha);
         HttpResponse response = this.getCliente().execute(get);
         BufferedImage img = ImageIO.read(response.getEntity().getContent());
         JLabel lImg = new JLabel(new ImageIcon(img));
-        String captcha = JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), lImg, "Introduzca el código", JOptionPane.QUESTION_MESSAGE);
+        String captcha = JOptionPane.showInputDialog(MaimonidesApp.getApplication().getMainFrame(), lImg,titulo , JOptionPane.QUESTION_MESSAGE);
         return captcha;
     }
 

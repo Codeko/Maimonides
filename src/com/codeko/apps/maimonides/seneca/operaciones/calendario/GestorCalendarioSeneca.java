@@ -145,9 +145,10 @@ public class GestorCalendarioSeneca extends MaimonidesBean {
         if (getCliente().hacerLogin()) {
             ret = new ArrayList<DiaCalendarioEscolar>();
             try {
+                //Pagina: Centro-> Calendario y Jornada -> Calendario escolar -> Dias festivos
                 firePropertyChange("message", null, "Cargando datos de calendario...");
                 boolean continuar = true;
-                String url = "Principal.jsp?rndval=572558106&COD_PAGINA=10006&DESDE_MENU_=S&PRIMERA_VISITA_=S&N_V_=" + getCliente().getNombreVentana();
+                String url = "Principal.jsp?rndval=572558106&COD_PAGINA="+getCliente().getCodigoPagina("200CalEscCent") +"&DESDE_MENU_=S&PRIMERA_VISITA_=S&N_V_=" + getCliente().getNombreVentana();
                 int cont = 10;
                 int pagina = 1;
                 while (continuar && cont > 0) {

@@ -91,8 +91,9 @@ public class GestorConvivenciaSeneca extends MaimonidesBean {
         boolean ok = false;
         if (getCliente().hacerLogin()) {
             firePropertyChange("message", null, "Cargando datos de convivencias...");
+            //Pagina Alumnado->Part Centroos Seguimiento de la Convivencia->	Alumnado incidente conducta contraria/grave
             //Pasamos como número de matricula 0 porque cuela, no pone los datos de alumno pero tampoco los necesitamos ahora
-            HttpGet get = new HttpGet(ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=344005786&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&COD_PAGINA=19386&MODO=NUEVO&X_MATRICULA=0&N_V_=" + getCliente().getNombreVentana());
+            HttpGet get = new HttpGet(ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=344005786&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&COD_PAGINA="+getCliente().getCodigoPagina("DetConConAlu") +"&MODO=NUEVO&X_MATRICULA=0&N_V_=" + getCliente().getNombreVentana());
             HttpResponse response = getCliente().getCliente().execute(get);
             String txt = EntityUtils.toString(response.getEntity());
             if (getCliente().isDebugMode()) {
