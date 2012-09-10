@@ -1006,7 +1006,7 @@ public class ClienteSeneca extends MaimonidesBean {
                 String valoresIE = getURL("PaginaActualizacion.jsp?rndval=971636491&CAMPO=X_TIPINTINF&INF_ACT_1=INF_SENTENCIA_ACTUALIZACION_1&C_SENINT=" + codExportacion + "&N_V_=" + getNombreVentana());
                 valoresIE = valoresIE.replaceAll("\r", "");
                 valoresIE = valoresIE.replaceAll("\n", "");
-                String codExportacionHorarios = getOptionVal(valoresIE, opcion);
+                String codExportacionHorarios = searchRegexp(valoresIE, "'"+opcion+"','([^']+)'");//getOptionVal(valoresIE, opcion);
                 if (!Str.noNulo(codExportacionHorarios).equals("")) {
                     datos=new Par<String, String>("Principal.jsp?rndval=722439096&COD_PAGINA=" + codPaginaExportacion + "&C_SENINT=" + codExportacion + "&X_TIPINTINF=" + codExportacionHorarios + "&N_V_=" + getNombreVentana(), codExportacionHorarios);
                 }
