@@ -30,6 +30,7 @@ import com.codeko.apps.maimonides.seneca.ClienteSeneca;
 import com.codeko.util.Fechas;
 import com.codeko.util.Num;
 import com.codeko.util.Str;
+import com.codeko.util.estructuras.Par;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -183,8 +184,10 @@ public class GestorEnvioFaltas extends MaimonidesBean {
             if (getCli().hacerLogin()) {
                 //tenemos que esperar hasta x minutos leyendo lo siguiente para ver si esta ok
                 //Si esta ok borrarlo si no moverlo
+                //Pagina: Utilizades->Importación/Exportación de datos->hacía séneca/faltas de asistencia
                 firePropertyChange("message", null, "Recuperando página de resultados de envío de ficheros de faltas...");
-                HttpGet get = new HttpGet(ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=578955782&COD_PAGINA=5004863&C_SENINT=I&X_TIPINTINF=6&X_CENTRO=&N_V_=" + getCli().getNombreVentana());// + "&COD_PAGINA_ANTERIOR=5004863&TIEMPO_PAGINA_ANTERIOR=1532&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=2068");
+                Par<String,String> datosExportacionHorarios=getCli().getURLImportacion("Importación hacia Séneca de faltas asistencia del alumnado");
+                HttpGet get = new HttpGet(ClienteSeneca.getUrlBase() + datosExportacionHorarios.getA());
                 HttpResponse response = getCli().getCliente().execute(get);
                 String txt = EntityUtils.toString(response.getEntity());
                 if (getCli().isOk(response, txt)) {
@@ -265,23 +268,24 @@ public class GestorEnvioFaltas extends MaimonidesBean {
         int ok = RET_ERROR_ENVIANDO;
         try {
             //Ahora enviamos el fichero
-            getCli().visitarURL("Principal.jsp?rndval=470649490&COD_PAGINA=5005684&MODO=NUEVO&X_TIPINTINF=6&N_V_=" + getCli().getNombreVentana());
+            Par<String,String> datosURL=getCli().getURLImportacion("Importación hacia Séneca de faltas asistencia del alumnado");
+            getCli().visitarURL("Principal.jsp?rndval=470649490&COD_PAGINA="+getCli().getCodigoPagina("DetImpFalAsi") +"&MODO=NUEVO&X_TIPINTINF="+datosURL.getB()+"&N_V_=" + getCli().getNombreVentana());
             String captcha = getCli().getCaptcha();
             if (captcha == null) {
                 ok = RET_ERROR_ENVIANDO;
             } else {
                 //Y enviamos el fichero
-                String url = ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=77730635&COD_PAGINA=5005364&TIPO_PARAMETROS_PETICION=MULTIPART_FORMDATA&TAM_MAXIMO_FICHERO_UPLOAD=5M&N_V_=" + getCli().getNombreVentana() + "&PAG_NO_VISIBLE_=S";//"&COD_PAGINA_ANTERIOR=5005684&TIEMPO_PAGINA_ANTERIOR=1092&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=1347";
+                String url = ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=77730635&COD_PAGINA="+getCli().getCodigoPagina("NVImpFalAsi") +"&TIPO_PARAMETROS_PETICION=MULTIPART_FORMDATA&TAM_MAXIMO_FICHERO_UPLOAD=5M&N_V_=" + getCli().getNombreVentana() + "&PAG_NO_VISIBLE_=S";//"&COD_PAGINA_ANTERIOR=5005684&TIEMPO_PAGINA_ANTERIOR=1092&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=1347";
                 HttpPost post = new HttpPost(url);
                 //post.addRequestHeader("Referer", r5);
                 String ano = MaimonidesApp.getApplication().getAnoEscolar().getAno() + "";
                 MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
                 FileBody bin = new FileBody(fichero);
                 reqEntity.addPart("RUTA_FICHERO", (ContentBody) bin);
-                reqEntity.addPart("KAPTCHA", (ContentBody) new StringBody(captcha+"asd"));
+                reqEntity.addPart("KAPTCHA", (ContentBody) new StringBody(captcha));
                 //reqEntity.addPart("X_TIPINTINF", (ContentBody) new StringBody("6"));
                 reqEntity.addPart("F_INTINF", (ContentBody) new StringBody(Fechas.format(new GregorianCalendar(), "dd/MM/yyyy hh:mm")));
-                reqEntity.addPart("C_SENINT", (ContentBody) new StringBody(""));
+                //reqEntity.addPart("C_SENINT", (ContentBody) new StringBody(""));
                 reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(ano + "|"));
                 //reqEntity.addPart("CHECKSUM_", (ContentBody) new StringBody(""));
                 reqEntity.addPart("C_ANNO", (ContentBody) new StringBody(ano + ""));

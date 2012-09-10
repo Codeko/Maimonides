@@ -230,10 +230,11 @@ public class GestorConvivenciaSeneca extends MaimonidesBean {
         if (getCliente().hacerLogin()) {
             ret = true;
             try {
-                //Primero visitamos la url anterior
-                String urlIni = "Principal.jsp?rndval=507813044&COD_PAGINA=19386&MODO=NUEVO&X_MATRICULA=" + parte.getAlumno().getCodFaltas() + "&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&N_V_=" + getCliente().getNombreVentana();
+                //Primero visitamos la url anterior: Alumnado->Alumnado->Part centros Seguimiento de la Convivencia-> Conductas Contrarias Graves de un alumno
+                
+                String urlIni = "Principal.jsp?rndval=507813044&COD_PAGINA="+getCliente().getCodigoPagina("DetConConAlu") +"&MODO=NUEVO&X_MATRICULA=" + parte.getAlumno().getCodFaltas() + "&C_ANNO=" + MaimonidesApp.getApplication().getAnoEscolar().getAno() + "&N_V_=" + getCliente().getNombreVentana();
                 getCliente().visitarURL(urlIni);
-                String url = "Principal.jsp?rndval=490519428&COD_PAGINA=12238&MODO=NUEVO&modoTramo=descriptivo&PAG_NO_VISIBLE_=S&N_V_=" + getCliente().getNombreVentana();
+                String url = "Principal.jsp?rndval=490519428&COD_PAGINA="+getCliente().getCodigoPagina("NVDetConConAlu") +"&MODO=NUEVO&modoTramo=descriptivo&PAG_NO_VISIBLE_=S&N_V_=" + getCliente().getNombreVentana();
                 HttpPost post = new HttpPost(ClienteSeneca.getUrlBase() + url);
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 //El año
@@ -247,9 +248,10 @@ public class GestorConvivenciaSeneca extends MaimonidesBean {
                 nameValuePairs.add(new BasicNameValuePair("CONCONDISP", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("CORCONDISP", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("OTRCORCONDISP", "-1"));
+                nameValuePairs.add(new BasicNameValuePair("OTRCORDESIN", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("X_GRUTIPCONNEG", "-1"));
                 nameValuePairs.add(new BasicNameValuePair("X_GRUTIPCORCONNEG", "-1"));
-
+                nameValuePairs.add(new BasicNameValuePair("T_ALUCONCON", ""));
                 //El profesor con formato 137076|01/09/2009  -> cod seneca profesor + fecha toma de posesion
                 Profesor p = parte.getProfesor();
                 String xEmpleado = p.getCodigo() + "|" + Fechas.format(p.getFechaTomaPosesion(), "dd/MM/yyyy");

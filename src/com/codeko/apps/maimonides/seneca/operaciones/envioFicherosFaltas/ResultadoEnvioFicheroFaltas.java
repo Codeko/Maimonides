@@ -140,7 +140,7 @@ public class ResultadoEnvioFicheroFaltas extends MaimonidesBean {
         boolean ok = false;
         try {
             if (!getParams().trim().equals("")) {
-                String url = ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=31417255&COD_PAGINA=13079&" + getParams() + "&MODO=BORRAR&N_V_=" + cli.getNombreVentana() + "&COD_PAGINA_ANTERIOR=5004863&TIEMPO_PAGINA_ANTERIOR=2751&TIEMPO_PAGINA_ANTERIOR_CON_BOTONERA=2889&PAG_NO_VISIBLE_=S";
+                String url = ClienteSeneca.getUrlBase() + "Principal.jsp?rndval=31417255&COD_PAGINA="+cli.getCodigoPagina("NVRegIntInf") +"&" + getParams() + "&MODO=BORRAR&N_V_=" + cli.getNombreVentana() + "&PAG_NO_VISIBLE_=S";
                 HttpGet get = new HttpGet(url);
                 HttpResponse response = cli.getCliente().execute(get);
                 String txt = EntityUtils.toString(response.getEntity());
